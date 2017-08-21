@@ -1,0 +1,174 @@
+    The CAM-SE 
+ uses   cubed-sphere geometry  originally introduced by \cite{S1972MWR}  to represent the planet earth. The  spherical   surface 
+  $\mathcal{S}$ is  a patched domain,  which is partitioned  into   non-overlapping quadrilateral elements 
+ $\Omega_e$ such that $\mathcal{S} = \cup \, \Omega_e$ (see Fig.~\ref{fig:gll4}). 
+  On   $\mathcal{S}$  each 2D  element $\Omega_e(x^1,x^2)$  defined in terms of
+ central  (gnomonic) projection angles $x^1,x^2 \in [-\pi/4, \pi/4]$, which serve as  the independent variables in the computational domain. 
+ The mapping from cube to sphere results in a non-orthogonal curvilinear  coordinate system on $\mathcal{S}$, with 
+ the  metric tensor $G_{ij}$ and  analytic Jacobian $ \sqrt{G} =  |G_{ij}|^{1/2}$, $i, j \in \{1,2\}$. 
+ A  physical vector quantity  such as the wind vector $\mathbf{v} = (u,v)$,  defined on  $\mathcal{S}$
+ in  orthogonal lat-long coordinates,  can  be uniquely
+ expressed in tensor form using conventional notations as the covariant $(u_1,u_2)$ and contravariant  $(u^1, u^2)$ vectors 
+ (see \cite{NTL2005MWR} for details).  The governing equations defined in familiar vector form can also be expressed 
+ in  general tensor form. In order  to  describe the SE discretization process in simple terms, we consider the 
+ the flux form  transport  equation on $\mathcal{S}$ for an arbitrary  scalar $\phi$:  
+ %
+ \begin{equation}
+ \frac{\partial \phi }{\partial t}  + \nabla \cdot \mathbf{F}(\phi)  = S(\phi)   \quad   
+ \Rightarrow  \frac{\partial U }{\partial t}  + \nabla_h \cdot \mathbf{F}(U)  = S(U), 
+  % \frac{\partial \phi }{\partial t}  + \frac{1}{J} \left[   \frac{\partial \phi F^1}{\partial x^1}  \right]
+  \label{eq:se1} 
+   \end{equation} 
+  %
+  with $U = \sqrt{G}  \phi $,  $\mathbf{F} = (F^1, F^2)$ contravariant fluxes and S(U)  is an arbitrary source term,
+  and  the gradient $\nabla_h = (\partial/\partial x^1, \partial/\partial x^2)$ defined on computational domain $\mathcal{C}$ corresponding
+  to $\mathcal{S}$ under the gnomonic mapping.  
+
+  
+\subsection{\normalsize SE spatial discretization in 2D}
+
+%In order to describe the spectral-element (SE) horizontal discretization as used in CAM-SE, we consider the
+%following generic form  of a governing equation (33-35): 
+% \begin{equation}
+% \frac{\partial U }{\partial t}  + \nabla_h \cdot \mathbf{F}(U)  = S(U)   \quad   {\rm in} \quad \mathcal{S}, \label{eq:se1} 
+% \end{equation} 
+% %
+%where $U$ is a prognostic variable defined on the spherical domain $\mathcal{S}$ and  $\nabla_h \cdot$ is the horizontal divergence operator. 
+%$\mathbf{F}$ is a general  flux function and $S(U)$ is the source term, which can be
+%a diffusive flux or any forcing term.  
+
+The  SE solution process involves  casting the PDE in Galerkin form, i.e.,  by multiplying  (\ref{eq:se1})  with a test (weight) function
+$\psi$  and integrating over the domain $\mathcal{C}$, 
+\begin{equation}
+ \int_{\mathcal{C}} \psi \,  \left[ \frac{\partial U }{\partial t}  + \nabla_h \cdot \mathbf{F}(U) -  S(U)  \right]  d\mathcal{C}  = 0. \label{eq:se2} 
+ \end{equation} 
+A computational form of  (\ref{eq:se2})  is obtained by applying Green's theorem,  
+resulting in  the weak Galerkin form as follows: 
+ %
+ \begin{equation}
+ \int_{\mathcal{C}} \psi   \ \frac{\partial U }{\partial t} \,   d\mathcal{C}  = 
+  \int_{\mathcal{C}}  \nabla_h \psi \cdot \mathbf{F}(U) \,  d\mathcal{C}  + 
+       \int_{\mathcal{C}} \psi  \, S(U)  \,   d\mathcal{C}, \label{eq:se3} 
+ \end{equation} 
+ %
+ where the approximate solution $U$ and the test function belong to a polynomial space  $V_{N}$. 
+ The SE method consists of  partitioning the domain into non-overlapping elements and solving the global problem 
+ locally on each element, where the  solution is approximated by using a set of  basis (polynomial) functions of prescribed 
+ order $N$.  A basic assumption used in SE (or continuous Galerkin) method is that the global basis 
+ corresponding to (\ref{eq:se3}) is 
+ $C^0$ continuous. 
+Therefore  the problem (\ref{eq:se3}) can be solved locally for each 
+ element $\Omega_e$, if there is a mechanism by which the solution maintains $C^0$ 
+ continuity at the element boundaries as required 
+ by the SE  discretization.   
+ %
+  \begin{figure}[h]
+\centering
+ \includegraphics[scale=0.75]{figs/cs_gll4_2017}
+ \caption{The left panel shows the  Gauss-Lobatto-Legendre (GLL)   grid with $ N_v \times  N_v$ quadrature points defined
+ on a standard element $[-1,1]^2$, where $N_v=4$. The right panel shows the cubed-sphere ($\mathcal{S}$) grid system tiled with 
+ $6 N_e^2 $ spectral elements $\Omega_e$, where $N_e$ is the number of elements  in each coordinate direction
+ on a panel. 
+ Each element  $\Omega_e$ on $\mathcal{S}$ has the GLL grid structure.  }
+ \label{fig:gll4}
+\end{figure}
+%
+ 
+ For efficient evaluation of the integral equation (\ref{eq:se3}), the SE  method employs the Gauss-Lobatto-Legendre (GLL) 
+  quadrature rule for integrals and collocation differentiation for derivative operators. All the corresponding numerical 
+  operations are performed on a square   $[-1,1]^2$ known as  the standard  (or reference) element.   
+%  For that each 2D  element $\Omega_e(x^1,x^2)$  defined in terms of
+% central angles $x^1,x^2 \in [-\pi/4, \pi/4]$, which are  essentially the independent variables 
+% in the physical domain (Nair et al. 2004).  
+ In order to facilitate local mesh refinement,   
+  the spectral elements  $\Omega_e$  on $\mathcal{S}$ are defined as arbitrary spherical quadrilaterals
+  in  the CAM-SE  grid system, which should   be  mapped onto  the standard element.
+  A direct  way to address this problem is establishing  % a composite mapping  in computational space. 
+  a  transformation  $\mathcal{J}_e: \Omega_e \rightarrow [-1,1]^2$.   $\mathcal{J}_e$
+  may be considered as   a  composite mapping combining the gnomonic and  the quadrilateral to standard-element mapping.
+  Let the Jacobian  associated  with the composite mapping be $J_e = J_e(\sqrt{G})$.
+   Then   an  arbitrary surface integral  on $\Omega_e$ can be expressed in terms of local coordinates $\xi^1, \xi^2 \in [-1, 1] $
+ and the Jacobian  $J_e$; 
+   %
+   \begin{equation}
+ \int_{\Omega_e} \psi (x^1,x^2) \,  d\Omega_e =   \int_{-1}^{1} \int_{-1}^{1} J_e(\xi^1,\xi^2)  \,  \psi(\xi^1,\xi^2) \, d\xi^1 \, d\xi^2
+   \approx   \sum_{k=0}^{N}   \sum_{l=0}^{N} w_k w_l \, J_e(\xi^1_k,\xi^2_l) \,   \psi(\xi^1_k,\xi^2_l),
+                               \label{eq:se4} 
+ \end{equation} 
+ %
+ where  $w_k, w_l$  are  the  Gauss  quadrature weights. 
+ 
+ In the  case of GLL quadrature rule, the  nodal points $\xi_k$, $k=0, 1, \dots, N$, 
+ are  the roots of  the polynomial $(1-\xi^2) P'_N(\xi) = 0$,
+ $\xi \in [-1,1]$;   and the corresponding  GLL quadrature  weights are given by 
+ \[   w_k =  \frac{2}{N(N+1) \, [P_N(\xi_k)]^2 },
+ \] 
+  where  $P_N(\xi)$ is the  Legendre polynomial of degree $N$. 
+   For the SE discretization it is customary to use  Lagrange polynomials  $h_k(\xi)$,   with roots at  the 
+ GLL   quadrature points $\xi_k$, as basis functions.  This setup provides  discrete orthogonality 
+ for  the basis function $h_k(\xi)$,  which   is formally defined as: 
+ %
+ \begin{equation}
+    h_k(\xi) = \frac{ (\xi^2-1)\, P'_N(\xi)}{ N (N+1)\, P_N(\xi_k) \,(\xi-\xi_k)}.   \label{eq:se5}
+ \end{equation}
+ %
+  Note that there are $N+1 = N_v$ GLL quadrature points in 1D,
+ and $N_v \times N_v$ GLL points are needed for 2D spectral elements $\Omega_e$. 
+ Figure~(\ref{fig:gll4}) shows the GLL grid  with $N_v =4$ on the left panel, 
+ and the right panel shows the cubed-sphere grid $\mathcal{S}$ tiled with elements $\Omega_e$,
+ each with the GLL  grid points. 
+ 
+  A semi-discrete  form of  (\ref{eq:se3})  on an  element $\Omega_e$ can by obtained by
+   approximating the solution  as a tensor product of  1D Lagrange basis  $\{ h_k(\xi)\}_{k=0}^N$ such that
+  %
+ \begin{equation}
+     U |_{\Omega_e} \approx  U^e(\xi^1,\xi^2,t) =  \sum_{k=0}^{N}   \sum_{l=0}^{N}  U^e_{kl}(t)  \, h_k(\xi^1) \, h_l(\xi^2), 
+ \end{equation}
+ %
+ where $U^e_{kl}(t) = U^e(\xi_k^1, \xi_l^2,t) $ are  the nodal grid-point values of the solution, and  defining the  test function as
+  $\psi(\xi^1,\xi^2) = h_k(\xi^1) \, h_l(\xi^2)$. By using (\ref{eq:se4}) and discrete orthogonality property of $h_k(\xi)$, 
+  we get a completely decoupled system of ODEs on  $\Omega_e$,  for each grid-point $(k,l)$  we have 
+  %
+  \begin{eqnarray}
+      M^e_{kl}\, \, \frac{d }{dt} U^e_{kl}(t) &= &  A^e_{kl}    + S^e_{kl}  \\
+        M^e_{kl}  &=  & \int_{-1}^{1} \int_{-1}^{1} J_e  \, h_k(\xi^1)  \, h_l(\xi^2) \, d\xi^1  d\xi^2 = J_e(k,l) \, w_k \, w_l \\
+          A^e_{kl}  &=  & \sum_{i=0}^N  J^{(1)}_e(i,l) \,  F^1_{i l} \, D_{ik}^{(1)}\, w_i  w_l  +
+           \sum_{i=0}^N  J^{(2)}_e(k, i) \,  F^2_{k i} \, D_{l i}^{(2)} \, w_k  w_i \\
+           S^e_{kl}  &=   &J_e(k,l) \, w_k w_l  \, S(U_{kl})
+  \end{eqnarray}  
+  %
+  %where $  M^e_{kl}$ is the so-called  mass matrix, $(F^1,F^2) = \mathbf{F}$  are  the  flux terms, 
+   where $J^{(i)}_e = J_e \,\partial \xi^i / \partial x^i$ is the metric term  and 
+   $D^{(i)}_{lk}$ is the  derivative matrix $h'_k(\xi^i_l)$, 
+  along $x^i$-direction and  $ i \in \{1,  2\}$.  The ODEs can be written a formal matrix-vector form
+  for  $\Omega_e$  as follows:
+  \cite{KS2013book}: 
+  %
+ \begin{equation}
+    M^e\, \, \frac{d }{dt} U^e =   A^e    + S^e + B^e,  \label{eq:se7}
+ \end{equation}
+      %
+      where $M^e$ is the mass matrix which  is diagonal,  and $B^e$
+  indicates the boundary terms for the element 
+  $\Omega_e$, which is a key component linking  the local and global problem (\ref{eq:se3}) and enforcing $C^0$ continuity
+  for solutions across element boundaries.  
+  
+  The  global matrices associated with  (\ref{eq:se3}) can be obtained 
+  by  summing the contributions from elemental matrices  and  this procedure is known as the 
+  direct stiffness summation (DSS). However the global matrices are  not explicitly constructed. 
+  In practice, the DSS operation replaces  interface values  of two  contiguous elements sharing the same physical location  
+  by the  weighted sum (average)  so that  the boundary  nodes get unique values,   
+   which maintains the continuity of the global solution across the element edges. This strategy has been adopted in CAM-SE. 
+  Note that the DSS operation does not affect interior nodal values of any element, and  preserves global conservation of SE discretization
+  for (\ref{eq:se1}).  The elemental discretization (\ref{eq:se7}) followed by DSS operation leads the time dependent  system of ODEs corresponding to (\ref{eq:se1}),
+     \begin{equation}
+  \frac{d }{dt} U_h(t) =   \mathcal{L}_h(U).  \label{eq:se8}
+       \end{equation}
+
+   
+ %  \subsection{Diffusive fluxes}
+
+
+
+
+
