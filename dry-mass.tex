@@ -219,12 +219,12 @@ q^{(\ell)}\equiv \frac{\rho^{(\ell)}}{\sum_\ell \rho^{(\ell)}}, \text{ where }\e
 \end{equation}
 where, in particular, $q^{(wv)}$ is the specific humidity. The sum on the right-hand side denominator of \eqref{eq:qx}, $\sum_\ell$, is over dry air density and the density of all water variables ($\ell=`d`,`wv`,`cl`,`ci`$'). The derivations below can easily be extended to include more water variables. We will use this notation throughout the paper.
 
-One can convert between moist and dry mixing ratios easily
+It is straight forward to convert between moist and dry mixing ratios
 \begin{align}
 m^{(\ell)}&=\frac{q^{(\ell)}}{1+q^{(d)}-\sum_\ell q^{(\ell)}},\label{eq:mxqx}\\
 q^{(\ell)}&=\frac{m^{(\ell)}}{\sum_\ell m^{(\ell)}}.
 \end{align}
-Note that if water vapor undergoes a phase change to rain and leaves the column, then the specific/wet mixing ratios change but the dry mixing ratio does not.
+Note that if water vapor undergoes a phase change to rain and leaves the column, then the specific/wet mixing ratios change but the dry mixing ratios do not.
 
 The density of a unit volume of moist air is related to the dry air density through
 \begin{equation}
@@ -234,7 +234,7 @@ The density of a unit volume of moist air is related to the dry air density thro
 \subsection{Ideal gas law and virtual temperature}\label{sec:tv}
 In this section the ideal gas law is derived for moist air containing condensates. Part of that derivation is the definition of virtual temperature. 
 
-If we assume that moist air obeys Amagat's law (or the law of partial volumes) then a unit volume of moist air $V=1$ is the sum of the volumes of the different forms of water in the air
+If we assume that moist air obeys Amagat's law (or the law of partial volumes) then a unit volume of moist air $V=1$ is the sum the volume of dry air and the volumes of the different forms of water in the air
 \begin{equation}
 V=\sum_\ell V^{(\ell)}.\label{eq:Volumes}
 \end{equation}
@@ -282,7 +282,7 @@ where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly
                                        &=& \left(R^{(d)}+m^{(wv)}R^{(wv)}\right)\left(\delta T-\frac{T}{p}\delta p\right)\label{eq:dt}.
 \end{eqnarray}
 where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that cloud ice and liquid are incompressible ($\delta \hat{\alpha}^{(cl)}=0$ and $\delta \hat{\alpha}^{(ci)}=0$). Finally \eqref{eq:ig3} has been used to substitute for $\hat{\alpha}^{(gas)}$ in \eqref{eq:dt}.
-Using \eqref{eq:dt} in the First law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_v^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for cloud liquid and ice (since they are incompressible) and rearranging terms yields
+Using \eqref{eq:dt} in the First law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_v^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for cloud liquid and ice (they are incompressible) and rearranging terms yields
 \begin{equation}
 \delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_\ell m^{(\ell)}\right)}{\left(\sum_\ell c_p^{(\ell)}m^{(\ell)}\right)}\frac{\delta Q}{T}.\label{eq:thermo1}
 \end{equation}
@@ -330,7 +330,7 @@ Using Dalton's law of partial pressures, \eqref{eq:z'2} can be written as
 \begin{equation}
 p^{(d)}+p^{(wv)}=\sum_\ell {\mathcal{P}}^{(\ell)}.\label{eq:dalton}
 \end{equation}
-From \eqref{eq:dalton} it is clear that in the presence of condensate one can not equate $p^{(d)}$ with ${\mathcal{P}}^{(d)}$ and equate $p^{(wv)}$ with ${\mathcal{P}}^{(wv)}$. The dry pressure and water vapor pressure are both affected by the weight of the condensates even though the condensates do not exert a pressure. Hence the dry pressure $p^{(d)}$ is different from the pressure in a dry atmosphere $\mathcal{P}^{(d)}={\mathcal{P}}^{(d)}$. The hydrostatic balance of a dry atmosphere, written in terms of differentials, is given by
+From \eqref{eq:dalton} it is clear that in the presence of condensate one can not equate $p^{(d)}$ with ${\mathcal{P}}^{(d)}$ and equate $p^{(wv)}$ with ${\mathcal{P}}^{(wv)}$. The dry pressure and water vapor pressure are both affected by the weight of the condensates even though the condensates do not exert a pressure. Hence the dry pressure $p^{(d)}$ is different from the pressure in a dry atmosphere $\mathcal{P}^{(d)}$. The hydrostatic balance of a dry atmosphere, written in terms of differentials, is given by
 \begin{equation}
 d\mathcal{P}^{(d)}=-\rho_d g dz,\label{eq:dry_atm_hydro}
 \end{equation}
@@ -371,7 +371,7 @@ For diagnosing vertical pressure velocity $\omega$ we note that
       &=\int_{\eta^{(d)}}^{\eta^{(d)}=0}\frac{\partial}{\partial t}\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}+\int_{\eta^{(d)}}^{\eta^{(d)}=0} \vec{v}\cdot \nabla \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}.\label{eq:omega}
 \end{align}
 \subsection{Hyperviscosity and frictional heating}
-\subsubsection{Viscosity operator}
+\subsubsection{Viscosity operator {\color{red}{[NEEDS WORK!]}}}
 The spectral-element method does not have implicit diffusion hence hyperviscosity operators are applied to the prognostic variables {\color{red}{[Taylor reference]}}. On the right-hand side of the momentum equations \eqref{E:PEmom} viscous terms $\nu \nabla^4 \left( \nabla \times \vec{v}\right)+\nu_{div}\nabla^4 \left( \nabla \cdot \vec{v}\right)$ are added. The velocity field is split into vorticity and divergence to allow for increased damping of divergent modes. The pseudo-density and temperature are damped with $\nu \nabla^4\left\{ \frac{\partial p\quad }{\partial \eta^{(d)}}\right\}$ and $\nu \nabla^4 T$. The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nu \nabla^4=\nu \nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate pressure surfaces
 \begin{equation}
 \nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\frac{\partial \Xi}{\partial p}\nu \nabla^4_{\eta_d}p,\qquad \Xi=\vec{v}, T,
@@ -388,7 +388,7 @@ Let the $\delta \vec{v}$ be the change in the velocity vector due to diffusion o
 \citep[p.71 in ][]{CAM5}. As shown in the results section this term is rather large and therefore important for good energy conservation characteristics of the dynamical core.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Global conservation}
-Below we show that the continuous equations of motion that include the effect of condensates conserve axial angular momentum and total energy. For the derivation below we first note that adding the continuity equations $\ell=`d`,`wv`,`cl`,`ci`$ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, the continuity equation for moist air can be written as
+Below it is shown that the continuous equations of motion, that include the effect of condensates, conserve axial angular momentum and total energy. For the derivation below we first note that adding the continuity equations $\ell=`d`,`wv`,`cl`,`ci`$ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, the continuity equation for moist air can be written as
 \begin{equation}
 \frac{\partial }{\partial t}\left[ \rho \left(\frac{\partial z\quad}{\partial \eta^{(d)}}\right)\right]+\nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]=0,\label{eq:cont2}
 \end{equation}
