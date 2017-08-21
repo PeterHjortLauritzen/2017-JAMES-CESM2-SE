@@ -157,7 +157,7 @@
 %% \begin{abstract} starts the second page 
 
 \begin{abstract}
-It is the purpose of this paper to document the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry pressure, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (high-order method modeling environment) as an external.
+It is the purpose of this paper to document the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry pressure, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced and cleaned up as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (high-order method modeling environment) as an external code.
 \end{abstract}
 
 
@@ -192,23 +192,19 @@ It is the purpose of this paper to document the new NCAR version of the spectral
 
 
 \section{Introduction}
-The high-order method modeling environment (HOMME)  is framework for developing new generation computationally efficient
- and petascale capable dynamical cores for  the community atmospheric model (CAM).
-  HOMME employs high-order method such as the  spectral element (SE)  and discontinuous Galerkin methods 
-  on a cubed-sphere, for solving  equations of motion 
-   and it can be configured to  solve hydrostatic primitive equations \cite{TL2000JSC,TES2008JPCS,NCT2009CF}. 
-   A version of SE dynamical core in HOMME has been  integrated into the CAM 
-   frame work  known as  the CAM-SE \cite{DetAl2012IJHPCA} and released with CAM5 \citep{CAM5} ... {\color{red}{DEFINE CESM1.5 SE}}
-\newline 
+For a while the Community Earth System Model \citep[CESM; ][]{CESM1} has had a highly scalable dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} based on the spectral-element (SE) method. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME) which is a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. The SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME which has been tested quite extensively for AMIP-style climate simulation \citep{ELMNTT2012JC}.{\color{red}{mention cubed-sphere and mesh-refinement}}
 
+With the department of energy (DOE) branching from the CESM to develop their on Earth System Model using their own code base, NCAR decided to no longer import HOMME as an external code base in CAM due to the cumbersome software engineering involved in maintaining two code bases and having to support configurations in HOMME not used in CAM. Instead the SE configuration of HOMME became part of the CAM code base. With that came a massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes which is the main topic of this paper.
 
-{\color{red}{IS $\Delta p_k m^{(d)}_k$ tracer mass? or pseudo-mass????}}
-\begin{itemize}
-\item formulation with the least changes to the existing CAM-SE modeling system
-\item why convert: physics dynamics coupling, conversion can violate shape-preservation, ...
-\end{itemize}
+The SE dynamical core is the default dynamical core for high-resolution CESM applications, in particular, the configuration in which the average distance between grid-point is approximately 25km \citep{BetAl2013JC}. At such resolutions the effects of condensates (such as cloud liquid and ice) may have a significant effect on the dynamics \citep{BLDT2012GRL}. CAM-HOMME does not represent the effect of condensates in the thermodynamic and momentum equations (also referred to as condensate loading). Representing condensates in the dynamical core is easier when using a dry-mass hybrid-sigma vertical coordinate than when using the usual moist-mass hybrid-sigma vertical coordinate \citep[e.g., ][]{SB1981MWR}. In other words, the model levels are defined in terms of dry surface pressure rather than moist (full) surface pressure. {\color{red}{reference for dry-mass vertical coordinates?}}
 
-\section{Continuous equations}
+A second motivation for switching to a dry-mass vertical coordinate is the physical parameterizations. CAM physics assumes that the moist pressure levels are constant for all parameterizations. Consequently the pressure levels stay constant even when moisture leaves the column (e.g., rain). At the very end of CAM physics the change in water  vapor in each column is taken into account by scaling the mixing ratio's for all tracers based on specific mixing ratios so that dry air mass and tracer mass is conserved \citep[see Section 3.1.6 in ][]{CAM5}. This scaling does not guarantee shape-preservation. Also, the pressure in CAM physics does not take into account the mass of condensates. When using a dry-mass vertical coordinate, the coordinate surfaces (assuming dry mass is constant) remain constant throughout the physics updates and there is no need to adjust specific tracer mixing ratios. {\color{red}{mentions IFS issues with dry mass conservation; ICON?}}
+
+The third motivation for using a dry-mass vertical coordinate relates to total energy conservation. Currently the energy fixer in CAM is based on a dry total energy \citep{WOHTTV2015JAMES} that uses that same heat-capacity for dry air and water vapor, and does not include the effect of condensates. To move towards a more accurate treatment of energy in CAM, a first step is to develop a dynamical core based on equations of motion conserving an energy that properly represents water vapor as well as condensates. This is most easily done when using a dry-mass vertical coordinate so that the energies associates with all water variables are clearly separated.
+
+In this paper we present a version of the SE dynamical core using a dry-mass vertical coordinate, includes condensate-loading, and the continuous equations of motion conserve a comprehensive moist total energy that includes all prognostic water variables. As this paper serves as documentation for the CESM2 version of SE we also provide details on the spectral-element method and viscosity operators. In section \ref{sec:cont-eq} the continuous equations of motion are derived which involves a detailed discussion of moist thermodynamics in the presence of condensates. The axial angular momentum and total energy conservation properties of this system of equations is also discussed. Section \ref{sec:discretized_eqs} present the discretized equations of motion with focus on the vertical discretization in dry-mass vertical coordinates. Details on the horizontal SE discretization on the cubed-sphere is also given. In the results section \ref{sec:results} the new dynamical core is test in idealized setups. {\color{red}{bla bla}}
+
+\section{Continuous equations}\label{sec:cont-eq}
 Before writing the continuous equations of motion using a dry-mass vertical coordinate, we first need to discuss the representation of water variables (section \ref{sec:mixing_ratios}), discuss the ideal gas law and derive the thermodynamic equation for a mixture containing all water variables not just water vapor (section \ref{sec:tv}). The discussion of the equations of motion in the presence of water vapor, cloud liquid and ice closely follows \citet{joyOfUM}. Thereafter dry mass vertical coordinate is defined in section \ref{eq:vertical_coord}. {\color{red}{more details on other sections}}
 \subsection{Representation of water phases in terms of dry and wet (specific) mixing ratios}\label{sec:mixing_ratios}
 Define the dry mixing ratios for the water variables (dry air 'd', water vapor 'vw', cloud liquid 'cl' and cloud ice 'ci')
@@ -221,7 +217,7 @@ Similarly define moist (or, equivalently, specific) mixing ratios
 \begin{equation}
 q^{(\ell)}\equiv \frac{\rho^{(\ell)}}{\sum_\ell \rho^{(\ell)}}, \text{ where }\ell=`wv`,`cl`,`ci`\label{eq:qx}.
 \end{equation}
-where, in particular, $q^{(wv)}$ is the specific humidity. The sum on the right-hand side denominator of \eqref{eq:qx}, $\sum_\ell$, is over dry air density and the density of all water variables ($\ell=`d`,`wv`,`cl`,`ci`$'). The derivations below can easly be extended to include more water variables. We will use this notation throughout the paper.
+where, in particular, $q^{(wv)}$ is the specific humidity. The sum on the right-hand side denominator of \eqref{eq:qx}, $\sum_\ell$, is over dry air density and the density of all water variables ($\ell=`d`,`wv`,`cl`,`ci`$'). The derivations below can easily be extended to include more water variables. We will use this notation throughout the paper.
 
 One can convert between moist and dry mixing ratios easily
 \begin{align}
@@ -360,7 +356,7 @@ The $\eta^{(d)}$-coordinate adiabatic and frictionless atmospheric primitive equ
 \end{align}
 where $\rho$ is the full density $\sum_\ell \rho^{(\ell)}$, $p$ is moist pressure, $\Phi$ is the geopotential height ($\Phi=g\, z$, where $g$ is the gravitational constant), ${\hat{\vec{k}}}$ is the unit vector normal to the surface of the sphere, $\zeta = {\hat{\vec{k}}} \cdot {\nabla \times} \vec{v}$ is vorticity, $f$ Coriolis parameter, and $\omega = Dp/Dt$ is the pressure vertical velocity. 
 
-The prognostic equations for $\vec{v}$, the temperature $T$, pseudo density of a dry atmpshere ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}}$, and pseudo tracer density ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}} m^{(\ell)}$ are solved with the diagnostic equation for geopotential height (hydrostatic balance)
+The prognostic equations for $\vec{v}$, the temperature $T$, pseudo density of a dry atmosphere ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}}$, and pseudo tracer density ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}} m^{(\ell)}$ are solved with the diagnostic equation for geopotential height (hydrostatic balance)
 \begin{equation}
 \frac{\partial \Phi\quad }{\partial \eta^{(d)}}=-\frac{R^{(d)} \,T_v}{p}\frac{\partial p\quad }{\partial \eta^{(d)}},\label{eq:phi_1}
 \end{equation}
@@ -485,7 +481,7 @@ by expanding $c_p$ using \eqref{eq:cp}, re-arranging terms and using that $\Phi_
 \begin{equation}
 p_s=\int_{\eta=0}^{\eta=1}\sum_\ell  \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) m^{(\ell)}d\eta^{(\eta)}.
 \end{equation}
-Note that the energy terms (inside square brackets) in \eqref{eq:totEp2} separate into dry air, water vapor, cloud liquid and cloud ice componets
+Note that the energy terms (inside square brackets) in \eqref{eq:totEp2} separate into dry air, water vapor, cloud liquid and cloud ice components
 \begin{equation}
 \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_\ell \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
 \end{equation}
@@ -507,14 +503,14 @@ We note that the CAM physics package energy fixer assumes that the `perfect' adi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discretized equations of motion}
+\section{Discretized equations of motion}\label{sec:discretized_eqs}
 \subsection{Vertical discretization}
 In the vertical the atmosphere is discretized into $nlev$ floating Lagrangian layers. The vertical index is 1 for the upper most level and $nlev$ in the lower most level. The level interfaces are referred to as half-levels so that layer k is bounded by interface level $k+1/2$ and $k-1/2$. Since we are using a dry-mass vertical reference coordinate, the dry atmosphere reference pressure at the layer interfaces is defined in terms of the hybrid coefficients $A$ and $B$
  that are only a function of level index
 \begin{equation}
 \mathcal{P}^{(d)}_{k+1/2}=A_{k+1/2}p_t+B_{k+1/2}\mathcal{P}_s^{(d)},\label{eq:ABs}
 \end{equation}
-and similartly for full levels $k$. Note that if the $`d`$ is removed from the above equation so that the levels are based on moist pressure then the vertical coordinate reduces to the usual hybrid vertical coordinate used in many global hydrostatic models. Every $rsplit$ time-steps the floating Lagrangian levels the prognostic variables are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
+and similarly for full levels $k$. Note that if the $`d`$ is removed from the above equation so that the levels are based on moist pressure then the vertical coordinate reduces to the usual hybrid vertical coordinate used in many global hydrostatic models. Every $rsplit$ time-steps the floating Lagrangian levels the prognostic variables are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
 
 CAM-SE is based on a Lorenz vertical staggering so the full level prognostic variables are $\vec{v}_k$ (velocity vector), $T_k$ (temperature), $\Delta \mathcal{P}^{(d)}_k=\mathcal{P}^{(d)}_{k+1/2}-\mathcal{P}^{(d)}_{k-1/2}$ (dry atmosphere pressure level thickness), and $\Delta \mathcal{P}^{(d)}_k m_k^{(\ell)}$ (tracer mass). At the level interfaces we have geopotential, pressure, vertical velocity and density. In the equations of motion the full level pressure, geopotential height, vertical velocity and density are needed and choices must be made on how these variables are derived (in discretized space) from the prognostic variables. Here we use the energy and angular momentum conserving method of \citet{SB1981MWR} to compute these quantities at full levels as discussed in the sections below.
 
@@ -599,7 +595,7 @@ I_{tot}^{(CAM)}=-\frac{1}{g}\iiint c_p^{(d)} T\, (1+m^{(wv)})\, \left( \frac{\pa
 \end{enumerate}
 In dynamics-physics coupling we pass $\Delta p=\Delta p \left( 1+m^{(wv)}\right)$ to remain consistent with the physics definition of total energy. 
 
-\section{Results}
+\section{Results}\label{sec:results}
 The evaluation of the SE dynamical core with CAM6 for realistic climate simulation is the subject of a separate paper. Here we ....
 \subsection{Idealized moist baroclinic wave with Kessler microphysics}
 For the validation of the new dynamical core version in a simplified setup, we use a moist variant of the dry baroclinic wave of \citet{UMJS2014QJRMS} with Kessler microphysics \citep{K1969MM}. This test case configuration was part of the Dynamical Core Model Intercomparison Project (DCMIP) 2016 test case suite {\color{red}{[DCMIP citation]}}. The initialization of the atmospheric state for the moist baroclinic wave is based on analytic expressions for $T_v$, $\vec{v}$, p and $q^{(vw)}$ as a function of latitude and height; $(\varphi,z)$. The surface geopotential is constant, $\Phi_s=0$, and the moist surface pressure is constant $p_s=1000hPa$. The analytical expressions for temperature, velocity components, moist pressure and specific humidity, denoted ${T_v}(\varphi,z)$, ${\vec{v}}(\varphi,z)$, ${p}(\varphi,z)$, and $q^{(wv)}(\varphi,z)$, respectively, are given in Appendix \ref{app:analytic}. When using a moist vertical pressure coordinate, the full level pressures $p_k$ of the initial condition are known from the hybrid coefficients, $A_k$ and $B_k$, and one can iteratively solve for $z_k$ given moist pressure: $p_k={p}(\varphi,z_k)$ \citep[see, ][]{UMJS2014QJRMS}. Once the full level heights, $z_k(\varphi)$, are known then the specific humidity, virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$. In the DCMIP 2016 test case documentation the virtual temperature is converted to temperature using $T_v=T\left( 1+\epsilon q^{(vw)}\right)$. For a dry-mass vertical coordinate model the initialization procedure is more complicated as described below.
@@ -644,12 +640,12 @@ Using this method for initializing the mixing ratio for water vapor the moist su
 \subsubsection{Simulation results}
 As part of the `CESM simpler models' effort started by \citet{CESM_SIMPLER_MODELS}, the baroclinic wave setup has been implemented rigorously in the CESM in the sense that the configuration easily runs from CESM without code configurations using the `{\bf{FKESSLER}} compset'. For instructions on how to run the moist baroclinic wave with Kessler microphysics see \citet{FKESSLER}. Since the test case configuration has been implemented in the full CESM, the dynamical core interacts with the physics module as in full climate model simulations. Hence the global energy fixer is invoked \citep{WOHTTV2015JAMES} and for the dynamical cores using a moist pressure vertical coordinate there is an adjustment of specific humidity to conserve water after the moist physics updates \citep[see Section 3.1.6 in ][]{CAM5}. The intent of this implementation is to evaluate the dynamical core in simplified setup but exactly as the dynamical core is configured for comprehensive climate simulations.
 
-Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at day 10 using the CESM-FV \citep{L2004MWR} dynamical core, CESM1.5 version for the SE dynamical core based on a moist vertical coordinate and the new dynamical core version (CESM2.0-SE). The CESM1.5 and CESM2.0 SE dynamical cores not only differ in terms of vertical coordinates but also in terms of hyperviscosity and the formula used for the heat-capacity in the thermodynamic equation. CESM1.5-SE uses $c_p^{(d)}$ whereas CESM2.0 uses the comprehensive formula \eqref{eq:cp} that includes the heat capacity of water vapor.
+Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at day 10 using the CAM-FV \citep[Finite-Volume; ][]{L2004MWR} dynamical core, CAM-HOMME dynamical core based on a moist vertical coordinate and the new dynamical core version (CAM-SE). The CAM-HOMME and CAM-SE (CESM2-SE) dynamical cores not only differ in terms of vertical coordinates but also in terms of hyperviscosity and the formula used for the heat-capacity in the thermodynamic equation. CAM-HOMME uses $c_p^{(d)}$ whereas CAM-SE (CESM2.0-SE) uses the comprehensive formula \eqref{eq:cp} that includes the heat capacity of water vapor.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=33pc]{figs/02_baro_wave.pdf}
-\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CESM1.5 version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. Rights column is the same as the left but for large-scale precipitation rate.}
+\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CAM-HOMME version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. Rights column is the same as the left but for large-scale precipitation rate.}
 \label{fig:baro_wave}
 \end{figure}
 
