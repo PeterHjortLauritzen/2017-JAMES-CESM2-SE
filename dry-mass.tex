@@ -1,4 +1,4 @@
-%% 11/23/2015
+% 11/23/2015
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AGUJournalTemplate.tex: this template file is for articles formatted with LaTeX
 %
@@ -558,9 +558,9 @@ To avoid excessive deformation or even crossing of the floating Lagrangian level
 \begin{equation}
 \mathcal{P}^{(d)}_{k+1/2}=p_t+\sum_{j=1}^{k}\Delta \mathcal{P}^{(d)}_j,
 \end{equation}
-the prognostic variables are remapped back to the (Eulerian) reference levels given in \eqref{eq:ABs} every $rsplit$ time-steps. In the remapping process we enforce conservation of mass by mapping $m^{(\ell)}_k\Delta \mathcal{P}^{(d)}_k$ using the piecewise-parabolic method \cite[PPM; ][]{CW1984JCP} and applying a standard shape-preserving limiter to avoid unphysical (in particular negative) mixing ratios in the remapping process. The internal energy is also conserved during the remapping process by mapping $\sum_\ell c_p^{(\ell)} m^{(\ell)}T_k \Delta \mathcal{P}^{(d)}_k$. Note that temperature must be recovered from the internal energy using the remapped tracer values for $m^{(\ell)}$. A shape-preserving filter is also used for the remapping of internal energy so that an isothermal profile remains isothermal if the limiter is active on one of the $m^{(\ell)}$. Note that if the limiter is active at the same points for more than one of the water species then we can not guarantee preservation of an isothermal atmosphere \citep[see, e.g., Section 2.5 in ][]{LT2011QJR}.
+the prognostic variables are remapped back to the (Eulerian) reference levels given in \eqref{eq:ABs} every $rsplit$ time-steps. In the remapping process we enforce conservation of mass by mapping $m^{(\ell)}_k\Delta \mathcal{P}^{(d)}_k$ using the piecewise-parabolic method \cite[PPM; ][]{CW1984JCP} and applying a standard shape-preserving limiter to avoid unphysical (in particular negative) mixing ratios in the remapping process. The internal energy is also conserved during the remapping process by mapping $\sum_\ell c_p^{(\ell)} m_k^{(\ell)}T_k \Delta \mathcal{P}^{(d)}_k$. Note that temperature must be recovered from the internal energy using the remapped tracer values for $m^{(\ell)}_k$. A shape-preserving filter is also used for the remapping of internal energy so that an isothermal profile remains isothermal if the limiter is active on one of the $m^{(\ell)}_k$. Note that if the limiter is active at the same points for more than one of the water species then we can not guarantee preservation of an isothermal atmosphere \citep[see, e.g., Section 2.5 in ][]{LT2011QJR}.
 
-The moist mass-weighted velocity compenents, $\sum_\ell m^{(\ell)} \Delta \mathcal{P}^{(d)}_k u_k$ and $\sum_\ell m^{(\ell)} \Delta \mathcal{P}^{(d)}_k v_k$ respectively, are remapped seperately. Mapping the moist mass weighted velocity components conservatively leads to an angular momentum conserving vertical remapping algorithm.
+The moist mass-weighted velocity compenents, $\sum_\ell m^{(\ell)}_k \Delta \mathcal{P}^{(d)}_k u_k$ and $\sum_\ell m_k^{(\ell)} \Delta \mathcal{P}^{(d)}_k v_k$ respectively, are remapped seperately. Mapping the moist mass weighted velocity components conservatively leads to an angular momentum conserving vertical remapping algorithm. For the velocity components we do not enforce shape-preservation in the vertical remapping process.
 \subsection{Horizontal discretization}
 \input{sem}
 
