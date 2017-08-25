@@ -202,7 +202,7 @@ A second motivation for switching to a dry-mass vertical coordinate is the physi
 
 The third motivation for using a dry-mass vertical coordinate relates to total energy conservation. Currently the energy fixer in CAM is based on a dry total energy \citep{WOHTTV2015JAMES} that uses that same heat-capacity for dry air and water vapor, and does not include the effect of condensates. To move towards a more accurate treatment of energy in CAM, a first step is to develop a dynamical core based on equations of motion conserving an energy that properly represents water vapor as well as condensates. This is most easily done when using a dry-mass vertical coordinate so that the energies associates with all water variables are clearly separated.
 
-In this paper we present a version of the SE dynamical core using a dry-mass vertical coordinate, includes condensate-loading, and the continuous equations of motion conserve a comprehensive moist total energy that includes all prognostic water variables. As this paper serves as documentation for the CESM2 version of SE we also provide details on the spectral-element method and viscosity operators. In section \ref{sec:cont-eq} the continuous equations of motion are derived which involves a detailed discussion of moist thermodynamics in the presence of condensates. The axial angular momentum and total energy conservation properties of this system of equations is also discussed. Section \ref{sec:discretized_eqs} present the discretized equations of motion with focus on the vertical discretization in dry-mass vertical coordinates. Details on the horizontal SE discretization on the cubed-sphere is also given. In the results section \ref{sec:results} the new dynamical core is test in idealized setups. {\color{red}{bla bla}}
+In this paper we present a version of the SE dynamical core using a dry-mass vertical coordinate, includes condensate-loading, and the continuous equations of motion conserve a comprehensive moist total energy that includes all prognostic water variables. As this paper serves as documentation for the CESM2 version of SE we also provide details on the spectral-element method and viscosity operators. In section \ref{sec:cont-eq} the continuous equations of motion are derived which involves a detailed discussion of moist thermodynamics in the presence of condensates. The axial angular momentum (AAM) and total energy conservation properties of this system of equations is also discussed. Section \ref{sec:discretized_eqs} present the discretized equations of motion with focus on the vertical discretization in dry-mass vertical coordinates. Details on the horizontal SE discretization on the cubed-sphere is also given. In the results section \ref{sec:results} the new dynamical core is test in idealized setups. {\color{red}{bla bla}}
 
 \section{Continuous equations}\label{sec:cont-eq}
 Before writing the continuous equations of motion using a dry-mass vertical coordinate, we first need to discuss the representation of water variables (section \ref{sec:mixing_ratios}), discuss the ideal gas law and derive the thermodynamic equation for a mixture containing all water variables not just water vapor (section \ref{sec:tv}). The discussion of the equations of motion in the presence of water vapor, cloud liquid and ice closely follows \citet{joyOfUM}. Thereafter dry mass vertical coordinate is defined in section \ref{eq:vertical_coord}. {\color{red}{more details on other sections}}
@@ -371,7 +371,7 @@ For diagnosing vertical pressure velocity $\omega$ we note that
       &=\int_{\eta^{(d)}}^{\eta^{(d)}=0}\frac{\partial}{\partial t}\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}+\int_{\eta^{(d)}}^{\eta^{(d)}=0} \vec{v}\cdot \nabla \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}.\label{eq:omega}
 \end{align}
 \subsection{Hyperviscosity and frictional heating}
-\subsubsection{Viscosity operator {\color{red}{[NEEDS WORK!]}}}
+\subsubsection{Viscosity operator {\color{red}{[NEEDS WORK!]}}}\label{sec:hyper}
 The spectral-element method does not have implicit diffusion hence hyperviscosity operators are applied to the prognostic variables {\color{red}{[Taylor reference]}}. On the right-hand side of the momentum equations \eqref{E:PEmom} viscous terms $\nu \nabla^4 \left( \nabla \times \vec{v}\right)+\nu_{div}\nabla^4 \left( \nabla \cdot \vec{v}\right)$ are added. The velocity field is split into vorticity and divergence to allow for increased damping of divergent modes. The pseudo-density and temperature are damped with $\nu \nabla^4\left\{ \frac{\partial p\quad }{\partial \eta^{(d)}}\right\}$ and $\nu \nabla^4 T$. The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nu \nabla^4=\nu \nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate pressure surfaces
 \begin{equation}
 \nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\frac{\partial \Xi}{\partial p}\nu \nabla^4_{\eta_d}p,\qquad \Xi=\vec{v}, T,
@@ -388,7 +388,7 @@ Let the $\delta \vec{v}$ be the change in the velocity vector due to diffusion o
 \citep[p.71 in ][]{CAM5}. As shown in the results section this term is rather large and therefore important for good energy conservation characteristics of the dynamical core.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Global conservation}
-Below it is shown that the continuous equations of motion, that include the effect of condensates, conserve axial angular momentum (AAM) and total energy. For the derivations first note that adding the continuity equations $\ell=`d`,`wv`,`cl`,`ci`$ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, yields a moist air continuity
+Below it is shown that the continuous equations of motion, that include the effect of condensates, conserve AAM and total energy. For the derivations first note that adding the continuity equations $\ell=`d`,`wv`,`cl`,`ci`$ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, yields a moist air continuity
 \begin{equation}
 \frac{\partial }{\partial t}\left[ \rho \left(\frac{\partial z\quad}{\partial \eta^{(d)}}\right)\right]+\nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]=0,\label{eq:cont2}
 \end{equation}
@@ -404,17 +404,17 @@ The conservation law for angular momentum is derived in spherical coordinates fo
 \end{equation}
 where $u$ and $v$ the zonal and meridional velocity components, respectively, $\varphi$ is latitude and $\lambda$ longitude, $\Omega$ rotation rate of Earth ($f=2\Omega \sin \varphi$), and $r$ is the mean radius of Earth.\\
 
-The conservation law for AAM, $M=\left( u+\Omega r \cos \varphi \right) r \cos \varphi$, can be conveniently derived using the Lagrangian form. Consider the material derivative of $M$ multiplied by the volume of a Lagrangian air parcel, $\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A$
+The conservation law for AAM, $\mathcal{M}=\left( u+\Omega r \cos \varphi \right) r \cos \varphi$, can be conveniently derived using the Lagrangian form. Consider the material derivative of $\mathcal{M}$ multiplied by the volume of a Lagrangian air parcel, $\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A$
 \begin{equation}
 \frac{D}{Dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A \left( u+\Omega r \cos \varphi \right) r \cos \varphi\right].
 \end{equation}
 Using the chain rule, continuity equation on the form \eqref{eq:lagra_cont}, the equality $v=r\frac{D\varphi}{Dt}$ and substituting \eqref{eq:tmp200}, one can obtain an evolution equation for AAM
 \begin{equation}
-\frac{D}{Dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A\, M \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda},\label{eq:tmp201}
+\frac{D}{Dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A\, \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda},\label{eq:tmp201}
 \end{equation}
 or, equivalently, in Eulerian form
 \begin{equation}
-\frac{\partial}{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \, M \right]+\nabla_{\eta_d}\cdot \left[\vec{v} \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)  M \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda}.\label{eq:tmp202}
+\frac{\partial}{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \, \mathcal{M} \right]+\nabla_{\eta_d}\cdot \left[\vec{v} \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)  \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda}.\label{eq:tmp202}
 \end{equation}
 Repeatedly using the chain rule one can show that the right-hand side of \eqref{eq:tmp201} and \eqref{eq:tmp202} can be written as
 \begin{align}
@@ -425,11 +425,11 @@ Repeatedly using the chain rule one can show that the right-hand side of \eqref{
 \end{align}
 Substituting \eqref{eq:tmp203} on the right-hand side of \eqref{eq:tmp202} and integrating \eqref{eq:tmp202} in the horizontal and vertical we get
 \begin{equation}
-\frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{D}}\left[ \left( \sum_\ell m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) M \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{D}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
+\frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{D}}\left[ \left( \sum_\ell m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) \mathcal{M} \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{D}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
 \end{equation}
-where $\mathcal{D}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography,$z_s=0$m, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($M_r$) associated with the relative motion of the atmosphere with respect to Earth's surface (also known as wind AAM) and another part ($M_{\Omega}$) associated with the angular velocity $\Omega$:
+where $\mathcal{D}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography,$z_s=0$m, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the relative motion of the atmosphere with respect to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$:
 \begin{equation}
-M=M_r+M_\Omega=\left( u r \cos \varphi\right)+\left(\Omega r^2 \cos^2 \varphi \right) .
+\mathcal{M}=\mathcal{M}_r+\mathcal{M}_\Omega=\left( u r \cos \varphi\right)+\left(\Omega r^2 \cos^2 \varphi \right) .
 \end{equation}
 \subsubsection{Total energy}
 The derivation of the total energy equation closely follows \citet{K1974MWR} but for a dry mass vertical coordinate and inclusion of condensates in the equations of motion. The equation for the horizontal kinetic energy per unit mass, $K=\frac{1}{2}\vec{v}\cdot \vec{v}$, is derived by multiplying the momentum equations \eqref{E:PEmom} with $\rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)$ and the continuity equation \eqref{eq:cont2} with $K$, adding the two resulting equations and simplifying using the chain rule yields
@@ -512,11 +512,9 @@ In the vertical the atmosphere is discretized into $nlev$ floating Lagrangian la
 \begin{equation}
 \mathcal{P}^{(d)}_{k+1/2}=A_{k+1/2}p_t+B_{k+1/2}\mathcal{P}_s^{(d)},\label{eq:ABs}
 \end{equation}
-and similarly for full levels $k$. Note that if the $`d`$ is removed from the above equation so that the levels are based on moist pressure then the vertical coordinate reduces to the usual hybrid vertical coordinate used in many global hydrostatic models. Every $rsplit$ time-steps the floating Lagrangian levels the prognostic variables are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
+and similarly for full levels $k$. Note that if the $`d`$ is removed from the above equation so that the levels are based on moist pressure then the vertical coordinate becomes the usual hybrid vertical coordinate used in many global hydrostatic models. Every $rsplit$ time-steps the floating Lagrangian levels the prognostic variables are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
 
-CAM-SE is based on a Lorenz vertical staggering so the full level prognostic variables are $\vec{v}_k$ (velocity vector), $T_k$ (temperature), $\Delta \mathcal{P}^{(d)}_k=\mathcal{P}^{(d)}_{k+1/2}-\mathcal{P}^{(d)}_{k-1/2}$ (dry atmosphere pressure level thickness), and $\Delta \mathcal{P}^{(d)}_k m_k^{(\ell)}$ (tracer mass). At the level interfaces we have geopotential, pressure, vertical velocity and density. In the equations of motion the full level pressure, geopotential height, vertical velocity and density are needed and choices must be made on how these variables are derived (in discretized space) from the prognostic variables. Here we use the energy and angular momentum conserving method of \citet{SB1981MWR} to compute these quantities at full levels as discussed in the sections below.
-
-For simplicity we do not discretize in the horizontal [{\color{red}{some wording about spectral element method in the horizontal needed ....}}]
+CAM-SE is based on a Lorenz vertical staggering so the full level prognostic variables are $\vec{v}_k$ (velocity vector), $T_k$ (temperature), $\Delta \mathcal{P}^{(d)}_k=\mathcal{P}^{(d)}_{k+1/2}-\mathcal{P}^{(d)}_{k-1/2}$ (dry atmosphere pressure level thickness), and $\Delta \mathcal{P}^{(d)}_k m_k^{(\ell)}$ (tracer mass per unit area). At the level interfaces the geopotential, pressure, vertical velocity and density are defined. In the equations of motion the full level pressure, geopotential height, vertical velocity and density are needed and choices must be made on how these variables are derived (in discretized space) from the prognostic variables. Here we use the energy and angular momentum conserving method of \citet{SB1981MWR} to compute these quantities at full levels as discussed in the sections below. For simplicity we do not discretize in the horizontal yet.
 \subsubsection{Pressure}\label{sec:pk}
 The half-level moist pressure is
 \begin{equation}
@@ -525,14 +523,14 @@ p_{k+1/2}=p_t+\sum_{j=1}^{nlev}\Delta \mathcal{P}^{(d)}_j \left(\sum_\ell m_j^{(
 where $p_t$ is the pressure at the model top, $\eta^{(d)}=0$.
 The full level moist pressure is obtained by averaging \citep{SB1981MWR}
 \begin{equation}
-p_k=\frac{p_{k+1/2}+p_{k-1/2}}{2}.
+p_k=\frac{p_{k+1/2}+p_{k-1/2}}{2}.\label{eq:pk}
 \end{equation}
 \subsubsection{Geopotential height}
 Discretizing \eqref{eq:phi_1} in the vertical yields
 \begin{equation}
 \Phi_{k+1/2}=\Phi_s+R^{(d)}\sum_j \left( \frac{T_k}{p_k}\right)\, \Delta p_j,
 \end{equation}
-where the full pressure $p_k$ is computed as described in section \ref{sec:pk}. The half level geopotential is computed by averaging
+where the full pressure $p_k$ is given in \eqref{eq:pk}. The half level geopotential is computed by averaging
 \begin{equation}
 \Phi_k=\frac{\Phi_{k+1/2}+\Phi_{k-1/2}}{2}.
 \end{equation}
@@ -556,20 +554,35 @@ Full level density is computed from the ideal gas law \eqref{eq:igl}
 \end{equation}
 where the full pressure $p_k$ is computed as described in section \ref{sec:pk}. The virtual temperature is based on prognostic variables defined at the layer centers so simple substitution into \eqref{eq:tv} yields $T_k^{(v)}$. Similarly for the computation of $\left( c_p\right)_k$.
 \subsubsection{Vertical remapping}\label{sec:verticalRemappin}
-To avoid excessive deformation or even crossing of the floating Lagrangian levels the prognostic variables defined at
+To avoid excessive deformation or even crossing of the floating Lagrangian levels, the prognostic variables defined at
 \begin{equation}
 \mathcal{P}^{(d)}_{k+1/2}=p_t+\sum_{j=1}^{k}\Delta \mathcal{P}^{(d)}_j,
 \end{equation}
-the prognostic variables are remapped back to the (Eulerian) reference levels given in \eqref{eq:ABs} every $rsplit$ time-steps. In the remapping process we enforce conservation of mass by mapping $m^{(\ell)}_k\Delta \mathcal{P}^{(d)}_k$ using the piecewise-parabolic method \cite[PPM; ][]{CW1984JCP} and applying a standard shape-preserving limiter to avoid unphysical (in particular negative) mixing ratios in the remapping process. The internal energy is also conserved during the remapping process by mapping $\sum_\ell c_p^{(\ell)} m_k^{(\ell)}T_k \Delta \mathcal{P}^{(d)}_k$. Note that temperature must be recovered from the internal energy using the remapped tracer values for $m^{(\ell)}_k$. A shape-preserving filter is also used for the remapping of internal energy so that an isothermal profile remains isothermal if the limiter is active on one of the $m^{(\ell)}_k$. Note that if the limiter is active at the same points for more than one of the water species then we can not guarantee preservation of an isothermal atmosphere \citep[see, e.g., Section 2.5 in ][]{LT2011QJR}.
+are remapped back to the (Eulerian) reference levels given in \eqref{eq:ABs} every $rsplit$ time-steps \citep{L2004MWR}. In the remapping process we enforce conservation of mass by mapping $m^{(\ell)}_k\Delta \mathcal{P}^{(d)}_k$ using the piecewise-parabolic method \cite[PPM; ][]{CW1984JCP} and applying a standard shape-preserving limiter to avoid unphysical (in particular negative) mixing ratios in the remapping process. The internal energy is also conserved during the remapping process by mapping $\sum_\ell c_p^{(\ell)} m_k^{(\ell)}T_k \Delta \mathcal{P}^{(d)}_k$. Note that temperature must be recovered from the internal energy using the remapped tracer values for $m^{(\ell)}_k$. A shape-preserving filter is also used for the remapping of internal energy so that an isothermal profile remains isothermal if the limiter is active on one of the water variables, $m^{(\ell)}_k$. Note that if the limiter is active at the same points for more than one of the water species then we can not guarantee preservation of an isothermal atmosphere when non-linear limiting filters are turned on \citep[see, e.g., Section 2.5 in ][]{LT2011QJR}.
 
-The moist mass-weighted velocity components, $\sum_\ell m^{(\ell)}_k \Delta \mathcal{P}^{(d)}_k u_k$ and $\sum_\ell m_k^{(\ell)} \Delta \mathcal{P}^{(d)}_k v_k$ respectively, are remapped separately. Mapping the moist mass weighted velocity components conservatively leads to an angular momentum conserving vertical remapping algorithm. For the velocity components we do not enforce shape-preservation in the vertical remapping process.
+The moist mass-weighted velocity components, $\sum_\ell m^{(\ell)}_k \Delta \mathcal{P}^{(d)}_k u_k$ and $\sum_\ell m_k^{(\ell)} \Delta \mathcal{P}^{(d)}_k v_k$ respectively, are remapped separately. Mapping the moist mass weighted velocity components conservatively leads to an angular momentum conserving vertical remapping algorithm. For the velocity components we do not enforce shape-preservation in the vertical remapping process to reduce the amount of kinetic energy dissipation.
 \subsection{Horizontal discretization}
 \input{sem}
 
 % CAM-SE is based on a continuous Galerkin finite-element (or spectral-element) method \citep{TTI1997JCP} and is discretized using a cubed-sphere tiling of the sphere. Petascale scalability of CAM-SE was demonstrated in \cite{DetAl2012IJHPCA}. Also, CAM-SE provided refined mesh functionality in CAM \cite[e.g., ][]{SJDTT2008MWR,ZetAl2014JC}, improved accuracy of idealized baroclinic wave simulation \citep{LJTN2010JAMES}, conserved total energy to time-truncation errors \citep{T2011LNCSEb} and improved global axial angular momentum budgets compared to CAM-FV \citep{LBDL2014JAMES}. That said, the tracer transport component of CAM-SE appeared to be less accurate than CAM-FV for non-smooth tracer distributions \citep{LetAl2011GMD,HetAl2016QJRMS}. In an idealized terminator test in which two species react according to a reaction coefficient proportional to the solar terminator while being transported by an idealized 2D flow, CAM-SE produces errors larger than CAM-FV \citep{LCLVT2015GMD}. The errors are due to the limiter used for tracer transport that prevents oscillatory (and in particular negative) solutions for tracers \citep{GTS2014JCP}. In terms of computational throughput it was also found that CAM-SE was slower for large tracer counts (at least when run with core counts similar to the non-scalable CAM-FV).
 
 \subsection{Temporal discretization}
-RK5
+In a typical CAM setup where the model top is around 40km the maximum stable time-step for solving the continuity equation for $\ell='wv','cl','ci'$ (referred to as tracer advection) is limited by the maximum advective winds. The maximum stable time-step for the remaining equations of motion (thermodynamic equation, momentum equations and the continuity equation for dry air) is limited by the fastest gravity waves.  Since the maximum advective winds are typically slower than the fastest gravity waves, different time-stepping methods are used for tracer advection and the remaining equations of motion. The same time-step is used but different Runge-Kutta (RK) methods are used to maintain stability. 
+
+The SE tracer advection algorithm uses a three-stage RK strong-stability-preserving (SSP) time-stepping method that ensures that the time step will preserve any shape-preserving properties preserved by the underlying spatial discretization\citep{SR2002SIAM}. The shape-preserving filter used is described in \citet{GTS2014JCP}. The shape-preserving SE tracer advection algorithm is formally second-order accurate.
+
+The momentum, thermodynamic and dry air continuity equations are solved using a third-order accurate five-stage Runga-Kutta method (RK5) based on a modified version of \cite{KG1984MCSb,KG1984MCS} described in \cite{GU2016GMD}. The inviscid equations of motion are advanced one dynamics time-step using the RK5 method followed by the application of hyperviscosity operators by solving the advection-diffusion equation on the updated prognostic variables. Note that it is necessary to subcycle the hyperviscosity-step for stability. The viscosity terms are computed as described in section \ref{sec:hyper} and discretized using the SE method presented in \ref{sec:dissipation}.
+
+{\color{red}{[How is tracer advection coupled to dry air continuity equation??]}} 
+
+The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}},{\tt{se\_rsplit}},{\tt{se\_hypervis\_subcycle}}  so that the time-steps for vertical remapping $\Delta t_{remap}$, tracer advection $\Delta t_{trac}$ (RK3), RK5 time-stepping for non-tracers $\Delta t_{dyn}$, and hyperviscosity $\Delta t_{hyper}$ are
+\begin{align}
+\Delta t_{remap}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit}},\\
+\Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
+\Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_hypervis\_subcycle}}.\\
+\end{align}
+In other words, the vertical Lagrangian coordinate is `floating' for {\tt{se\_rsplit}} dynamics/tracer time-steps, ...
+
 \subsection{Coupling to physics}
 Denote the time-step for computing physics tendencies $\Delta t_{physics}$ and let $\Delta_{remap}=rsplit \times \Delta t_{dyn}$ be the vertical remapping time-step. CAM-SE uses a time-split {\color{red}{(CHECK if it is process or time split)}} in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. The question is then how to add the physics tendencies to the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given in {\color{red}{reference Jablo paper}}.
 \subsubsection{`ftype=0' configuration}
