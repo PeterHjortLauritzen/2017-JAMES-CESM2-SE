@@ -575,43 +575,33 @@ The momentum, thermodynamic and dry air continuity equations are solved using a 
 
 {\color{red}{[How is tracer advection coupled to dry air continuity equation??]}} 
 
-The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}},{\tt{se\_rsplit}},{\tt{se\_hypervis\_subcycle}}  so that the time-steps for vertical remapping $\Delta t_{remap}$, tracer advection $\Delta t_{trac}$ (RK3), RK5 time-stepping for non-tracers $\Delta t_{dyn}$, and hyperviscosity $\Delta t_{hyper}$ are
+The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}},{\tt{se\_rsplit}},
+{\tt{se\_hypervis\_subcycle}}  so that the time-steps for vertical remapping $\Delta t_{remap}$, tracer advection $\Delta t_{trac}$ (RK3), RK5 time-stepping for non-tracers $\Delta t_{dyn}$, and hyperviscosity $\Delta t_{hyper}$ are
 \begin{align}
 \Delta t_{remap}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit}},\\
 \Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
-\Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_hypervis\_subcycle}}.\\
+\Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}},\\
 \end{align}
-In other words, the vertical Lagrangian coordinate is `floating' for {\tt{se\_rsplit}} dynamics/tracer time-steps, ...
-
+where $\Delta t_{phys}$ is the time-step used for computing physics tendencies.
+%
 \subsection{Coupling to physics}
-Denote the time-step for computing physics tendencies $\Delta t_{physics}$ and let $\Delta_{remap}=rsplit \times \Delta t_{dyn}$ be the vertical remapping time-step. CAM-SE uses a time-split {\color{red}{(CHECK if it is process or time split)}} in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. The question is then how to add the physics tendencies to the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given in {\color{red}{reference Jablo paper}}.
+CAM-SE uses a time-split {\color{red}{[(CHECK if it is process or time split)]}} in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. The question is then how to add the physics tendencies to the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given by C. Jablonowski in \cite[][; see section 6]{GetAl2016}.
 \subsubsection{`ftype=0' configuration}
-In this case add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{physics}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. 
+In this case add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{phys}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. 
 
 The CAM parameterization package returns mixing ratio tendencies for tracers. We convert the mixing ratio tendencies to mass tendencies $F_x \Delta \mathcal{P}^{(d)}_k$ since the prognostic variable for tracers in the dynamical core is $\Delta p_k m^{(d)}_k$.
 
 Generally modelers do not allow the tracer tendencies to drive the mixing ratio of tracers negative, however, this may happen using `ftype=0'. If the tendency drives a mixing ratio negative the mixing ratio is set to zero. As a result not the entire tracer tendency is added leading to an inconsistency is how much mass the physics package wants to remove and the amount of tracer mass actually removed in the physics-dynamics coupling code in the dynamical core.
 \subsubsection{`ftype=1' configuration}
-In this configuration the entire physics forcing is added to the dynamics state $\Delta t_{physics}F_X$ which is equivalent to have the physics module update the model state. This coupling methods is used in CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0' configuration, this configuration always provides a closed mass budget for tracers in terms of physics tendencies being fully applied in the dynamical core.
+In this configuration the entire physics forcing is added to the dynamics state $\Delta t_{phys}F_X$ which is equivalent to have the physics module update the model state. This coupling methods is used in CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0' configuration, this configuration always provides a closed mass budget for tracers in terms of physics tendencies being fully applied in the dynamical core.
 \subsubsection{`ftype=2' configuration}
 This configuration constitutes a hybrid approach where mass variables (tracers) used `ftype=1' physics-dynamics coupling method and all other variables use the `ftype=0' method.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{2 configurations}
-The internal energy in CAM physics is defined as
-\begin{equation}
-I_{tot}^{(CAM)}=-\frac{1}{g}\iiint c_p^{(d)} T\, (1+m^{(wv)})\, \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) d\eta^{(d)}\, \cos(\varphi) r\, d\lambda\, d\varphi.
-\end{equation}
-\begin{enumerate}
-\item Set $c_p=c_p^{(d)}$ and $\rho=\rho^{(d)}+\rho^{(wv)}$
-\item Use `correct' $c_p$ and $\rho=\rho^{(d)}+\rho^{(wv)}+\rho^{(ci)}+\rho^{(cl)}$.
-\end{enumerate}
-In dynamics-physics coupling we pass $\Delta p=\Delta p \left( 1+m^{(wv)}\right)$ to remain consistent with the physics definition of total energy. 
-
 \section{Results}\label{sec:results}
-The evaluation of the SE dynamical core with CAM6 for realistic climate simulation is the subject of a separate paper. Here we ....
+The evaluation of the SE dynamical core with CAM6 for realistic climate simulation is the subject of a separate paper. Here we .... {\color{red}{[bla bla ...]}}
 \subsection{Idealized moist baroclinic wave with Kessler microphysics}
 For the validation of the new dynamical core version in a simplified setup, we use a moist variant of the dry baroclinic wave of \citet{UMJS2014QJRMS} with Kessler microphysics \citep{K1969MM}. This test case configuration was part of the Dynamical Core Model Intercomparison Project (DCMIP) 2016 test case suite {\color{red}{[DCMIP citation]}}. The initialization of the atmospheric state for the moist baroclinic wave is based on analytic expressions for $T_v$, $\vec{v}$, p and $q^{(vw)}$ as a function of latitude and height; $(\varphi,z)$. The surface geopotential is constant, $\Phi_s=0$, and the moist surface pressure is constant $p_s=1000hPa$. The analytical expressions for temperature, velocity components, moist pressure and specific humidity, denoted ${T_v}(\varphi,z)$, ${\vec{v}}(\varphi,z)$, ${p}(\varphi,z)$, and $q^{(wv)}(\varphi,z)$, respectively, are given in Appendix \ref{app:analytic}. When using a moist vertical pressure coordinate, the full level pressures $p_k$ of the initial condition are known from the hybrid coefficients, $A_k$ and $B_k$, and one can iteratively solve for $z_k$ given moist pressure: $p_k={p}(\varphi,z_k)$ \citep[see, ][]{UMJS2014QJRMS}. Once the full level heights, $z_k(\varphi)$, are known then the specific humidity, virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$. In the DCMIP 2016 test case documentation the virtual temperature is converted to temperature using $T_v=T\left( 1+\epsilon q^{(vw)}\right)$. For a dry-mass vertical coordinate model the initialization procedure is more complicated as described below.
 
