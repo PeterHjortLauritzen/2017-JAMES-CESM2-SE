@@ -157,7 +157,7 @@
 %% \begin{abstract} starts the second page 
 
 \begin{abstract}
-It is the purpose of this paper to document and validate the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry pressure, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced and cleaned up as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (high-order method modeling environment) as an external code.
+It is the purpose of this paper to provide a comprehensive documentation of the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry pressure, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced and cleaned up as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (high-order method modeling environment) as an external code.
 \end{abstract}
 
 
@@ -801,7 +801,7 @@ in  discretized space \citep{TF2010JCP}. This property can be used to show the i
 \subsection{Temporal discretization}
 In a typical CAM setup where the model top is around 40km the maximum stable time-step for solving the continuity equation for $\ell='wv','cl','ci'$ (referred to as tracer advection) is limited by the maximum advective winds. The maximum stable time-step for the remaining equations of motion (thermodynamic equation, momentum equations and the continuity equation for dry air) is limited by the fastest gravity waves.  Since the maximum advective winds are typically slower than the fastest gravity waves, different time-stepping methods are used for tracer advection and the remaining equations of motion. The same time-step is used but different Runge-Kutta (RK) methods are used to maintain stability. 
 
-The SE tracer advection algorithm uses a three-stage RK strong-stability-preserving (SSP) time-stepping method that ensures that the time step will preserve any shape-preserving properties preserved by the underlying spatial discretization\citep{SR2002SIAM}. The shape-preserving filter used is described in \citet{GTS2014JCP}. The shape-preserving SE tracer advection algorithm is formally second-order accurate.{\color{red}{[limiter applied in last RK step?]}}
+The SE tracer advection algorithm uses a three-stage RK strong-stability-preserving (SSP) time-stepping method that ensures that the time step will preserve any shape-preserving properties preserved by the underlying spatial discretization \citep{SR2002SIAM}. The shape-preserving filter used is described in \citet{GTS2014JCP}. The shape-preserving SE tracer advection algorithm is formally second-order accurate.{\color{red}{[limiter applied in last RK step?]}}
 
 The momentum, thermodynamic and dry air continuity equations are solved using a third-order accurate five-stage Runga-Kutta method (RK5) based on a modified version of \cite{KG1984MCSb,KG1984MCS} described in \cite{GU2016GMD}. The inviscid equations of motion are advanced one dynamics time-step using the RK5 method followed by the application of hyperviscosity operators by solving the advection-diffusion equation on the updated prognostic variables. Note that it is necessary to subcycle the hyperviscosity-step for stability. The viscosity terms are computed as described in section \ref{sec:hyper} and discretized using the SE method presented in \ref{sec:dissipation}.
 
@@ -814,7 +814,7 @@ The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}
 \Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
 \Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}},\\
 \end{align}
-where $\Delta t_{phys}$ is the time-step used for computing physics tendencies.
+where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. For the $1/4^\circ$ horizontal resolution model ($N_e=120$, $N_p=4$) the physics time-step is $\Delta t_{phys}=15 min$, {\tt{se\_nsplit}=4}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=3}}. Both configurations have 32 leves with CAM6 physics.
 %
 \subsection{Coupling to physics}
 CAM-SE uses a time-split {\color{red}{[(CHECK if it is process or time split)]}} in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. The question is then how to add the physics tendencies to the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given by C. Jablonowski in \cite[][; see section 6]{GetAl2016}.
@@ -1092,7 +1092,12 @@ Thus the discretization of the Laplacian for SE method can be obtained by simpli
 
  
 \subsection{Hyperviscosity coefficients}\label{app:nu}
-
+The following hyperviscosity coefficients are used in CAM-SE:
+\begin{align}
+\nu_T = \nu_{vor} &= 0.2\times \left(\frac{9\times 10^6}{N_e (N_p-1)}\right)^3\, \frac{m^4}{s},\\
+\nu_p = \nu_{div} &= 1.0\times \left(\frac{9\times 10^6}{N_e (N_p-1)}\right)^3\, \frac{m^4}{s},
+\end{align}
+where $N_p=4$ in CAM-SE, and $N_e=30$ and $N_e=120$ for the $1^\circ$ and $1/4^{\circ}$ horizontal resolution configurations. Note that mass-wind consistency may be violated if $\nu_p \neq \nu_{div}$.
 
 
 
