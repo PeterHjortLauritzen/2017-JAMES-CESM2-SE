@@ -13,6 +13,12 @@ The influence of the new definition of $c_p$ and the PPM limiter on Tropical pre
 
 To explain how the limiter works, consider a vertical profile of the horizontal wind in the aqua-planet simulations across the lowest model level, $u(k_1)$, and the second lowest model level, $u(k_2)$. In the equatorial regions, there is a monotonic increase in the magnitude of the wind with height, across the lowest levels. If level $k_1$ is undergoing horizontal mass convergence, the model level will be raised. To find the mean wind on the new grid, $u(l_1)$, one integrates the PPM subgrid reconstruction from the surface to within a region that is occupied by $k_2$. Since the magnitude of the wind increases with height, the contribution of the mean wind in $u(l_1)$ from the region occupied by $k_2$ will always have a smaller magnitude than $u(k_2)$, which is computed by integrating to the top of $k_2$. The limiter forces the contribution of the mean wind to $u(l_1)$ from $k_2$ to be equal to $u(k_2)$. In this scenario, the limiter will result in larger magnitude winds in a convergent flow regime in the lowest model level, facilitating greater mass convergence during the following time-step.    
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{figs/kespectra.pdf}
+\caption{Total kinetic energy spectrum of the horizontal winds at the 200 hPa level in CAM-HOMME and CAM-SE}
+\label{fig:kespectra}
+\end{figure}
 
 \begin{figure}[h]
 \centering
