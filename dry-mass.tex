@@ -392,24 +392,25 @@ For diagnosing vertical pressure velocity $\omega$ we note that
       &=\int_{\eta^{(d)}}^{\eta^{(d)}=0}\frac{\partial}{\partial t}\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}+\int_{\eta^{(d)}}^{\eta^{(d)}=0} \vec{v}\cdot \nabla \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)d\eta^{(d)}.\label{eq:omega}
 \end{align}
 \subsection{Hyperviscosity and frictional heating}
-The spectral-element method does not have implicit diffusion hence hyperviscosity operators are applied to the prognostic variables to dissipate energy near the grid scale. Hyperviscosity also damp the propagation of spurious grid-scale modes \citep{AW2009SIAM}. For the uniform resolution configuration constant hyperviscosity coefficients are used whereas the variable resolution configuration uses either a scaling of the coefficients according to the local element length scale \citep{ZJT2013} or a tensor-based hyperviscosity operator \citep{GetAl2014GMD}.
+The spectral-element method does not have implicit diffusion hence hyperviscosity operators are applied to the prognostic variables to dissipate energy near the grid scale. Hyperviscosity also damp the propagation of spurious grid-scale modes \citep{AW2009SIAM} and smooth the solution at element boundaries where the basis-functions are least smooth ($C^0$-continuous). For the uniform resolution configuration constant hyperviscosity coefficients are used whereas the variable resolution configuration uses either a scaling of the coefficients according to the local element length scale \citep{ZJT2013} or a tensor-based hyperviscosity operator approach \citep{GetAl2014GMD}.
 \subsubsection{Viscosity operator}\label{sec:hyper}
 On the right-hand side of the equations of motion hyperviscosity terms are added. For the momentum equations \eqref{E:PEmom} the viscous terms are as follows. By using the vector identity  $\nabla^2 \vec{v} = \nabla(\nabla \cdot \vec{v}) - \nabla \times (\nabla \times \vec{v}) $, the viscosity term splits into two terms. One that damps divergent modes and one that damps rotational modes. Thereby one can damp divergent modes more (or less) than rotational modes by having different coefficients ($\nu_d$ and $\nu_v$, respectively) in front of the respective terms
  \begin{equation}
-  \nu \nabla^2 \vec{v} = \nu_d \, \nabla(\nabla \cdot \vec{v}) -
+  \nu_d \, \nabla(\nabla \cdot \vec{v}) -
    \nu_v \,  \nabla \times (\nabla \times \vec{v}).\label{eq:vec_diff}
  \end{equation}
-By iteratively applying the Laplacian operator \eqref{eq:vec_diff} the 4th-order hyperviscosity operator results.
+By iteratively applying the Laplacian operator \eqref{eq:vec_diff} the 4th-order hyperviscosity operator results. 
 
-The pseudo-density and temperature are damped with $\nu \nabla^4\left\{ \frac{\partial p\quad }{\partial \eta^{(d)}}-\left(\frac{\partial p\quad }{\partial \eta^{(d)}}\right)^{(ref)}\right\}$ and $\nu \nabla^4 T$. The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nu \nabla^4=\nu \nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate pressure surfaces
+The pseudo-density is damped with $\nu_p \nabla^4\left\{ \frac{\partial p\quad }{\partial \eta^{(d)}}\right\}$ and temperature with $\nu_T \nabla^4 T$. The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), pressure-level thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and given in Appendix \ref{app:nu}.
+
+The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nabla^4=\nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate pressure surfaces
 \begin{equation}
 \nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\frac{\partial \Xi}{\partial p}\nu \nabla^4_{\eta_d}p,\qquad \Xi=\vec{v}, T,
 \end{equation}
-\citep[p.58 in ][]{CAM5} to reduce spurious diffusion over steep topography. In theory the damping of the pseudo-density should be zero if hyperviscosity is applied on pressure surfaces. However, for stability it is necessaary to damp pressure-level thicknesses but instead of applying $\nabla^4$ to $\frac{\partial p\quad }{\partial \eta^{(d)}}$ it is applied to the difference between $\frac{\partial p\quad }{\partial \eta^{(d)}}$ and a smoothed version of $\frac{\partial p\quad }{\partial \eta^{(d)}}$ referred to as $\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)^{(ref)}$. The computation of the smoothed reference profile is described in the next section.
-\subsubsection{Reference pressure damping}
-{\color{red}{Patrick}}
+\citep[p.58 in ][]{CAM5} to reduce spurious diffusion over steep topography. In theory the damping of the pseudo-density should be zero if hyperviscosity is applied on pressure surfaces. However, for stability it is necessary to damp pressure-level thicknesses but instead of applying $\nabla^4$ to $\frac{\partial p\quad }{\partial \eta^{(d)}}$ it is applied to the difference between $\frac{\partial p\quad }{\partial \eta^{(d)}}$ and a smoothed version of $\frac{\partial p\quad }{\partial \eta^{(d)}}$ referred to as $\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)^{(ref)}$. The reference/smoothed pressure-level thickness is defined in Appendix \ref{app:ref_dp}. 
+%
 \subsubsection{Frictional heating}\label{sec:frictional_heating}
-Let the $\delta \vec{v}$ be the change in the velocity vector due to diffusion of momentum. Then the change in kinetic energy due hyperviscosity applied to $\vec{v}$ is $\frac{1}{2}\rho \vec{v} \cdot \delta \vec{v}$. This kinetic energy is converted to a heating rate by adding a heating term $\delta \mathcal{T}$ in the thermodynamic equation corresponding to the kinetic energy change
+Let the $\delta \vec{v}$ be the change in the velocity vector due to diffusion of momentum. Then the change in kinetic energy due to hyperviscosity applied to $\vec{v}$ is $\frac{1}{2}\rho \vec{v} \cdot \delta \vec{v}$. This kinetic energy is converted to a heating rate by adding a heating term $\delta \mathcal{T}$ in the thermodynamic equation corresponding to the kinetic energy change
 \begin{equation}
 \rho c_p \delta \mathcal{T}=-\frac{1}{2}\rho \vec{v} \cdot \delta \vec{v} \Rightarrow
  \delta \mathcal{T}=-\frac{1}{c_p}\left(\vec{v}\cdot \delta \vec{v}\right),\label{eq:tcp}
@@ -778,16 +779,22 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
   by the  weighted sum (average)  so that  the boundary  nodes get unique values,   
    which maintains the continuity of the global solution across the element edges. This strategy has been adopted in CAM-SE. 
   Note that the DSS operation does not affect interior nodal values of any element, and  preserves global conservation of SE discretization
-  for (\ref{eq:se1}).  The elemental discretization (\ref{eq:se7}) combined with the  DSS operation  ($ \mathcal{L}_h$) leads 
+  for (\ref{eq:se1}).  The elemental discretization (\ref{eq:se7}) combined with the  DSS operation  leads 
   to the time-dependent  system of ODE corresponding to (\ref{eq:se1}),
      \begin{equation}
-  \frac{d }{dt} \phi(t) =   \mathcal{L}_h(\phi).  \label{eq:se8}
+  \frac{d }{dt} \phi(t) =   DSS(\phi).  \label{eq:se8}
        \end{equation}
 
 The details of the discretization of the dissipation operators is discussed in Appendix \ref{sec:dissipation}.
-
+%
 \subsection{Mimetic discretization}
-{\color{red}{[need to mention this and refer to Mark's book chapter - discuss in the context of total energy conservation too]}}\cite{TF2010JCP}
+A numerical method is mimetic (or compatible) if key integral properties of divergence, gradient and curl-operators are mimicked in discretized space. The CAM-SE discretization satisfies the divergence/gradient adjoint relation
+\begin{equation}
+\int \phi \nabla \cdot \vec{v} \, d\mathcal{S}+\int \vec{v} \nabla \phi \, d\mathcal{S}=0
+\end{equation}
+in  discretized space \citep{TF2010JCP}. This property can be used to show the inherent conservation properties of CAM-SE in terms of mass and energy in the horizontal discretization. This is discussed in detail in \cite{T2011LNCSEb} and hence not repeated here.
+
+ {\color{red}{[need to mention this and refer to Mark's book chapter - discuss in the context of total energy conservation too]}}\cite{TF2010JCP}
 
 
 
@@ -994,7 +1001,8 @@ Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at d
 % A: Here Is Appendix Title
 %
 \appendix
-   \subsection{Dissipation}\label{sec:dissipation}
+   \section{Dissipation}\label{sec:dissipation}
+   \subsection{Discretization}
    In the CAM-SE model explicit  fourth-order hyperviscosity  ($\nu \nabla^4 \phi$) used as 
     the main stabilization mechanism.  For scalar fields such as $T, p, q$ etc., 
    a scalar viscosity   is applied,  while  for the horizontal momentum equations vector viscosity
@@ -1013,7 +1021,7 @@ Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at d
   \int_{\Omega_e}  L \, \psi  \,  d \Omega_e  =   \int_{\Gamma_e}  \phi \nabla \psi  \,    d  \Gamma_e - 
                       \int_{\Omega_e}  \nabla \psi \cdot \nabla \phi \,  d \Omega_e  \label{eq:Lweak}
    \end{equation}
-   For the continuous Galekin (SE) method the boundary integral vanishes ($\psi = 0$ at the element boundaries) 
+   For the continuous Galerkin (SE) method the boundary integral vanishes ($\psi = 0$ at the element boundaries) 
    and the  {\em  rhs} simplifies to 
    a surface integral.   The tensor gradients in the integrand  can be expressed  in terms of its contravariant  components 
    $(\tilde{F}^1, \tilde{F}^2)$, using (\ref{eq:covcontra}) such that 
@@ -1083,8 +1091,11 @@ Thus the discretization of the Laplacian for SE method can be obtained by simpli
    The {\em rhs} of the above equations are converted into equivalent tensor form  for the divergence and curl terms,
    and discretized as in the case of (\ref{eq:Lap1}). 
    
- 
+\subsection{Reference pressure for pressure-level thickness damping}\label{app:ref_dp}
+{\color{red}{Patrick}}
 
+ 
+\subsection{Hyperviscosity coefficients}\label{app:nu}
 
 
 
