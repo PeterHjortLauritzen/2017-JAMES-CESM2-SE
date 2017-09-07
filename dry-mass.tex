@@ -794,10 +794,6 @@ A numerical method is mimetic (or compatible) if key integral properties of dive
 \end{equation}
 in  discretized space \citep{TF2010JCP}. This property can be used to show the inherent conservation properties of CAM-SE in terms of mass and energy in the horizontal discretization. This is discussed in detail in \cite{T2011LNCSEb} and hence not repeated here.
 
- {\color{red}{[need to mention this and refer to Mark's book chapter - discuss in the context of total energy conservation too]}}\cite{TF2010JCP}
-
-
-
 
 
 % CAM-SE is based on a continuous Galerkin finite-element (or spectral-element) method \citep{TTI1997JCP} and is discretized using a cubed-sphere tiling of the sphere. Petascale scalability of CAM-SE was demonstrated in \cite{DetAl2012IJHPCA}. Also, CAM-SE provided refined mesh functionality in CAM \cite[e.g., ][]{SJDTT2008MWR,ZetAl2014JC}, improved accuracy of idealized baroclinic wave simulation \citep{LJTN2010JAMES}, conserved total energy to time-truncation errors \citep{T2011LNCSEb} and improved global axial angular momentum budgets compared to CAM-FV \citep{LBDL2014JAMES}. That said, the tracer transport component of CAM-SE appeared to be less accurate than CAM-FV for non-smooth tracer distributions \citep{LetAl2011GMD,HetAl2016QJRMS}. In an idealized terminator test in which two species react according to a reaction coefficient proportional to the solar terminator while being transported by an idealized 2D flow, CAM-SE produces errors larger than CAM-FV \citep{LCLVT2015GMD}. The errors are due to the limiter used for tracer transport that prevents oscillatory (and in particular negative) solutions for tracers \citep{GTS2014JCP}. In terms of computational throughput it was also found that CAM-SE was slower for large tracer counts (at least when run with core counts similar to the non-scalable CAM-FV).
