@@ -102,11 +102,12 @@
 % Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
 % Author\affil{3,4}\thanks{Also funded by Monsanto.}}
 
-\authors{P. H. Lauritzen\affil{1}\thanks{1850 Table Mesa Drive, Boulder, Colodaro, USA}, R.D. Nair\affil{1}, A.R. Herrington\affil{2},P. Callaghan\affil{1}, S. Goldhaber\affil{1}, J.M. Dennis\affil{1}, Julio T. Bacmeister\affil{1}, B. Eaton\affil{1}, C.M. Zarzycki\affil{1}, A. Gettelman\affil{1},  R.B. Neale\affil{1}, B. Dobbins\affil{1}, Mark A. Taylor\affil{3}, K.A. Reed\affil{2}}
+\authors{P. H. Lauritzen\affil{1}\thanks{1850 Table Mesa Drive, Boulder, Colodaro, USA}, R.D. Nair\affil{1}, A.R. Herrington\affil{2},P. Callaghan\affil{1}, S. Goldhaber\affil{1}, J.M. Dennis\affil{1}, Julio T. Bacmeister\affil{1}, B. Eaton\affil{1}, C.M. Zarzycki\affil{1}, Mark A. Taylor\affil{3}, A. Gettelman\affil{1},  R.B. Neale\affil{1}, B. Dobbins\affil{1}, K.A. Reed\affil{2}, T. Dubos\affil{4}}
 
  \affiliation{1}{National Center for Atmospheric Research}
  \affiliation{2}{School of Marine and Atmospheric Sciences, Stony Brook University, State University of New York, Stony Brook, New York}
  \affiliation{3}{Sandia National Laboratories, Albuquerque, New Mexico}
+ \affiliation{4}{Ecole Polytechnique, UMR 8539, Laboratoire de M\'et\'eorologie Dynamique/IPSL, F-94270, Palaiseau, France}
 
 % \affiliation{3}{Third Affiliation}
 % \affiliation{4}{Fourth Affiliation}
@@ -200,9 +201,9 @@ Over the last two decades or so the spectral-element (SE) method has been consid
  \label{fig:grids}
 \end{figure}
 
-With the department of energy (DOE) branching from the CESM to develop their on Earth System Model using their own code base, NCAR decided to no longer import HOMME as an external code base in CAM due to the cumbersome software engineering involved in maintaining two code bases and having to support configurations in HOMME not used in CAM. Instead the SE configuration of HOMME became part of the CAM code base. With that came a massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described in this paper.
+With the department of energy (DOE) branching from the CESM to develop an Earth System Model using their own code base, NCAR decided to no longer import HOMME as an external code base in CAM in part due to the cumbersome software engineering involved in maintaining two code bases and having to support configurations in HOMME not used in CAM. Instead the SE configuration of HOMME became part of the CAM code base. With that came a massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described in this paper.
 
-The SE dynamical core is the default dynamical core for high-resolution CESM applications, in particular, the configuration in which the average distance between grid-point is approximately 25km \citep{BetAl2013JC}. At such resolutions the effects of condensates (such as cloud liquid and rain) may have a significant effect on the dynamics \citep{BLDT2012GRL}. CAM-HOMME does not represent the effect of condensates in the thermodynamic and momentum equations (also referred to as condensate loading). Representing condensates in the dynamical core is easier when using a dry-mass hybrid-sigma vertical coordinate than when using the usual moist-mass hybrid-sigma vertical coordinate \citep[e.g., ][]{SB1981MWR}. In other words, the model levels are defined in terms of dry atmosphere surface pressure rather than moist (full) surface pressure.
+The SE dynamical core is the default dynamical core for high-resolution CESM applications, in particular, the configuration in which the average distance between grid-point is approximately 25km \citep{BetAl2013JC}. At such resolutions the effects of condensates (such as cloud liquid and rain) may have a significant effect on the dynamics \citep{BLDT2012GRL}. CAM-HOMME does not represent the effect of condensates in the thermodynamic and momentum equations (also referred to as condensate loading). Representing condensates in the dynamical core is easier when using a dry-mass hybrid-sigma vertical coordinate than when using the usual moist-mass hybrid-sigma vertical coordinate \citep[e.g., ][]{SB1981MWR}.
 
 A second motivation for switching to a dry-mass vertical coordinate is the physical parameterizations. CAM physics assumes that the moist pressure levels are constant during the parameterization updates. Consequently the moist pressure levels stay constant even when moisture leaves the column (e.g., rain). At the very end of CAM physics the change in water  vapor in each column is taken into account by scaling the mixing ratio's for all tracers that are based on specific/moist mixing ratios so that dry air mass and tracer mass is conserved \citep[see Section 3.1.6 in ][]{CAM5}. This scaling does not guarantee shape-preservation. Also, the pressure in CAM physics does not take into account the mass of condensates. When using a dry-mass vertical coordinate, the coordinate surfaces (assuming dry mass is constant) remain constant throughout the physics updates and there is no need to adjust tracer mixing ratios, and one can more rigorously take into account the work performed by water variables in the context of the energy cycle.
 
@@ -789,7 +790,7 @@ Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at d
 \begin{figure}[h]
 \centering
 \includegraphics[width=33pc]{figs/02_baro_wave.pdf}
-\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CAM-HOMME version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. Rights column is the same as the left but for large-scale precipitation rate.}
+\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CAM-HOMME version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. The right column is the same as the left but for large-scale precipitation rate.}
 \label{fig:baro_wave}
 \end{figure}
 
@@ -806,6 +807,7 @@ Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at d
 \subsection{Performance}\label{sec:performance}
 \input{performance.tex}
 \section{Conclusions}\label{sec:concl}
+The NCAR CESM2.0 version of CAM-SE is presented. This version uses a dry-mass vertical coordinate and has a comprehensive treatment of condensates both in the thermodynamic equation and momentum equations. The conservation properties in terms of total energy and axial angular momentum for this system of equations derived. The discretization of the equations of motion is explained in detail and is intended to serve as a comprehensive documentation for CAM-SE. Idealized simulations demonstrate the accuracy and conservation property of the numerical model. In particular, we show that the reduction in viscosity parameters greatly improved the total kinetic energy spectrum of CAM-SE and that the comprehensive treatment of moist thermodynamics and condensate loading significantly changes precipitation rates in aqua-planet simulations. Last but not least the CAM-SE model has been sped-up significantly compared to its predecessor CAM-HOMME.
 %Text here ===>>>
 
 %%
@@ -1227,7 +1229,7 @@ where $p_w=340$ $hPa$ is a pressure width parameter, $q_0=0.018$ $kg/kg$ is maxi
 
 
 \acknowledgments
- = enter acknowledgments here =
+The National Center for Atmospheric Research is sponsored by the National Science Foundation. Herrington, Reed and Lauritzen are grateful to the NCAR Advance Study Program graduate visitor program for funding Herrington's 9-month visit to NCAR. We thank NCAR's Computational and Information Systems Lab (CISL) for providing computing support. Goldhaber was partially supported by the U.S. Department of Energy Office of Biological and Environmental Research, Work Package 12-015334 ``Multiscale Methods for Accurate, Efficient, and Scale-Aware Models of the Earth System.''
 
 
 %% ------------------------------------------------------------------------ %%
