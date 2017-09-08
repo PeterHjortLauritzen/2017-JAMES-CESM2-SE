@@ -418,122 +418,28 @@ Let $\delta \vec{v}$ be the change in the velocity vector due to diffusion of mo
 \end{equation}
 \citep[p.71 in ][]{CAM5}. As shown in the results section this term is rather large and therefore important for good energy conservation characteristics of the dynamical core.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Global conservation}\label{sec:aam}
-Below it is shown that the continuous equations of motion, that include the effect of condensates, conserve AAM and total energy. For the derivations first note that adding the continuity equations $\ell=`d`,`wv`,`cl`,`ci`$ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, yields a moist air continuity
+\subsection{Global conservation: AAM and energy}\label{sec:aam}
+The conservation law for AAM
 \begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left(\frac{\partial z\quad}{\partial \eta^{(d)}}\right)\right]+\nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]=0,\label{eq:cont2}
+\mathcal{M}=\left( u+\Omega r \cos \varphi \right) r \cos \varphi,
 \end{equation}
-or, equivalently, in Lagrangian form
-\begin{equation}
-\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A\right]=0,\label{eq:lagra_cont}
-\end{equation}
-where $\delta A$ is a horizontal area of a Lagrangian air parcel so that $\nabla \cdot \vec{v}=\frac{1}{\delta A}\frac{d}{dt}\left( \delta A\right)$, and  $\frac{d}{dt}=\frac{\partial }{\partial t}+\vec{v}\cdot \nabla $ is the material/total derivative. 
-\subsubsection{Axial angular momentum (AAM)}
-The conservation law for angular momentum is derived in spherical coordinates for which the zonal momentum equation takes the form
-\begin{equation}
-\frac{du}{dt}=\frac{u v \tan \varphi}{r}+2\Omega v\sin \varphi -\frac{1}{\rho r \cos \varphi}\frac{\partial p}{\partial \lambda},\label{eq:tmp200}
-\end{equation}
-where $u$ and $v$ are the zonal and meridional velocity components, respectively, $\varphi$ is latitude and $\lambda$ longitude, $\Omega$ rotation rate of Earth ($f=2\Omega \sin \varphi$), and $r$ is the mean radius of Earth.\\
-
-The conservation law for AAM, $\mathcal{M}=\left( u+\Omega r \cos \varphi \right) r \cos \varphi$, can be conveniently derived using the Lagrangian form. Consider the material derivative of $\mathcal{M}$ multiplied by the volume of a Lagrangian air parcel, $\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A$
-\begin{equation}
-\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A \left( u+\Omega r \cos \varphi \right) r \cos \varphi\right].
-\end{equation}
-Using the chain rule, continuity equation on the form \eqref{eq:lagra_cont}, the equality $v=r\frac{d\varphi}{dt}$ and substituting \eqref{eq:tmp200}, one can obtain an evolution equation for AAM
-\begin{equation}
-\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A\, \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda},\label{eq:tmp201}
-\end{equation}
-or, equivalently, in Eulerian form
-\begin{equation}
-\frac{\partial}{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \, \mathcal{M} \right]+\nabla_{\eta_d}\cdot \left[\vec{v} \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)  \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda}.\label{eq:tmp202}
-\end{equation}
-Repeatedly using the chain rule one can show that the right-hand side of \eqref{eq:tmp201} and \eqref{eq:tmp202} can be written as
-\begin{align}
-- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}&=-\frac{\partial }{\partial \lambda}\left[  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) p\right]+p\frac{\partial }{\partial \lambda} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\\ 
-&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)+\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}+p\frac{\partial }{\partial \lambda}\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),\\
-&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)+\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}-\frac{\partial }{\partial \lambda}\left[ p\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]-\frac{\partial p}{\partial \lambda}\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right).\\
-&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)-\frac{\partial }{\partial \lambda}\left[ p\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right].\label{eq:tmp203}
-\end{align}
-Substituting \eqref{eq:tmp203} on the right-hand side of \eqref{eq:tmp202} and integrating \eqref{eq:tmp202} in the horizontal and vertical we get
+integrated over the entire domain is derived in Appendix \ref{app:conservation} and the final equation is
 \begin{equation}
 \frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{S}}\left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) \mathcal{M} \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{S}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
 \end{equation}
-where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography,$z_s=0m$, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the relative motion of the atmosphere with respect to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$ (referred to as mass AAM):
+where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The equation clearly separates the AAM of each component of moist air. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography,$z_s=0m$, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the relative motion of the atmosphere with respect to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$ (referred to as mass AAM):
 \begin{equation}
 \mathcal{M}=\mathcal{M}_r+\mathcal{M}_\Omega=\left( u r \cos \varphi\right)+\left(\Omega r^2 \cos^2 \varphi \right) .
 \end{equation}
-\subsubsection{Total energy}
-The derivation of the total energy equation closely follows \citet{K1974MWR} but for a dry mass vertical coordinate and inclusion of condensates in the equations of motion. The equation for the horizontal kinetic energy per unit mass, $K=\frac{1}{2}\vec{v}\cdot \vec{v}$, is derived by multiplying the momentum equations \eqref{E:PEmom} with $\rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)$ and the continuity equation \eqref{eq:cont2} with $K$, adding the two resulting equations and simplifying using the chain rule yields
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]=-\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p-g\rho \left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \cdot \nabla_{\eta^{(d)}}z.\label{eq:K}
-\end{equation}
-For the derivation of a flux-form version of the total energy equation (that includes a geopotential term) we substitute
-\begin{align}
-g \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \vec{v} \cdot \nabla_{\eta^{(d)}} z &= \nabla_{\eta^{(d)}}\cdot \left[ gz\vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right] - gz \nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right],\\
-&=\nabla_{\eta^{(d)}}\cdot \left[ g z\vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right] -z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)\right],\label{eq:tmpK}
-\end{align}
-(where the hydrostatic balance equation \eqref{eq:phi_1} has been used on the right-hand side of \eqref{eq:tmpK}) on the right-hand side of \eqref{eq:K} and rearrange terms
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]+\nabla_{\eta^{(d)}} \cdot \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz \right) \right]=-\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p - z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)\right].\label{eq:tmp1}
-\end{equation}
-Now, by multiplying the thermodynamic equation \eqref{E:PEtemp} with $\rho \frac{\partial z\quad }{\partial \eta^{(d)}}c_p$ and the continuity equation \eqref{eq:cont2} with $c_p T$, adding the resulting equations and simplifying using the chain rule yields
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)c_p T\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)c_p T\right]=\left( \frac{\partial z\quad}{\partial \eta^{(d)}}\right)\omega.\label{eq:tmp2}
-\end{equation}
-By using that $\omega\equiv \frac{\partial p}{\partial t}+\vec{v} \cdot \nabla_{\eta^{(d)}} p$, using the chain rule and the continuity equation \eqref{eq:cont2} , one can show that
-\begin{equation}
-\left( \frac{\partial z\quad}{\partial \eta^{(d)}}\right)\omega = \frac{\partial}{\partial \eta^{(d)}}\left( z\frac{\partial p}{\partial t}\right)+\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p +z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \frac{\partial p\quad }{\partial \eta^{(d)}}\right].\label{eq:tmp3}
-\end{equation}
-Substituting \eqref{eq:tmp3} on the right-hand side of \eqref{eq:tmp2} and adding the resulting equation to \eqref{eq:tmp1}, the two terms on the right-hand side of \eqref{eq:tmp1} cancel the two last terms on the right-hand side of \eqref{eq:tmp3} and we get the total energy equation
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_pT\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=\frac{\partial}{\partial \eta^{(d)}}\left( z\frac{\partial p}{\partial t}\right).\label{eq:Etotp}
-\end{equation}
-This equation is in the same form as (5.7) in \cite{K1974MWR} but $\rho$, $c_p$ and $p$ include the effect of condensates. Noting that
-\begin{equation}
-c_pT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)=c_vT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)+g z \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),
-\end{equation}
-where we have used the ideal gas law on the form \eqref{eq:ig4}, chain rule and hydrostatic equation on the form \eqref{eq:phi_1}, the total energy equation can be written on the form
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_vT+gz\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=-\frac{\partial}{\partial \eta^{(d)}}\left( p\frac{\partial z}{\partial t}\right).\label{eq:Ecv}
-\end{equation}
-As an aside it is noted that in a $z$-based vertical coordinate (for a moment assume $\eta^{(d)}\equiv z$), if integrating \eqref{eq:Ecv} in the vertical and using that $z$ is constant at the model top ($z_{top}$) and surface ($z_s$) we get
-\begin{equation}
-\frac{\partial }{\partial t}\int_{z=z_s}^{z=z_{top}}\left(K+c_vT+gz\right)\rho dz+\nabla_z \cdot \int_{z=z_s}^{z=z_{top}} \vec{v} \left( K+gz+c_pT \right) \rho dz=0.\label{eq:totEz}
-\end{equation}
-Note the clear separation of kinetic ($K$), potential ($gz$) and internal ($c_vT$) energy. Integrating \eqref{eq:totEz} in the horizontal over the entire sphere the flux term drops out, and it is clear that the total energy is conserved for the frictionless and adiabatic system of equations.
-
-For the global integral of the total energy equation in a dry-mass vertical coordinate, we substitute the hydrostatic relation on the form \eqref{eq:phi_1} into \eqref{eq:Etotp}, integrate in the vertical and use that the pressure at the model top is constant,
-\begin{multline}
-\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\left(K+c_pT\right)d \eta^{(d)}\\ +\frac{1}{g}\nabla_{\eta^{(d)}} \cdot \int_{\eta=0}^{\eta=1} \vec{v} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\left( K+gz+c_pT \right) d \eta^{(d)} =-z_s\frac{\partial p_s}{\partial t},\label{eq:tmp99}
-\end{multline}
-which can also be written as
-\begin{multline}
-\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[m^{(\ell)} \left(K+c_p^{(\ell)}T+\Phi_s  \right)\right]d \eta^{(d)}\\ +\frac{1}{g}\nabla_{\eta^{(d)}} \cdot \int_{\eta=0}^{\eta=1} \vec{v} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+gz\right) \right]d \eta^{(d)} =0.\label{eq:totEp2}
-\end{multline}
-by expanding $c_p$ using \eqref{eq:cp}, re-arranging terms and using that $\Phi_s=gz_s$ is time-independent and that 
-\begin{equation}
-p_s=\int_{\eta=0}^{\eta=1}\sum_{\ell \in \mathcal{L}_{all}}  \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) m^{(\ell)}d\eta^{(\eta)}.
-\end{equation}
-Note that the energy terms (inside square brackets) in \eqref{eq:totEp2} separate into all the components of moist air
-\begin{equation}
-\left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
-\end{equation}
-Similarly for the flux term in the second square brackets on the left-hand side of \eqref{eq:totEp2}. Integrating \eqref{eq:totEp2} over the entire sphere results in
+The total energy equation integrated over the global domain is also derived in Appendix \ref{app:conservation} and the final equation is
 \begin{equation}
 \frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \iint_\mathcal{S} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[m^{(\ell)} \left(K+c_p^{(\ell)}T+\Phi_s  \right)\right]  dA d \eta^{(d)}=0.\label{eq:comprehensice_energy}
 \end{equation}
-As for the $z$-based vertical coordinate derivation, \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell=`cl`,`ci`$ and $m^{(\ell)}=0$ for $\ell=`cl`,`ci`$ \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion the dynamical core will conserve the energy used in CAM physics.
-
-%\begin{equation}
-%
-%\end{equation}
-
-%The total internal energy integrated over the entire atmosphere is given by
-%\begin{equation}
-%I=\iiint \rho c_p T\, dz\, \cos(\varphi) r\, d\lambda\, d\varphi,\label{tot:I}
-%\end{equation}
-%where
-
+Note that the energy terms (inside square brackets) in \eqref{eq:comprehensice_energy} separate into all the components of moist air
+\begin{equation}
+\left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
+\end{equation}
+The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell=`cl`,`ci`$ and $m^{(\ell)}=0$ for $\ell=`cl`,`ci`$ \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discretized equations of motion}\label{sec:discretized_eqs}
@@ -818,23 +724,23 @@ The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}
 where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. For the $1/4^\circ$ horizontal resolution model ($N_e=120$, $N_p=4$) the physics time-step is $\Delta t_{phys}=15 min$, {\tt{se\_nsplit}=4}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=3}}. Both configurations have 32 levels with CAM6 physics.
 %
 \subsection{Coupling to physics}
-CAM-SE uses a time-split {\color{red}{[(CHECK if it is process or time split)]}} in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. The question is then how to add the physics tendencies to the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given by C. Jablonowski in \cite[][; see section 6]{GetAl2016}.
-\subsubsection{`ftype=0' configuration}
+CAM-SE uses a time-split approach in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. When CAM-SE starts a simulation physics is called first and the dynamics. The question is how to add the physics tendencies in the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given by C. Jablonowski in \citet[][; see section 6]{GetAl2016}.
+\subsubsection{`ftype=0' configuration (default)}
 In this case add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{phys}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. 
 
 The CAM parameterization package returns mixing ratio tendencies for tracers. We convert the mixing ratio tendencies to mass tendencies $F_x \Delta \mathcal{P}^{(d)}_k$ since the prognostic variable for tracers in the dynamical core is $\Delta p_k m^{(d)}_k$.
 
-Generally modelers do not allow the tracer tendencies to drive the mixing ratio of tracers negative, however, this may happen using `ftype=0'. If the tendency drives a mixing ratio negative the mixing ratio is set to zero. As a result not the entire tracer tendency is added leading to an inconsistency is how much mass the physics package wants to remove and the amount of tracer mass actually removed in the physics-dynamics coupling code in the dynamical core.
+Generally modelers do not allow the tracer tendencies to drive the mixing ratio of tracers negative, however, this may happen using `ftype=0'. If the tendency drives a mixing ratio negative the mixing ratio is set to zero. As a result not the entire tracer tendency is added leading to an inconsistency in how much mass the physics package wants to remove and the amount of tracer mass actually removed in the physics-dynamics coupling code in the dynamical core.
 \subsubsection{`ftype=1' configuration}
-In this configuration the entire physics forcing is added to the dynamics state $\Delta t_{phys}F_X$ which is equivalent to have the physics module update the model state. This coupling methods is used in CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0' configuration, this configuration always provides a closed mass budget for tracers in terms of physics tendencies being fully applied in the dynamical core.
+In this configuration the entire physics forcing is added to the dynamics state $\Delta t_{phys}F_X$ which is equivalent to having the physics module update the model state. This coupling method is used in CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0' configuration, this configuration always provides a closed mass budget for tracers in terms of physics tendencies being fully applied in the dynamical core. That disadvantage in the context of CAM-SE and using a rather long physics time-step with CAM6 physics, is that spurious gravity waves appear due to large physics tendencies.
 \subsubsection{`ftype=2' configuration}
-This configuration constitutes a hybrid approach where mass variables (tracers) used `ftype=1' physics-dynamics coupling method and all other variables use the `ftype=0' method.
+This configuration constitutes a hybrid approach where mass variables (tracers) use the `ftype=1' physics-dynamics coupling method and all other variables use the `ftype=0' method.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}\label{sec:results}
-The evaluation of the SE dynamical core with CAM6 physics in AMIP configuration simulation is the subject of a separate paper. Here the new dynamical core is evaluated in simpler setups. First the new dynamical core version is compared with the old version using an idealized moist baroclinic wave without the complexity of a full physics parameterization suite. It is confirmed that the new SE dynamical core version converges to within the uncertainty of high resolution reference solutions computed with the old SE dynamical core (that has been extensively validated) and the `workhorse' dynamical for $1^\circ$ climate simulation; CAM-FV \citep[finit-volume][]{L2004MWR}. Second, the dynamical core is evaluated in aqua-planet setup \citep{NH2000ASL,WetAl2012NCAR,MWO2016JAMES} using CAM6 physics. .... {\color{red}{[bla bla ...]}}
+The evaluation of the SE dynamical core with CAM6 physics in an AMIP configuration simulation is the subject of a separate paper. Here the new dynamical core is evaluated in simpler setups. First the new dynamical core version is compared with the old version using an idealized moist baroclinic wave thereby avoiding the complexity of a full physics parameterization suite that may make it harder to distinguish between cause and effect. It is confirmed that the new SE dynamical core version converges to within the uncertainty of high resolution reference solutions computed with the old SE dynamical core (that has been extensively validated) and the current `workhorse' dynamical core for $1^\circ$ climate simulation; CAM-FV \citep[finit-volume][]{L2004MWR}. Second, the dynamical core is evaluated in aqua-planet setup \citep{NH2000ASL,WetAl2012NCAR,MWO2016JAMES} using CAM6 physics. Thirdly the computational efficiency of CAM-SE is evaluated.
 \subsection{Idealized moist baroclinic wave with Kessler microphysics}
 For the validation of the new dynamical core version in a simplified setup, we use a moist variant of the dry baroclinic wave of \citet{UMJS2014QJRMS} with Kessler microphysics \citep{K1969MM}. This test case configuration was part of the Dynamical Core Model Intercomparison Project (DCMIP) 2016 test case suite {\color{red}{[DCMIP citation]}}. The initialization of the atmospheric state for the moist baroclinic wave is based on analytic expressions for $T_v$, $\vec{v}$, p and $q^{(wv)}$ as a function of latitude and height; $(\varphi,z)$. The surface geopotential is constant, $\Phi_s=0$, and the moist surface pressure is constant $p_s=1000hPa$. The analytical expressions for temperature, velocity components, moist pressure and specific humidity, denoted ${T_v}(\varphi,z)$, ${\vec{v}}(\varphi,z)$, ${p}(\varphi,z)$, and $q^{(wv)}(\varphi,z)$, respectively, are given in Appendix \ref{app:analytic}. When using a moist vertical pressure coordinate, the full level pressures $p_k$ of the initial condition are known from the hybrid coefficients, $A_k$ and $B_k$, and one can iteratively solve for $z_k$ given moist pressure: $p_k={p}(\varphi,z_k)$ \citep[see, ][]{UMJS2014QJRMS}. Once the full level heights, $z_k(\varphi)$, are known then the specific humidity, virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$. In the DCMIP 2016 test case documentation the virtual temperature is converted to temperature using $T_v=T\left( 1+\epsilon q^{(wv)}\right)$. For a dry-mass vertical coordinate model the initialization procedure is more complicated as described below.
 
@@ -1111,6 +1017,102 @@ In the top three levels (sponge layer) the prognostic variables are damped with 
 \end{equation}
 for resolutions up to (and including) $N_e=120$.
 %
+\section{Global conservation}\label{app:conservation}
+Below it is shown that the continuous equations of motion, that include the effect of condensates, conserve AAM and total energy. For the derivations first note that adding the continuity equations $\ell \in \mathcal{L}_{all} $ \eqref{E:PEq}, using hydrostatic balance \eqref{eq:phi_1} and ideal gas law \eqref{eq:igl}, yields a moist air continuity
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left(\frac{\partial z\quad}{\partial \eta^{(d)}}\right)\right]+\nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]=0,\label{eq:cont2}
+\end{equation}
+or, equivalently, in Lagrangian form
+\begin{equation}
+\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A\right]=0,\label{eq:lagra_cont}
+\end{equation}
+where $\delta A$ is a horizontal area of a Lagrangian air parcel so that $\nabla \cdot \vec{v}=\frac{1}{\delta A}\frac{d}{dt}\left( \delta A\right)$, and  $\frac{d}{dt}=\frac{\partial }{\partial t}+\vec{v}\cdot \nabla $ is the material/total derivative. 
+\subsection{Axial angular momentum (AAM)}
+The conservation law for angular momentum is derived in spherical coordinates for which the zonal momentum equation takes the form
+\begin{equation}
+\frac{du}{dt}=\frac{u v \tan \varphi}{r}+2\Omega v\sin \varphi -\frac{1}{\rho r \cos \varphi}\frac{\partial p}{\partial \lambda},\label{eq:tmp200}
+\end{equation}
+where $u$ and $v$ are the zonal and meridional velocity components, respectively, $\varphi$ is latitude and $\lambda$ longitude, $\Omega$ rotation rate of Earth ($f=2\Omega \sin \varphi$), and $r$ is the mean radius of Earth.\\
+
+The conservation law for AAM, $\mathcal{M}=\left( u+\Omega r \cos \varphi \right) r \cos \varphi$, can be conveniently derived using the Lagrangian form. Consider the material derivative of $\mathcal{M}$ multiplied by the volume of a Lagrangian air parcel, $\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\delta A$
+\begin{equation}
+\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A \left( u+\Omega r \cos \varphi \right) r \cos \varphi\right].
+\end{equation}
+Using the chain rule, continuity equation on the form \eqref{eq:lagra_cont}, the equality $v=r\frac{d\varphi}{dt}$ and substituting \eqref{eq:tmp200}, one can obtain an evolution equation for AAM
+\begin{equation}
+\frac{d}{dt}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \delta A\, \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda},\label{eq:tmp201}
+\end{equation}
+or, equivalently, in Eulerian form
+\begin{equation}
+\frac{\partial}{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \, \mathcal{M} \right]+\nabla_{\eta_d}\cdot \left[\vec{v} \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)  \mathcal{M} \right]=- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \frac{\partial p}{\partial \lambda}.\label{eq:tmp202}
+\end{equation}
+Repeatedly using the chain rule one can show that the right-hand side of \eqref{eq:tmp201} and \eqref{eq:tmp202} can be written as
+\begin{align}
+- \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}&=-\frac{\partial }{\partial \lambda}\left[  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) p\right]+p\frac{\partial }{\partial \lambda} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\\ 
+&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)+\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}+p\frac{\partial }{\partial \lambda}\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),\\
+&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)+\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\frac{\partial p}{\partial \lambda}-\frac{\partial }{\partial \lambda}\left[ p\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right]-\frac{\partial p}{\partial \lambda}\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right).\\
+&=-\frac{\partial \quad}{\partial \eta^{(d)}}\left( \frac{\partial z}{\partial \lambda}p\right)-\frac{\partial }{\partial \lambda}\left[ p\left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\right].\label{eq:tmp203}
+\end{align}
+Substituting \eqref{eq:tmp203} on the right-hand side of \eqref{eq:tmp202} and integrating \eqref{eq:tmp202} in the horizontal and vertical we results in the final AAM equation \eqref{eq:aam_final} in the main text.
+\subsection{Total energy}
+The derivation of the total energy equation closely follows \citet{K1974MWR} but for a dry mass vertical coordinate and inclusion of condensates in the equations of motion. The equation for the horizontal kinetic energy per unit mass, $K=\frac{1}{2}\vec{v}\cdot \vec{v}$, is derived by multiplying the momentum equations \eqref{E:PEmom} with $\rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)$ and the continuity equation \eqref{eq:cont2} with $K$, adding the two resulting equations and simplifying using the chain rule yields
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]=-\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p-g\rho \left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \cdot \nabla_{\eta^{(d)}}z.\label{eq:K}
+\end{equation}
+For the derivation of a flux-form version of the total energy equation (that includes a geopotential term) we substitute
+\begin{align}
+g \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \vec{v} \cdot \nabla_{\eta^{(d)}} z &= \nabla_{\eta^{(d)}}\cdot \left[ gz\vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right] - gz \nabla_{\eta^{(d)}} \cdot \left[ \vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right],\\
+&=\nabla_{\eta^{(d)}}\cdot \left[ g z\vec{v}\rho  \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \right] -z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)\right],\label{eq:tmpK}
+\end{align}
+(where the hydrostatic balance equation \eqref{eq:phi_1} has been used on the right-hand side of \eqref{eq:tmpK}) on the right-hand side of \eqref{eq:K} and rearrange terms
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)K\right]+\nabla_{\eta^{(d)}} \cdot \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz \right) \right]=-\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p - z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)\right].\label{eq:tmp1}
+\end{equation}
+Now, by multiplying the thermodynamic equation \eqref{E:PEtemp} with $\rho \frac{\partial z\quad }{\partial \eta^{(d)}}c_p$ and the continuity equation \eqref{eq:cont2} with $c_p T$, adding the resulting equations and simplifying using the chain rule yields
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)c_p T\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)c_p T\right]=\left( \frac{\partial z\quad}{\partial \eta^{(d)}}\right)\omega.\label{eq:tmp2}
+\end{equation}
+By using that $\omega\equiv \frac{\partial p}{\partial t}+\vec{v} \cdot \nabla_{\eta^{(d)}} p$, using the chain rule and the continuity equation \eqref{eq:cont2} , one can show that
+\begin{equation}
+\left( \frac{\partial z\quad}{\partial \eta^{(d)}}\right)\omega = \frac{\partial}{\partial \eta^{(d)}}\left( z\frac{\partial p}{\partial t}\right)+\left( \frac{\partial z}{\partial \eta^{(d)}}\right)\vec{v} \nabla_{\eta^{(d)}}p +z \nabla_{\eta^{(d)}}\cdot \left[ \vec{v} \frac{\partial p\quad }{\partial \eta^{(d)}}\right].\label{eq:tmp3}
+\end{equation}
+Substituting \eqref{eq:tmp3} on the right-hand side of \eqref{eq:tmp2} and adding the resulting equation to \eqref{eq:tmp1}, the two terms on the right-hand side of \eqref{eq:tmp1} cancel the two last terms on the right-hand side of \eqref{eq:tmp3} and we get the total energy equation
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_pT\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=\frac{\partial}{\partial \eta^{(d)}}\left( z\frac{\partial p}{\partial t}\right).\label{eq:Etotp}
+\end{equation}
+This equation is in the same form as (5.7) in \cite{K1974MWR} but $\rho$, $c_p$ and $p$ include the effect of condensates. Noting that
+\begin{equation}
+c_pT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)=c_vT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)+g z \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),
+\end{equation}
+where we have used the ideal gas law on the form \eqref{eq:ig4}, chain rule and hydrostatic equation on the form \eqref{eq:phi_1}, the total energy equation can be written on the form
+\begin{equation}
+\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_vT+gz\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \vec{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=-\frac{\partial}{\partial \eta^{(d)}}\left( p\frac{\partial z}{\partial t}\right).\label{eq:Ecv}
+\end{equation}
+As an aside it is noted that in a $z$-based vertical coordinate (for a moment assume $\eta^{(d)}\equiv z$), if integrating \eqref{eq:Ecv} in the vertical and using that $z$ is constant at the model top ($z_{top}$) and surface ($z_s$) we get
+\begin{equation}
+\frac{\partial }{\partial t}\int_{z=z_s}^{z=z_{top}}\left(K+c_vT+gz\right)\rho dz+\nabla_z \cdot \int_{z=z_s}^{z=z_{top}} \vec{v} \left( K+gz+c_pT \right) \rho dz=0.\label{eq:totEz}
+\end{equation}
+Note the clear separation of kinetic ($K$), potential ($gz$) and internal ($c_vT$) energy. Integrating \eqref{eq:totEz} in the horizontal over the entire sphere the flux term drops out, and it is clear that the total energy is conserved for the frictionless and adiabatic system of equations.
+
+For the global integral of the total energy equation in a dry-mass vertical coordinate, we substitute the hydrostatic relation on the form \eqref{eq:phi_1} into \eqref{eq:Etotp}, integrate in the vertical and use that the pressure at the model top is constant,
+\begin{multline}
+\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\left(K+c_pT\right)d \eta^{(d)}\\ +\frac{1}{g}\nabla_{\eta^{(d)}} \cdot \int_{\eta=0}^{\eta=1} \vec{v} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\left( K+gz+c_pT \right) d \eta^{(d)} =-z_s\frac{\partial p_s}{\partial t},\label{eq:tmp99}
+\end{multline}
+which can also be written as
+\begin{multline}
+\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[m^{(\ell)} \left(K+c_p^{(\ell)}T+\Phi_s  \right)\right]d \eta^{(d)}\\ +\frac{1}{g}\nabla_{\eta^{(d)}} \cdot \int_{\eta=0}^{\eta=1} \vec{v} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+gz\right) \right]d \eta^{(d)} =0.\label{eq:totEp2}
+\end{multline}
+by expanding $c_p$ using \eqref{eq:cp}, re-arranging terms and using that $\Phi_s=gz_s$ is time-independent and that 
+\begin{equation}
+p_s=\int_{\eta=0}^{\eta=1}\sum_{\ell \in \mathcal{L}_{all}}  \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) m^{(\ell)}d\eta^{(\eta)}.
+\end{equation}
+Note that the energy terms (inside square brackets) in \eqref{eq:totEp2} separate into all the components of moist air
+\begin{equation}
+\left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
+\end{equation}
+Similarly for the flux term in the second square brackets on the left-hand side of \eqref{eq:totEp2}. Integrating \eqref{eq:totEp2} over the entire sphere results in \eqref{eq:comprehensice_energy} given in the main text.
+
+
 \section{Analytical initial condition functions}\label{app:analytic}
 In this section the analytical expressions for the moist baroclinic wave are given. The moist surface pressure is constant $p_s=1000$ $hPa$, meridional wind component is zero, $v(\varphi,z)=0$ $m/s$, and the surface geopotential is zero, $\Phi_s(\varphi,z)=0$ $m^2/s^2$. The reference virtual temperature is given by
 \begin{equation}
