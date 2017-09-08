@@ -213,7 +213,7 @@ In this paper we present a version of the SE dynamical core using a dry-mass ver
 The paper is organized as follows. In section \ref{sec:cont-eq} the continuous equations of motion are derived which involves a detailed discussion of moist thermodynamics in the presence of condensates. The axial angular momentum (AAM) and total energy conservation properties of continuous system of equations is also discussed. In section \ref{sec:discretized_eqs} the discretized equations of motion with focus on the vertical discretization in dry-mass vertical coordinates are documented. Details on the horizontal SE discretization on the cubed-sphere are presented as well. Lastly there is the results section \ref{sec:results} where the new dynamical core is validated in idealized setups. First using a moist baroclinic wave with simple warm-rain micro-physics and secondly in a CAM6 aqua-planet configuration. The computational performance of CAM-SE is also discussed in section \ref{sec:results}. The paper ends with summary and conclusions in section \ref{sec:concl}.
 %
 \section{Continuous equations}\label{sec:cont-eq}
-Before writing the continuous equations of motion using a dry-mass vertical coordinate, we first need to discuss the representation of water variables (section \ref{sec:mixing_ratios}), discuss the ideal gas law and derive the thermodynamic equation for a mixture containing all water variables not just water vapor (section \ref{sec:tv}). The discussion of the equations of motion in the presence of water vapor, cloud liquid and ice closely follows \citet{joyOfUM}. Thereafter dry mass vertical coordinate is defined in section \ref{eq:vertical_coord}. {\color{red}{more details on other sections}}
+Before writing the continuous equations of motion using a dry-mass vertical coordinate, we first need to discuss the representation of water variables (section \ref{sec:mixing_ratios}), discuss the ideal gas law and derive the thermodynamic equation for a mixture containing all water variables not just water vapor (section \ref{sec:tv}). The discussion of the equations of motion in the presence of water vapor, cloud liquid, ice, rain and snow closely follows \citet{joyOfUM}. Thereafter dry mass vertical coordinate is defined in section \ref{eq:vertical_coord}. Details on viscosity, frictional heating adn global conservation properties are provided as well.
 \subsection{Representation of water phases in terms of dry and wet (specific) mixing ratios}\label{sec:mixing_ratios}
 Define the dry mixing ratios for the water variables (vapor 'wv', cloud liquid 'cl', cloud ice 'ci', rain 'rn' and snow 'sw')
 \begin{equation}
@@ -796,6 +796,7 @@ Figure \ref{fig:baro_wave} shows the evolution of the moist baroclinic wave at d
 \input{l2.tex}
 \input{ape.tex}
 \input{conservation.tex}
+\input{condensate.tex}
 \begin{figure}[h]
 \centering
 \includegraphics[width=30pc]{figs/aam.pdf}
