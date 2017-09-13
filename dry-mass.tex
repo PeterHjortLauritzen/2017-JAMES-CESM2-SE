@@ -723,7 +723,27 @@ The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}
 \Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
 \Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}},\\
 \end{align}
-where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. For the $1/4^\circ$ horizontal resolution model ($N_e=120$, $N_p=4$) the physics time-step is $\Delta t_{phys}=15 min$, {\tt{se\_nsplit}=4}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=3}}. Both configurations have 32 levels with CAM6 physics.
+where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. See Table \ref{table:subc} for other resolutions.
+
+ \begin{table}
+ \caption{The table shows phsyics time-step (column 3), sub-cycling parameters (columns 4-6) as a function of resolution (column 1-2). The horizontal resolution is specified in the format $ne30np4$ which refers to $N_e=30$ and $N_p=4$; similar for other resolutions. The approximate average grid-spacing, $\Delta x_{ave}$ (in kilometers), is also listed (column 2). {\color{red}{Colin: please double-check CONUS variables}}}
+ \centering
+ \begin{tabular}{llcccc}
+ \hline
+  Horizontal res. & $\Delta x_{ave}$  & $\Delta t_{phys}$ & {\tt{se\_nsplit}} & {\tt{se\_rsplit}} & {\tt{se\_hypervis\_subcycle}} \\
+ \hline
+   {\tt{ne}}16{\tt{np4}}  & $\sim$200km   & 1800s & 1 & 3 & 1  \\
+   {\tt{ne}}30{\tt{np4}}  & $\sim$100km   & 1800s & 2 & 3 & 1  \\
+   {\tt{ne}}60{\tt{np4}}  & $\sim$ 50km   & 1800s & 4 & 3 & 2  \\
+   {\tt{ne}}120{\tt{np4}} & $\sim$25km   &  900s & 4 & 3 & 3  \\
+   {\tt{ne}}240{\tt{np4}} &  $\sim$12.5km &  600s & 6 & 3 & 3  \\
+   {\tt{ne}}0{\tt{np4}}  & $\sim$100km$\rightarrow$ $\sim$25km &  ? & 5 & 3 & 1  \\
+ \hline
+% \multicolumn{2}{l}{$^{a}$Footnote text here.}
+ \end{tabular}
+ \label{table:subc}
+ \end{table}
+
 %
 \subsection{Coupling to physics}
 CAM-SE uses a time-split approach in which dynamics advances the model state and then the physics tendencies are based on the dynamics updated state. When CAM-SE starts a simulation physics is called first and the dynamics. The question is how to add the physics tendencies in the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are given by C. Jablonowski in \citet[][; see section 6]{GetAl2016}.
