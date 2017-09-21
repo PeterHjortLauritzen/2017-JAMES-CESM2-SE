@@ -1,5 +1,5 @@
 This directory contains CESM run scripts using for the simulations presented in this paper
 
 
-
-QPC6_ne30_pe1800_170907.csh:  run-script for aqua-planet simulations
+FKESSLER.sh			: run-script for moist baroclinic wave
+QPC6_ne30_pe1800_170907.csh	: run-script for aqua-planet simulations
