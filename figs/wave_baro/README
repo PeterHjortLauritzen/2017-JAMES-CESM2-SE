@@ -1,5 +1,8 @@
+This directory contains source code to produce the moist baroclinic wave plot
+of PS and PRECT (file name is "02_baro_wave.pdf").
+
 The output from CAM is postprocessed with
 
 	ncks -d time,10 1-fv.nc out.nc
 
-to extract data only for day 10.
+to extract data only for day 10 (to safe disk space.
