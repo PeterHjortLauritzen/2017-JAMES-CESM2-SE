@@ -1,4 +1,4 @@
-This directory contains CESM run scripts using for the simulations presented in this paper
+This directory contains CESM run scripts used for the simulations presented in this paper
 
 
 FKESSLER.sh			: run-script for moist baroclinic wave
