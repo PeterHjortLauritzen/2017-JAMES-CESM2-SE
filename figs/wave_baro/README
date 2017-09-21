@@ -1,0 +1,5 @@
+The output from CAM is postprocessed with
+
+	ncks -d time,10 1-fv.nc out.nc
+
+to extract data only for day 10.
