@@ -193,7 +193,7 @@ It is the purpose of this paper to provide a comprehensive documentation of the 
 
 
 \section{Introduction}
-Over the last two decades or so the spectral-element (SE) method has been considered a candidate next-generation numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM} {\color{red}{other references needed?}}. The main motivations were the SE methods near perfect scalability, high-order accuracy for smooth problems, and mesh-refinement capabilities. For a while the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid and a mesh-refinement configuration with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZJT2013,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep{ELMNTT2012JC,BetAl2013JC,RetAl2015GRL}.
+Over the last two decades or so the spectral-element (SE) method has been considered a candidate next-generation numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM} {\color{red}{other references needed?}}. The main motivations were the SE methods near perfect scalability, high-order accuracy for smooth problems, and mesh-refinement capabilities. For a while the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid and a mesh-refinement configuration with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZJT2013,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep[e.g., ][]{ELMNTT2012JC,RetAl2015GRL,BetAl2016CC,RHUZ2016JAMC}.
   \begin{figure}[h]
 \centering
  \includegraphics[scale=0.45]{figs/grids}
@@ -203,9 +203,9 @@ Over the last two decades or so the spectral-element (SE) method has been consid
 
 With the department of energy (DOE) branching from the CESM to develop an Earth System Model using their own code base, NCAR decided to no longer import HOMME as an external code base in CAM. A reason for doing so was the cumbersome software engineering involved in maintaining two code bases and having to support configurations in HOMME not used in CAM. Instead the SE configuration of HOMME became part of the CAM code base. With that came a massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described in this paper.
 
-The SE dynamical core is the default dynamical core for high-resolution CESM applications, in particular, the configuration in which the average distance between grid-points is approximately 25km \citep{BetAl2013JC}. At such resolutions the effects of condensates (such as cloud liquid and rain) may have a significant effect on the dynamics \citep{BLDT2012GRL}. CAM-HOMME does not represent the effect of condensates in the thermodynamic and momentum equations (also referred to as condensate loading). Representing condensates in the dynamical core is easier when using a dry-mass hybrid-sigma vertical coordinate than when using the usual moist-mass hybrid-sigma vertical coordinate \citep[e.g., ][]{SB1981MWR}.
+The SE dynamical core is the default dynamical core for high-resolution CESM applications, in particular, the configuration in which the average distance between grid-points is approximately 25km \citep{BetAl2016CC}. At such resolutions the effects of condensates (such as cloud liquid and rain) may have a significant effect on the dynamics \citep{BLDT2012GRL}. CAM-HOMME does not represent the effect of condensates in the thermodynamic and momentum equations (also referred to as condensate loading). Including the thermodynamic and mass effect of condensates in the dynamical core is easier when using a dry-mass hybrid-sigma vertical coordinate than when using the usual moist-mass hybrid-sigma vertical coordinate \citep[e.g., ][]{SB1981MWR}. This is the initial motivation for using a dry-mass vertical coordinate.
 
-A second motivation for switching to a dry-mass vertical coordinate is the physical parameterizations. CAM physics assumes that the moist pressure levels are constant during the parameterization updates. Consequently the moist pressure levels stay constant even when moisture leaves the column (e.g., rains out). At the very end of CAM physics the change in water  vapor in each column is taken into account by scaling the mixing ratio's for all tracers that are based on specific/moist mixing ratios so that dry air mass and tracer mass is conserved \citep[see Section 3.1.6 in ][]{CAM5}. This scaling does not guarantee shape-preservation and changes the total energy. In addition, the pressure field in CAM physics does not take into account the mass of condensates. When using a dry-mass vertical coordinate, the coordinate surfaces (assuming dry mass is constant) remain constant throughout the physics updates and there is no need to adjust tracer mixing ratios, and one can more rigorously take into account the work performed by water variables in the context of the energy cycle.
+A second motivation for switching to a dry-mass vertical coordinate is the consistent coupling with the physical parameterizations. CAM physics assumes that the moist pressure levels are constant during the parameterization updates. Consequently the moist pressure levels stay constant even when moisture leaves the column (e.g., rains out). At the very end of CAM physics the change in water  vapor in each column is taken into account by scaling the mixing ratio's for all tracers that are based on specific/moist mixing ratios so that dry air mass and tracer mass is conserved \citep[see Section 3.1.6 in ][]{CAM5}. This scaling does not guarantee shape-preservation and changes the total energy. In addition, the pressure field in CAM physics does not take into account the mass of condensates. When using a dry-mass vertical coordinate, the coordinate surfaces (assuming dry mass is constant) remain constant throughout the physics updates and there is no need to adjust tracer mixing ratios, and one can more rigorously take into account the work performed by water variables in the context of the energy cycle.
 
 The third motivation for using a dry-mass vertical coordinate relates to total energy conservation. Currently the energy fixer in CAM is based on a dry total energy \citep{WOHTTV2015JAMES} that uses the same heat-capacity for dry air and water vapor, and does not include the effect of condensates. To move towards a more accurate treatment of energy in CAM, a first step is to develop a dynamical core based on equations of motion conserving an energy that more accurately represents water vapor as well as condensates. This is most easily done when using a dry-mass vertical coordinate so that the energies associates with all water variables are clearly separated.
 
@@ -258,13 +258,13 @@ In this section the ideal gas law is derived for moist air containing condensate
 \begin{equation}
 V=\sum_{\ell \in \mathcal{L}_{all}} V^{(\ell)}.\label{eq:Volumes}
 \end{equation}
-Now let $\alpha\equiv \frac{1}{\rho}$ denote the specific volume of moist air, let $\hat{\alpha}^{(gas)}$ be the specific volume of the gaseous components of moist air (the volume of water vapor and dry air per unit mass of water vapor and dry air), let $\hat{\alpha}^{(cl)}$ be the specific volume of cloud liquid (i.e. volume occupied by unit mass of cloud liquid), and similarly for cloud ice, rain and snow. Then we can write \eqref{eq:Volumes} in terms of densities and specific volumes
+Now let $\alpha\equiv \frac{1}{\rho}$ denote the specific volume of moist air, let $\alpha^{(gas)}$ be the specific volume of the gaseous components of moist air (the volume of water vapor and dry air per unit mass of water vapor and dry air), let $\alpha^{(cl)}$ be the specific volume of cloud liquid (i.e. volume occupied by unit mass of cloud liquid), and similarly for cloud ice, rain and snow. Then we can write \eqref{eq:Volumes} in terms of densities and specific volumes
 \begin{equation}
-\rho \alpha=\rho^{(gas)}\hat{\alpha}^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}\rho^{(\ell)}\hat{\alpha}^{(\ell)},\label{eq:massV}
+\rho \alpha=\rho^{(gas)}\alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)},\label{eq:massV}
 \end{equation}
-where $\rho^{(gas)}=\rho^{(d)}+\rho^{(wv)}$. Note that $\hat{\alpha}^{(\ell)}\neq \frac{1}{\rho^{(\ell)}}$ since $\rho^{(\ell)}$ is defined in terms mass of $\ell$ per unit volume of moist air and not mass of $\ell$ per unit volume of water phase $\ell$. Dividing \eqref{eq:massV} with $\rho^{(d)}$ and substituting \eqref{eq:mx} yields
+where $\rho^{(gas)}=\rho^{(d)}+\rho^{(wv)}$. Note that $\alpha^{(\ell)}\neq \frac{1}{\rho^{(\ell)}}$ since $\rho^{(\ell)}$ is defined in terms mass of $\ell$ per unit volume of moist air and not mass of $\ell$ per unit volume of water phase $\ell$. Dividing \eqref{eq:massV} with $\rho^{(d)}$ and substituting \eqref{eq:mx} yields
 \begin{equation}
-  \left(\sum_\ell m^{(\ell)}\right) \alpha = \left( 1+m^{(wv)}\right) \hat{\alpha}^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\hat{\alpha}^{(\ell)}.\label{eq:vol}
+  \left(\sum_\ell m^{(\ell)}\right) \alpha = \left( 1+m^{(wv)}\right) \alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\alpha^{(\ell)}.\label{eq:vol}
 \end{equation}
 The ideal gas law for the gaseous components, using Dalton's law of partial pressures, is
 \begin{equation}
@@ -274,19 +274,19 @@ where $p^{(d)}$ is the dry pressure and $p^{(wv)}$ is the water vapor pressure. 
 \begin{equation}
 p=\rho R^{(d)} T\rho^{(gas)}\left( \frac{\rho^{(d)}}{\rho^{(gas)}}+\frac{\rho^{(wv)}}{\rho^{(gas)}}\frac{R^{(wv)}}{R^{(d)}}\right)=\frac{R^{(d)} \rho^{(gas)}T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)}\label{eq:ig2}.
 \end{equation}
-where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\hat{\alpha}^{(gas)}$ to get:
+where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\alpha^{(gas)}$ to get:
 \begin{equation}
-p=\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)\hat{\alpha}^{(gas)}}\label{eq:ig3}.
+p=\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)\alpha^{(gas)}}\label{eq:ig3}.
 \end{equation}
-Using \eqref{eq:vol} to eliminate $\left(1+m^{(wv)}\right)\hat{\alpha}^{(gas)}$ in \eqref{eq:ig3} and simplifying yields
+Using \eqref{eq:vol} to eliminate $\left(1+m^{(wv)}\right)\alpha^{(gas)}$ in \eqref{eq:ig3} and simplifying yields
 \begin{equation}
 p=\rho R^{(d)} T_v\label{eq:igl},
 \end{equation}
 where the virtual temperature is given by
 \begin{equation}
-T_v =T\left[ \frac{1+\frac{1}{\epsilon}m^{(wv)}}{1+m^{(wv)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\left(1-\frac{\hat{\alpha}^{(\ell)}}{\alpha}\right)}\right].
+T_v =T\left[ \frac{1+\frac{1}{\epsilon}m^{(wv)}}{1+m^{(wv)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\left(1-\frac{\alpha^{(\ell)}}{\alpha}\right)}\right].
 \end{equation}
-The ratio of the density of moist air to the density of the condensates are negligible (e.g., the terms $\frac{\hat{\alpha}^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
+The ratio of the density of moist air to the density of the condensates are negligible (e.g., the terms $\frac{\alpha^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
 \begin{equation}
 T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right).\label{eq:tv}
 \end{equation}
@@ -298,11 +298,11 @@ The first law of thermodynamics for a mixture of dry air, water vapor, cloud liq
 where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, $\delta T$ and $\delta \alpha$ are the moist air temperature and specific volume changes, and $c_v^{(\ell)}$ is the heat capacity at constant volume for component $\ell$ of moist air. Note that
 \begin{eqnarray}
 \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)p\delta \alpha &=& p \delta \left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\alpha  \right],\label{eq:pdalpha}\\
-                                       &=& (1+m^{(wv)})p\delta \hat{\alpha}^{(gas)},\label{eq:pdalpha2}\\
+                                       &=& (1+m^{(wv)})p\delta \alpha^{(gas)},\label{eq:pdalpha2}\\
                                        &=& \left(R^{(d)}+m^{(wv)}R^{(wv)}\right)\left(\delta T-\frac{T}{p}\delta p\right)\label{eq:dt}.
 \end{eqnarray}
-where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that the condensates are incompressible ($\delta \hat{\alpha}^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$). Finally \eqref{eq:ig3} has been used to substitute for $\hat{\alpha}^{(gas)}$ in \eqref{eq:dt}.
-Using \eqref{eq:dt} in the First law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_v^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
+where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that the condensates are incompressible ($\delta \alpha^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$). Finally \eqref{eq:ig3} has been used to substitute for $\alpha^{(gas)}$ in \eqref{eq:dt}.
+Using \eqref{eq:dt} in the first law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_v^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
 \begin{equation}
 \delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\frac{\delta Q}{T}.\label{eq:thermo1}
 \end{equation}
@@ -334,7 +334,7 @@ Let $\mathcal{P}^{(d)}_s$ be the surface pressure of a dry atmosphere  and $\mat
 \begin{equation}
 \eta^{(d)}=h(\mathcal{P}^{(d)},\mathcal{P}_s^{(d)}),
 \end{equation}
-where $h(\mathcal{P}s^{(d)},\mathcal{P}s^{(d)})=1$ and $h(\mathcal{P}t^{(d)},\mathcal{P}s^{(d)})=0$. Note that by removing the superscript $(d)$ from the equations above (so that the dry variable represent moist pressure variables) then the vertical coordinate is the usual hybrid-pressure coordinate widely used in hydrostatic global modeling \citep{SB1981MWR}. The top and bottom boundary conditions are that $\dot{\eta}\left({\mathcal{P}s^{(d)},\mathcal{P}s^{(d)}}\right)=0$ and $\dot{\eta}\left( \mathcal{P}t^{(d)},\mathcal{P}s^{(d)}\right)=0$. Note that using a dry-mass vertical coordinate simplifies the coupling to physics since the dry mass coordinate remains constant even if water leaves the column.
+where $h(\mathcal{P}_s^{(d)},\mathcal{P}_s^{(d)})=1$ and $h(\mathcal{P}t^{(d)},\mathcal{P}s^{(d)})=0$. Note that by removing the superscript $(d)$ from the equations above (so that the dry variable represent moist pressure variables) then the vertical coordinate is the usual hybrid-pressure coordinate widely used in hydrostatic global modeling \citep{SB1981MWR}. The top and bottom boundary conditions are that $\dot{\eta}\left({\mathcal{P}s^{(d)},\mathcal{P}s^{(d)}}\right)=0$ and $\dot{\eta}\left( \mathcal{P}t^{(d)},\mathcal{P}s^{(d)}\right)=0$. Note that using a dry-mass vertical coordinate simplifies the coupling to physics since the dry mass coordinate remains constant even if water leaves the column.
 \subsubsection{Dry pressure and dry atmosphere pressure}
 The observant reader will have noticed that we denote the dry atmosphere pressure $\mathcal{P}^{(d)}$ and not $p^{(d)}$. The moist pressure at given height $z'$ can be computed from the hydrostatic balance
 \begin{align}
@@ -374,7 +374,7 @@ The $\eta^{(d)}$-coordinate adiabatic and frictionless atmospheric primitive equ
 %\frac{\partial}{\partial t} \left(\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) + \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \vec{v} \right)  &= \nu \nabla^4_{\eta^{(d)}} \left(\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right), \label{E:PEcont} \\
 \frac{\partial}{\partial t} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} m^{(\ell)} \right) +  \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} m^{(\ell)} \vec{v} \right)  &= 0, \quad \ell \in \mathcal{L}_{all}, \label{E:PEq}
 \end{align}
-where $\Phi$ is the geopotential height ($\Phi=g\, z$, where $g$ is the gravitational constant), ${\hat{\vec{k}}}$ is the unit vector normal to the surface of the sphere, $\zeta = {\hat{\vec{k}}} \cdot {\nabla \times} \vec{v}$ is vorticity, $f$ Coriolis parameter, and $\omega = dp/Dt$ is the pressure vertical velocity. 
+where $\Phi$ is the geopotential height ($\Phi=g\, z$, where $g$ is the gravitational constant), ${\hat{\vec{k}}}$ is the unit vector normal to the surface of the sphere, $\vec{v}=(u,v)$ is the velocity vector with $u$ being the zonal velocity component and $v$ the meridional velocity component, $\zeta = {\hat{\vec{k}}} \cdot {\nabla \times} \vec{v}$ is vorticity, $f$ Coriolis parameter, and $\omega = dp/Dt$ is the pressure vertical velocity with $d/dt=\frac{\partial }{\partial t}+\vec{v}\cdot \nabla$ being the material/total derivative. 
 
 The prognostic equations for $\vec{v}$, the temperature $T$, pseudo density of a dry atmosphere ${\frac{\partial {\mathcal{P}^{(d)}}}{\partial \eta^{(d)}}}$, and pseudo tracer density ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}} m^{(\ell)}$ are solved with the diagnostic equation for geopotential height (hydrostatic balance)
 \begin{equation}
@@ -426,11 +426,11 @@ The conservation law for AAM
 \begin{equation}
 \mathcal{M}=\left( u+\Omega r \cos \varphi \right) r \cos \varphi,
 \end{equation}
-integrated over the entire domain is derived in Appendix \ref{app:conservation} and the final equation is
+(where $r$ is the mean radius of Earth, $\Omega$ angular velocity and $\varphi$ latitude), integrated over the entire domain is derived in Appendix \ref{app:conservation} and the final equation is
 \begin{equation}
 \frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{S}}\left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) \mathcal{M} \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{S}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
 \end{equation}
-where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The equation clearly separates the AAM of each component of moist air. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography,$z_s=0m$, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the motion of the atmosphere relative to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$ of Earth's surface (referred to as mass AAM)
+where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The equation clearly separates the AAM of each component of moist air. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography, $z_s=0m$, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the motion of the atmosphere relative to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$ of Earth's surface (referred to as mass AAM)
 \begin{equation}
 \mathcal{M}=\mathcal{M}_r+\mathcal{M}_\Omega=\left( u r \cos \varphi\right)+\left(\Omega r^2 \cos^2 \varphi \right) .
 \end{equation}
@@ -725,7 +725,7 @@ The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}
 \Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
 \Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}},\\
 \end{align}
-where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. See Table \ref{table:subc} for other resolutions.
+where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$ where $N_e$ is the number of elements in each coordinate direction on a panel and $N_p$ is the number of quadrature points along each coordinate direction in an element) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=1}}. See Table \ref{table:subc} for other resolutions.
 
  \begin{table}
  \caption{The table shows physics time-step (column 3), sub-cycling parameters (columns 4-6) as a function of resolution (column 1-2). The horizontal resolution is specified in the format $ne30np4$ which refers to $N_e=30$ and $N_p=4$; similar for other resolutions. The approximate average grid-spacing, $\Delta x_{ave}$ (in kilometers), is also listed (column 2). {\color{red}{Colin: please double-check CONUS variables}}}
@@ -734,12 +734,12 @@ where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. 
  \hline
   Horizontal res. & $\Delta x_{ave}$  & $\Delta t_{phys}$ & {\tt{se\_nsplit}} & {\tt{se\_rsplit}} & {\tt{se\_hypervis\_subcycle}} \\
  \hline
-   {\tt{ne}}16{\tt{np4}}  & $\sim$200km   & 1800s & 1 & 3 & 1  \\
-   {\tt{ne}}30{\tt{np4}}  & $\sim$100km   & 1800s & 2 & 3 & 2  \\
-   {\tt{ne}}60{\tt{np4}}  & $\sim$ 50km   & 1800s & 4 & 3 & 2  \\
-   {\tt{ne}}120{\tt{np4}} & $\sim$25km   &  600s & 4 & 3 & 3  \\
-   {\tt{ne}}240{\tt{np4}} &  $\sim$12.5km &  600s & 6 & 3 & 3  \\
-   {\tt{ne}}0{\tt{np4}}  & $\sim$100km$\rightarrow$ $\sim$25km &  ? & 5 & 3 & 1  \\
+   {\tt{ne}}16{\tt{np4}}  & $\sim$220km   & 1800s & 1 & 3 & 1  \\
+   {\tt{ne}}30{\tt{np4}}  & $\sim$110km   & 1800s & 2 & 3 & 2  \\
+   {\tt{ne}}60{\tt{np4}}  & $\sim$ 56km   & 1800s & 4 & 3 & 2  \\
+   {\tt{ne}}120{\tt{np4}} & $\sim$28km   &  600s & 4 & 3 & 3  \\
+   {\tt{ne}}240{\tt{np4}} &  $\sim$14km &  600s & 6 & 3 & 3  \\
+   {\tt{ne}}0{\tt{np4}}  & $\sim$110km$\rightarrow$ $\sim$28km &  ? & 5 & 3 & 1  \\
  \hline
 % \multicolumn{2}{l}{$^{a}$Footnote text here.}
  \end{tabular}
@@ -750,7 +750,7 @@ where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. 
 \subsection{Coupling to physics}
 CAM-SE uses a time-split approach in which dynamics advances the model state and the physics tendencies are based on the dynamics updated state. When CAM-SE starts a simulation, the physics are called first and then the  dynamics. The question is then how to add the physics tendencies in the dynamical core. CAM-SE supports several physics-dynamics coupling methods. Let $F_X$ be the physics tendency for prognostic variable $X$ in level $k$ (for notational simplicity the vertical index is dropped). The different coupling methods are detailed below and are identified with the rather arbitrary name `ftype'. A fuller discussion with results about different coupling methods is the content of a separate paper. Some results are provided by C. Jablonowski in \citet[][; see section 6]{GetAl2016}.
 \subsubsection{`ftype=0' configuration (default)}
-In this case, compute the physics tendencies and add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{phys}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. 
+In this case, compute the physics tendencies and add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{phys}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. The `ftype=0'-option is used by default in CAM-SE and used for all simulations presented in this paper.
 
 The CAM parameterization package returns mixing ratio tendencies for tracers. We convert the mixing ratio tendencies to mass tendencies $F_x \Delta \mathcal{P}^{(d)}_k$ since the prognostic variable for tracers in the dynamical core is $\Delta p_k m^{(d)}_k$.
 
@@ -766,7 +766,7 @@ This configuration constitutes a hybrid approach where mass variables (tracers) 
 \section{Results}\label{sec:results}
 The evaluation of the SE dynamical core with CAM6 physics in an AMIP configuration simulation is the subject of a separate paper. Here the new dynamical core is evaluated in simpler configurations. First the new dynamical core version is compared with the old version using an idealized moist baroclinic wave thereby avoiding the complexity of a full physics parameterization suite that may make it harder to distinguish between cause and effect. It is confirmed that the new SE dynamical core version converges to within the uncertainty of high resolution reference solutions computed with the old SE dynamical core (that has been extensively validated) and the current `workhorse' dynamical core for $1^\circ$ climate simulation; CAM-FV \citep[finite-volume][]{L2004MWR}. Second, the dynamical core is evaluated in an aqua-planet setup \citep{NH2000ASL,WetAl2012NCAR,MWO2016JAMES} using CAM6 physics. In this context the conservation properties AAM and total moist energy is discussed. Thirdly the computational efficiency of CAM-SE is evaluated.
 \subsection{Idealized moist baroclinic wave with Kessler microphysics}
-For the validation of the new dynamical core version in a simplified setup, we use a moist variant of the dry baroclinic wave of \citet{UMJS2014QJRMS} with Kessler microphysics \citep{K1969MM}. This test case configuration was part of the Dynamical Core Model Intercomparison Project (DCMIP) 2016 test case suite {\color{red}{[DCMIP citation]}}. The initialization of the atmospheric state for the moist baroclinic wave is based on analytic expressions for $T_v$, $\vec{v}$, p and $q^{(wv)}$ as a function of latitude and height; $(\varphi,z)$. The surface geopotential is constant, $\Phi_s=0$, and the moist surface pressure is constant $p_s=1000hPa$. The analytical expressions for temperature, velocity components, moist pressure and specific humidity, denoted ${T_v}(\varphi,z)$, ${\vec{v}}(\varphi,z)$, ${p}(\varphi,z)$, and $q^{(wv)}(\varphi,z)$, respectively, are given in Appendix \ref{app:analytic}. When using a moist vertical pressure coordinate, the full level pressures $p_k$ of the initial condition are known from the hybrid coefficients, $A_k$ and $B_k$, and one can iteratively solve for $z_k$ given moist pressure: $p_k={p}(\varphi,z_k)$ \citep[see, ][]{UMJS2014QJRMS}. Once the full level heights, $z_k(\varphi)$, are known then the specific humidity, virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$. In the DCMIP 2016 test case documentation the virtual temperature is converted to temperature using $T_v=T\left( 1+\epsilon q^{(wv)}\right)$. For a dry-mass vertical coordinate model the initialization procedure is more complicated as described below.
+For the validation of the new dynamical core version in a simplified setup, we use a moist variant of the dry baroclinic wave of \citet{UMJS2014QJRMS} with Kessler microphysics \citep{K1969MM}. This test case configuration was part of the Dynamical Core Model Intercomparison Project (DCMIP) 2016 test case suite \citep[][]{DCMIP16}. The initialization of the atmospheric state for the moist baroclinic wave is based on analytic expressions for $T_v$, $\vec{v}$, p and $q^{(wv)}$ as a function of latitude and height; $(\varphi,z)$. The surface geopotential is constant, $\Phi_s=0$, and the moist surface pressure is constant $p_s=1000hPa$. The analytical expressions for temperature, velocity components, moist pressure and specific humidity, denoted ${T_v}(\varphi,z)$, ${\vec{v}}(\varphi,z)$, ${p}(\varphi,z)$, and $q^{(wv)}(\varphi,z)$, respectively, are given in Appendix \ref{app:analytic}. When using a moist vertical pressure coordinate, the full level pressures $p_k$ of the initial condition are known from the hybrid coefficients, $A_k$ and $B_k$, and one can iteratively solve for $z_k$ given moist pressure: $p_k={p}(\varphi,z_k)$ \citep[see, ][]{UMJS2014QJRMS}. Once the full level heights, $z_k(\varphi)$, are known then the specific humidity, virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$. In the DCMIP 2016 test case documentation the virtual temperature is converted to temperature using $T_v=T\left( 1+\epsilon q^{(wv)}\right)$. For a dry-mass vertical coordinate model the initialization procedure is more complicated as described below.
 
 \subsubsection{Initialization of the moist baroclinic wave using a dry-mass vertical coordinate}
 The challenge is to extract dry pressure from the initial state defined in terms of moist pressure and preserve a balanced initial condition. For that we write the dry atmosphere hydrostatic relation \eqref{eq:dry_atm_hydro} in terms of specific humidity, virtual temperature and moist pressure
@@ -808,12 +808,12 @@ Using this method for initializing the mixing ratio for water vapor the moist su
 \subsubsection{Simulation results}
 As part of the `CESM simpler models' effort started by \citet{CESM_SIMPLER_MODELS}, the moist baroclinic wave setup has been implemented rigorously in the CESM in the sense that the configuration easily runs from CESM without code configurations using the `{\bf{FKESSLER}} compset'. For instructions on how to run the moist baroclinic wave with Kessler microphysics see \citet{FKESSLER}. Since the test case configuration has been implemented in the full CESM, the dynamical core interacts with the physics module as in full climate model simulations. Hence the global energy fixer is invoked \citep{WOHTTV2015JAMES} and for the dynamical cores using a moist pressure vertical coordinate there is an adjustment of specific humidity to conserve water after the moist physics updates \citep[see Section 3.1.6 in ][]{CAM5}. The intent of this implementation is to evaluate the dynamical core in simplified setup but exactly as the dynamical core is configured for comprehensive climate simulations.
 
-Figure \ref{fig:baro_wave} depicts day 1- pf the moist baroclinic wave test using the CAM-FV \citep[Finite-Volume; ][]{L2004MWR} dynamical core, CAM-HOMME dynamical core based on a moist vertical coordinate and the new dynamical core version (CAM-SE). The CAM-HOMME and CAM-SE (CESM2.0-SE) dynamical cores not only differ in terms of vertical coordinates but also in terms of hyperviscosity and the formula used for the heat-capacity in the thermodynamic equation. CAM-HOMME uses $c_p^{(d)}$ whereas CAM-SE (CESM2.0-SE) uses the comprehensive formula \eqref{eq:cp} that includes the heat capacity of water vapor.
+Figure \ref{fig:baro_wave} depicts day 10 of the moist baroclinic wave test using the CAM-FV \citep[Finite-Volume; ][]{L2004MWR} dynamical core, CAM-HOMME dynamical core based on a moist vertical coordinate and the new dynamical core version (CAM-SE). The CAM-HOMME and CAM-SE (CESM2.0-SE) dynamical cores not only differ in terms of vertical coordinates but also in terms of hyperviscosity and the formula used for the heat-capacity in the thermodynamic equation. CAM-HOMME uses $c_p^{(d)}$ whereas CAM-SE (CESM2.0-SE) uses the comprehensive formula \eqref{eq:cp} that includes the heat capacity of water vapor.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=33pc]{figs/02_baro_wave.pdf}
-\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CAM-HOMME version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. The right column is the same as the left but for large-scale precipitation rate.}
+\caption{Left column shows moist surface pressure at day 10 for the moist baroclinic wave test case for (row 1) the finite-volume dynamical core, (row 2) CAM-HOMME version of the SE dynamical core based on a moist pressure vertical coordinate and (row 3) the dry-mass vertical coordinate version of SE presented in this paper. The right column is the same as the left but for large-scale precipitation rate. All results on this Figure are at $~1^\circ$ horizontal resolution.}
 \label{fig:baro_wave}
 \end{figure}
 
@@ -1162,18 +1162,18 @@ p(\varphi, z) = p_0\exp \left[ -\frac{g}{R^{(d)}}(\mathcal{F}_{3}(z) -\mathcal{F
 \end{align}    
 To define the zonal velocity component define the great circle distance between $(\lambda,\varphi)$ and $(\lambda_p,\varphi_p)$:
 \begin{equation}
-r(\lambda, \varphi; \lambda_p, \varphi_p) = a \arccos \left( \sin \varphi \sin \varphi_p + \cos \varphi \cos \varphi_p \cos (\lambda - \lambda_p) \right).
+R(\lambda, \varphi; \lambda_p, \varphi_p) = r \arccos \left( \sin \varphi \sin \varphi_p + \cos \varphi \cos \varphi_p \cos (\lambda - \lambda_p) \right).
 \end{equation}
 The zonal velocity component is
 \begin{equation}
-u(\varphi, z) = -\Omega a \cos(\varphi)+\sqrt{(\Omega a\cos(\varphi))^2+ a\cos(\varphi)U(\varphi,z)}+u^\prime(\lambda, \varphi, z),
+u(\varphi, z) = -\Omega r \cos(\varphi)+\sqrt{(\Omega r\cos(\varphi))^2+ r\cos(\varphi)U(\varphi,z)}+u^\prime(\lambda, \varphi, z),
 \end{equation} where the zonally symmetric part of the velocity field is given by
 \begin{equation}
-U(\varphi,z) = \frac{g {\mathcal{K}}}{a} \mathcal{F}_{4}(z) \left[ (\cos \varphi)^{{\mathcal{K}} - 1} - (\cos \varphi)^{{\mathcal{K}} + 1} \right] T_v(\varphi, z),
+U(\varphi,z) = \frac{g {\mathcal{K}}}{r} \mathcal{F}_{4}(z) \left[ (\cos \varphi)^{{\mathcal{K}} - 1} - (\cos \varphi)^{{\mathcal{K}} + 1} \right] T_v(\varphi, z),
 \end{equation} 
-$a=6371.22$ $m$ is the mean radius of Earth and angular velocity is $\Omega=\frac{2\pi}{86164}$ $\frac{1}{s}$ (denominator is length of day is seconds), and $u^\prime(\lambda, \varphi, z)$ is the exponential bell-shaped perturbation to the zonally balanced velocity field
+$r=6371.22$ $m$ is the mean radius of Earth and angular velocity is $\Omega=\frac{2\pi}{86164}$ $\frac{1}{s}$ (denominator is length of day is seconds), and $u^\prime(\lambda, \varphi, z)$ is the exponential bell-shaped perturbation to the zonally balanced velocity field
 \begin{equation}
-u^\prime(\lambda, \varphi, z) = \left\{ \begin{array}{ll} U_p Z(z)  \exp \left[ - \left( \frac{r(\lambda, \varphi; \lambda_p, \varphi_p)}{r_p} \right)^2 \right], & \mbox{if $r(\lambda, \varphi; \lambda_p, \varphi_p) < r_p$,} \\ 0, & \mbox{otherwise,} \end{array} \right.
+u^\prime(\lambda, \varphi, z) = \left\{ \begin{array}{ll} U_p Z(z)  \exp \left[ - \left( \frac{R(\lambda, \varphi; \lambda_p, \varphi_p)}{r_p} \right)^2 \right], & \mbox{if $R(\lambda, \varphi; \lambda_p, \varphi_p) < r_p$,} \\ 0, & \mbox{otherwise,} \end{array} \right.
 \end{equation} where perturbation velocity is $U_p=1$ $m/s$, longitude/latitude of the zonal wind perturbation centerpoint is $(\lambda_p,\varphi_p)$=$(\pi/9,2\pi/9)$=$(20^{\circ}$E,$40^{\circ}$N),  and
 \begin{equation}
 Z(z) = \left\{ \begin{array}{ll} \displaystyle 1 - 3 \left( \frac{z}{z_p} \right)^2 + 2 \left( \frac{z}{z_p} \right)^3, & \mbox{if $z \leq z_p$,} \\ 0, & \mbox{otherwise,} \end{array} \right.
