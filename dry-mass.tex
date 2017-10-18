@@ -254,7 +254,7 @@ Note that if water vapor undergoes a phase change to rain and leaves the column,
 
 %
 \subsection{Ideal gas law and virtual temperature}\label{sec:tv}
-In this section the ideal gas law is derived for moist air containing condensates. Part of that derivation is the definition of virtual temperature. If we assume that moist air obeys Amagat's law (or the law of partial volumes) then a unit volume of moist air $V=1$ is the sum the volume of dry air and the volumes of the different forms of water in the air
+In this section the ideal gas law is derived for moist air containing condensates. Part of that derivation is the definition of virtual temperature. A unit volume of moist air $V=1$ is the sum of the volume of dry air and the volumes of the different forms of water in the air
 \begin{equation}
 V=\sum_{\ell \in \mathcal{L}_{all}} V^{(\ell)}.\label{eq:Volumes}
 \end{equation}
@@ -302,13 +302,13 @@ where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly
                                        &=& \left(R^{(d)}+m^{(wv)}R^{(wv)}\right)\left(\delta T-\frac{T}{p}\delta p\right)\label{eq:dt}.
 \end{eqnarray}
 where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that the condensates are incompressible ($\delta \alpha^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$). Finally \eqref{eq:ig3} has been used to substitute for $\alpha^{(gas)}$ in \eqref{eq:dt}.
-Using \eqref{eq:dt} in the first law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_v^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
+Using \eqref{eq:dt} in the first law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_p^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
 \begin{equation}
-\delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\frac{\delta Q}{T}.\label{eq:thermo1}
+\delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\delta Q.\label{eq:thermo1}
 \end{equation}
 Equation \eqref{eq:thermo1} can be written in a more familiar form
 \begin{equation}
-\delta T-\frac{R}{c_p}\frac{T}{p}\delta p=\frac{1}{c_p T}\delta Q\label{eq:thermo},
+\delta T-\frac{R}{c_p}\frac{T}{p}\delta p=\frac{1}{c_p}\delta Q\label{eq:thermo},
 \end{equation}
 if we define $c_p$ and $R$ as
 \begin{eqnarray}
@@ -325,7 +325,7 @@ c_p=R+c_v.
 \end{equation}
 The thermodynamic equation \eqref{eq:thermo} may also be written in terms of full density
 \begin{equation}
-\delta T-\frac{1}{\rho\, c_p}\delta p=\frac{1}{c_p T}\delta Q\label{eq:thermo2}.
+\delta T-\frac{1}{\rho\, c_p}\delta p=\frac{1}{c_p}\delta Q\label{eq:thermo2}.
 \end{equation}
 %
 \subsection{Vertical coordinate}\label{eq:vertical_coord}
