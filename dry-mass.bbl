@@ -1,0 +1,408 @@
+\begin{thebibliography}{62}
+\providecommand{\natexlab}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem[{\textit{Ainsworth and Wajid}(2009)}]{AW2009SIAM}
+Ainsworth, M., and H.~A. Wajid (2009), Dispersive and dissipative behavior of
+  the spectral element method, \textit{SIAM Journal on Numerical Analysis},
+  \textit{47}(5), 3910--3937, \doi{10.1137/080724976}.
+
+\bibitem[{\textit{Bacmeister et~al.}(2012)\textit{Bacmeister, Lauritzen, Dai,
+  and Truesdale}}]{BLDT2012GRL}
+Bacmeister, J.~T., P.~H. Lauritzen, A.~Dai, and J.~E. Truesdale (2012),
+  Assessing possible dynamical effects of condensate in high resolution climate
+  simulations, \textit{Geophys. Res. Lett.}, \textit{39}(L04806).
+
+\bibitem[{\textit{Bacmeister et~al.}(2016)\textit{Bacmeister, Reed, Hannay,
+  Lawrence, Bates, Truesdale, Rosenbloom, and Levy}}]{BetAl2016CC}
+Bacmeister, J.~T., K.~A. Reed, C.~Hannay, P.~Lawrence, S.~Bates, J.~E.
+  Truesdale, N.~Rosenbloom, and M.~Levy (2016), Projected changes in tropical
+  cyclone activity under future warming scenarios using a high-resolution
+  climate model, \textit{Climatic Change}, \doi{10.1007/s10584-016-1750-x}.
+
+\bibitem[{\textit{Baer et~al.}(2006)\textit{Baer, Wang, Tribbia, and
+  Fournier}}]{BWTF2006MWR}
+Baer, F., H.~Wang, J.~J. Tribbia, and A.~Fournier (2006), Climate modeling with
+  spectral elements, \textit{Mon. Wea. Rev.}, \textit{134}(12), 3610--3624,
+  \doi{10.1175/MWR3360.1}.
+
+\bibitem[{\textit{Bellucci and Navarra}(2010)}]{BGN2010JCLIM}
+Bellucci, S.~G., A., and A.~Navarra (2010), The double-itcz syndrome in coupled
+  general circulation models: the role of large-scale vertical circulation
+  regimes, \textit{J. Climate}, \textit{23}, \doi{10.1175/2009JCLI3002.1}.
+
+\bibitem[{\textit{Charney}(1971)}]{C1971JAS}
+Charney, J. (1971), Geostrophic turbulence, \textit{J. Atmos. Sci.},
+  \textit{28}, 1087--1095.
+
+\bibitem[{\textit{Colella and Woodward}(1984)}]{CW1984JCP}
+Colella, P., and P.~R. Woodward (1984), The piecewise parabolic method
+  ({P}{P}{M}) for gas-dynamical simulations, \textit{J. Comput. Phys.},
+  \textit{54}, 174--201.
+
+\bibitem[{\textit{Erath et~al.}(2012)\textit{Erath, Lauritzen, Garcia, and
+  Tufo}}]{ELGT2012PCS}
+Erath, C., P.~H. Lauritzen, J.~H. Garcia, and H.~M. Tufo (2012), Integrating a
+  scalable and efficient semi-{L}agrangian multi-tracer transport scheme in
+  {HOMME}, \textit{Procedia Computer Science}, \textit{9}, 994--1003.
+
+\bibitem[{\textit{Evans et~al.}(2012)\textit{Evans, Lauritzen, Mishra, Neale,
+  Taylor, and Tribbia}}]{ELMNTT2012JC}
+Evans, K., P.~H. Lauritzen, S.~Mishra, R.~Neale, M.~A. Taylor, and J.~J.
+  Tribbia (2012), {AMIP} simulations wiht the {CAM4} spectral element dynamical
+  core, \textit{J. Climate}, in press.
+
+\bibitem[{\textit{Fournier et~al.}(2004)\textit{Fournier, Taylor, and
+  Tribbia}}]{FT2004MWR}
+Fournier, A., M.~A. Taylor, and J.~J. Tribbia (2004), The spectral element
+  atmosphere model ({SEAM}): High-resolution parallel computation and localized
+  resolution of regional dynamics, \textit{Mon. Wea. Rev.}, \textit{132}(3),
+  726--748.
+
+\bibitem[{\textit{Gettelman et~al.}(2017)\textit{Gettelman, Callaghan, Larson,
+  Zarzycki, Bacmeister, Lauritzen, Bogenschutz, and Neale}}]{GetAl2017JAMES}
+Gettelman, A., P.~Callaghan, V.~Larson, C.~Zarzycki, J.~Bacmeister,
+  P.~Lauritzen, P.~Bogenschutz, and R.~Neale (2017), Regional climate
+  simulations with the community earth system model, \textit{J. Adv. Model.
+  Earth Syst.}, submitted.
+
+\bibitem[{\textit{Giraldo et~al.}(2013)\textit{Giraldo, Kelly, and
+  Constantinescu}}]{GKC2013SIAM}
+Giraldo, F.~X., J.~F. Kelly, and E.~M. Constantinescu (2013), Implicit-explicit
+  formulations of a three-dimensional nonhydrostatic unified model of the
+  atmosphere (numa), \textit{SIAM Journal on Scientific Computing},
+  \textit{35}(5), B1162--B1194, \doi{10.1137/120876034}.
+
+\bibitem[{\textit{Guba et~al.}(2014{\natexlab{a}})\textit{Guba, Taylor,
+  Ullrich, Overfelt, and Levy}}]{GetAl2014GMD}
+Guba, O., M.~A. Taylor, P.~A. Ullrich, J.~R. Overfelt, and M.~N. Levy
+  (2014{\natexlab{a}}), The spectral element method (sem) on
+  variable-resolution grids: evaluating grid sensitivity and resolution-aware
+  numerical viscosity, \textit{Geosci. Model Dev.}, \textit{7}(6), 2803--2816,
+  \doi{10.5194/gmd-7-2803-2014}.
+
+\bibitem[{\textit{Guba et~al.}(2014{\natexlab{b}})\textit{Guba, Taylor, and
+  St-Cyr}}]{GTS2014JCP}
+Guba, O., M.~Taylor, and A.~St-Cyr (2014{\natexlab{b}}), Optimization-based
+  limiters for the spectral element method, \textit{J. Comput. Phys.},
+  \textit{267}(0), 176 -- 195,
+  \doi{http://dx.doi.org/10.1016/j.jcp.2014.02.029}.
+
+\bibitem[{\textit{Guerra and Ullrich}(2016)}]{GU2016GMD}
+Guerra, J.~E., and P.~A. Ullrich (2016), A high-order staggered finite-element
+  vertical discretization for non-hydrostatic atmospheric models,
+  \textit{Geosci. Model Dev.}, \textit{9}(5), 2007--2029,
+  \doi{10.5194/gmd-9-2007-2016}.
+
+\bibitem[{\textit{Herrington and Reed}(2017)}]{HR2017JCLIM}
+Herrington, A.~R., and K.~A. Reed (2017), An explanation for the sensitivity of
+  the mean state of the community atmosphere model to horizontal resolution on
+  aquaplanets, \textit{J. Climate}, \textit{30}(13), 4781--4797,
+  \doi{10.1175/jcli-d-16-0069.1}.
+
+\bibitem[{\textit{Hurrell et~al.}(2013)\textit{Hurrell, Holland, Gent, Ghan,
+  Kay, Kushner, Lamarque, Large, Lawrence, Lindsay, Lipscomb, Long, Mahowald,
+  Marsh, Neale, Rasch, Vavrus, Vertenstein, Bader, Collins, Hack, Kiehl, and
+  Marshall}}]{CESM1}
+Hurrell, J.~W., M.~M. Holland, P.~R. Gent, S.~Ghan, J.~E. Kay, P.~J. Kushner,
+  J.-F. Lamarque, W.~G. Large, D.~Lawrence, K.~Lindsay, W.~H. Lipscomb, M.~C.
+  Long, N.~Mahowald, D.~R. Marsh, R.~B. Neale, P.~Rasch, S.~Vavrus,
+  M.~Vertenstein, D.~Bader, W.~D. Collins, J.~J. Hack, J.~Kiehl, and
+  S.~Marshall (2013), The community earth system model: A framework for
+  collaborative research, \textit{Bulletin of the American Meteorological
+  Society}, \textit{94}(9), 1339--1360, \doi{10.1175/BAMS-D-12-00121.1}.
+
+\bibitem[{\textit{Jablonowski and Williamson}(2006)}]{JW2006QJR}
+Jablonowski, C., and D.~L. Williamson (2006), A baroclinic instability test
+  case for atmospheric model dynamical cores, \textit{Q. J. R. Meteorol. Soc.},
+  \textit{132}, 2943--2975.
+
+\bibitem[{\textit{Karniadakis and Sherwin}(2013)}]{KS2013book}
+Karniadakis, G., and S.~Sherwin (2013), \textit{Spectral/hp element methods for
+  computational fluid dynamics}, 2 ed., 1--686 pp., Oxford University Press.
+
+\bibitem[{\textit{Kasahara}(1974)}]{K1974MWR}
+Kasahara, A. (1974), Various vertical coordinate systems used for numerical
+  weather prediction, \textit{Mon. Wea. Rev.}, \textit{102}(7), 509--522.
+
+\bibitem[{\textit{Kelly and Giraldo}(2012)}]{KG2012JCP}
+Kelly, J.~F., and F.~X. Giraldo (2012), Continuous and discontinuous galerkin
+  methods for a scalable three-dimensional nonhydrostatic atmospheric model:
+  Limited-area mode, \textit{J. Comput. Phys.}, \textit{231}(24), 7988 -- 8008,
+  \doi{http://dx.doi.org/10.1016/j.jcp.2012.04.042}.
+
+\bibitem[{\textit{Kessler}(1969)}]{K1969MM}
+Kessler, E. (1969), On the distribution and continuity of water substance in
+  atmospheric circulations, \textit{Meteorol. Monogr.}, \textit{10}(32), 88.
+
+\bibitem[{\textit{Kinnmark and Gray}(1984{\natexlab{a}})}]{KG1984MCSb}
+Kinnmark, I.~P., and W.~G. Gray (1984{\natexlab{a}}), One step integration
+  methods of third-fourth order accuracy with large hyperbolic stability
+  limits, \textit{Mathematics and Computers in Simulation}, \textit{26}(3), 181
+  -- 188, \doi{http://dx.doi.org/10.1016/0378-4754(84)90056-9}.
+
+\bibitem[{\textit{Kinnmark and Gray}(1984{\natexlab{b}})}]{KG1984MCS}
+Kinnmark, I.~P., and W.~G. Gray (1984{\natexlab{b}}), One step integration
+  methods with maximum stability regions, \textit{Mathematics and Computers in
+  Simulation}, \textit{26}(2), 87 -- 92,
+  \doi{http://dx.doi.org/10.1016/0378-4754(84)90039-9}.
+
+\bibitem[{\textit{Lauritzen and Thuburn}(2012)}]{LT2011QJR}
+Lauritzen, P., and J.~Thuburn (2012), Evaluating advection/transport schemes
+  using interrelated tracers, scatter plots and numerical mixing diagnostics,
+  \textit{Quart. J. Roy. Met. Soc.}, \textit{138}(665), 906--918,
+  \doi{10.1002/qj.986}.
+
+\bibitem[{\textit{Lauritzen and Goldhaber}(2017)}]{FKESSLER}
+Lauritzen, P.~H., and S.~Goldhaber (2017), \textit{{CESM} simpler models: Moist
+  baroclinic wave with Kessler microphysics},
+  \url{http://www.cesm.ucar.edu/models/simpler-models-indev/fkessler/index.html}.
+
+\bibitem[{\textit{Lauritzen et~al.}(2011)\textit{Lauritzen, Mirin, Truesdale,
+  Raeder, Anderson, Bacmeister, and Neale}}]{L2011IJHPC}
+Lauritzen, P.~H., A.~Mirin, J.~Truesdale, K.~Raeder, J.~Anderson,
+  J.~Bacmeister, and R.~B. Neale (2011), Implementation of new
+  diffusion/filtering operators in the {CAM-FV} dynamical core, \textit{Int. J.
+  High Perform. Comput. Appl.}, \doi{10.1177/1094342011410088}.
+
+\bibitem[{\textit{Lauritzen et~al.}(2014)\textit{Lauritzen, Bacmeister, Dubos,
+  Lebonnois, and Taylor}}]{LBDL2014JAMES}
+Lauritzen, P.~H., J.~T. Bacmeister, T.~Dubos, S.~Lebonnois, and M.~A. Taylor
+  (2014), {H}eld-{S}uarez simulations with the {C}ommunity {A}tmosphere {M}odel
+  {S}pectral {E}lement ({CAM-SE}) dynamical core: A global axial angular
+  momentum analysis using {E}ulerian and floating {L}agrangian vertical
+  coordinates, \textit{J. Adv. Model. Earth Syst.}, \textit{6},
+  \doi{10.1002/2013MS000268}.
+
+\bibitem[{\textit{Lauritzen et~al.}(2017)\textit{Lauritzen, Taylor, Overfelt,
+  Ullrich, Nair, Goldhaber, and Kelly}}]{LTOUNGK2017MWR}
+Lauritzen, P.~H., M.~A. Taylor, J.~Overfelt, P.~A. Ullrich, R.~D. Nair,
+  S.~Goldhaber, and R.~Kelly (2017), {CAM-SE-CSLAM}: Consistent coupling of a
+  conservative semi-lagrangian finite-volume method with spectral element
+  dynamics, \textit{Mon. Wea. Rev.}, \textit{145}(3), 833--855,
+  \doi{10.1175/MWR-D-16-0258.1}.
+
+\bibitem[{\textit{Lebonnois et~al.}(2010)\textit{Lebonnois, Hourdin, Eymet,
+  Crespin, Fournier, and Forget}}]{LHECFF2010JGR}
+Lebonnois, S., F.~Hourdin, V.~Eymet, A.~Crespin, R.~Fournier, and F.~Forget
+  (2010), Superrotation of venus' atmosphere analysed with a full general
+  circulation model, \textit{J. Geo. Res.: Atmospheres}, \textit{115}(E06006),
+  \doi{10.1029/2009JE003458}.
+
+\bibitem[{\textit{Lebonnois et~al.}(2012)\textit{Lebonnois, Covey, Grossman,
+  Parish, Schubert, Walterscheid, Lauritzen, and
+  Jablonowski}}]{LCGPSWLJ2012JGR}
+Lebonnois, S., C.~Covey, A.~Grossman, H.~Parish, G.~Schubert, R.~Walterscheid,
+  P.~H. Lauritzen, and C.~Jablonowski (2012), Angular momentum budget in
+  general circulation models of superrotating atmospheres: A critical
+  diagnostic, \textit{J. Geo. Res.: Planets}, \textit{117}(E12), n/a--n/a,
+  \doi{10.1029/2012JE004223}.
+
+\bibitem[{\textit{Lin}(2004)}]{L2004MWR}
+Lin, S.-J. (2004), A 'vertically {L}agrangian' finite-volume dynamical core for
+  global models, \textit{Mon. Wea. Rev.}, \textit{132}, 2293--2307.
+
+\bibitem[{\textit{Medeiros et~al.}(2016)\textit{Medeiros, Williamson, and
+  Olson}}]{MWO2016JAMES}
+Medeiros, B., D.~L. Williamson, and J.~G. Olson (2016), Reference aquaplanet
+  climate in the community atmosphere model, version 5, \textit{J. Adv. Model.
+  Earth Syst.}, \textit{8}(1), 406--424, \doi{10.1002/2015MS000593}.
+
+\bibitem[{\textit{Muller and O'Gorman}(2011)}]{MO2011NATUREC}
+Muller, C.~J., and P.~A. O'Gorman (2011), An energetic perspective on the
+  regional response of precipitation to climate change, \textit{Nature Climate
+  Change}, \textit{1}(5), 266--271, \doi{10.1038/nclimate1169}.
+
+\bibitem[{\textit{Nair et~al.}(2009)\textit{Nair, Choi, and Tufo}}]{NCT2009CF}
+Nair, R., H.-W. Choi, and H.~Tufo (2009), Computational aspects of a scalable
+  high-order discontinuous galerkin atmospheric dynamical core,
+  \textit{Computers \& Fluids}, \textit{38}(2), 309 -- 319,
+  \doi{http://dx.doi.org/10.1016/j.compfluid.2008.04.006}.
+
+\bibitem[{\textit{Nair et~al.}(2005)\textit{Nair, Thomas, and
+  Loft}}]{NTL2005MWR}
+Nair, R.~D., S.~J. Thomas, and R.~D. Loft (2005), A discontinuous galerkin
+  global shallow water model, \textit{Mon. Wea. Rev.}, \textit{133}(4),
+  876--888, \doi{10.1175/MWR2903.1}.
+
+\bibitem[{\textit{Nastrom and Gage}(1985)}]{NG1985JAS}
+Nastrom, G.~D., and K.~S. Gage (1985), A climatology of atmospheric wavenumber
+  spectra of wind and temperature observed by commercial aircraft, \textit{J.
+  Atmos. Sci.}, \textit{42}, 950--960.
+
+\bibitem[{\textit{Neale and Hoskins}(2000)}]{NH2000ASL}
+Neale, R.~B., and B.~J. Hoskins (2000), A standard test for agcms including
+  their physical parametrizations: I: the proposal, \textit{Atmos. Sci. Lett},
+  \textit{1}(2), 101--107, \doi{10.1006/asle.2000.0022}.
+
+\bibitem[{\textit{Neale et~al.}(2012)\textit{Neale, Chen, Gettelman, Lauritzen,
+  Park, Williamson, Conley, Garcia, Kinnison, Lamarque, Marsh, Mills, Smith,
+  Tilmes, Vitt, Cameron-Smith, Collins, Iacono, Easter, Ghan, Liu, Rasch, and
+  Taylor}}]{CAM5}
+Neale, R.~B., C.-C. Chen, A.~Gettelman, P.~H. Lauritzen, S.~Park, D.~L.
+  Williamson, A.~J. Conley, R.~Garcia, D.~Kinnison, J.-F. Lamarque, D.~Marsh,
+  M.~Mills, A.~K. Smith, S.~Tilmes, F.~Vitt, P.~Cameron-Smith, W.~D. Collins,
+  M.~J. Iacono, R.~C. Easter, S.~J. Ghan, X.~Liu, P.~J. Rasch, and M.~A. Taylor
+  (2012), Description of the {NCAR} {C}ommunity {A}tmosphere {M}odel ({CAM}
+  5.0), \textit{{NCAR} {T}echnical {N}ote NCAR/TN-486+STR}, National Center of
+  Atmospheric Research.
+
+\bibitem[{\textit{Obrien et~al.}(2016)\textit{Obrien, Collins, Kashinath,
+  Rübel, Byna, Gu, Krishnan, and Ullrich}}]{OETAL2016JAMES}
+Obrien, T.~A., W.~D. Collins, K.~Kashinath, O.~Rübel, S.~Byna, J.~Gu,
+  H.~Krishnan, and P.~A. Ullrich (2016), Resolution dependence of precipitation
+  statistical fidelity in hindcast simulations, \textit{J. Adv. Model. Earth
+  Syst.}, \textit{8}(2), 976--990, \doi{10.1002/2016ms000671}.
+
+\bibitem[{\textit{Polvani et~al.}(2017)\textit{Polvani, Clement, Medeiros,
+  Benedict, and Simpson}}]{CESM_SIMPLER_MODELS}
+Polvani, L., A.~Clement, B.~Medeiros, J.~Benedict, and I.~Simpson (2017),
+  Opening the door to simpler climate models in the commnity earth system model
+  project, \textit{EOS}, submitted.
+
+\bibitem[{\textit{Reed et~al.}(2015)\textit{Reed, Bacmeister, Rosenbloom,
+  Wehner, Bates, Lauritzen, Truesdale, and Hannay}}]{RetAl2015GRL}
+Reed, K.~A., J.~T. Bacmeister, N.~A. Rosenbloom, M.~F. Wehner, S.~C. Bates,
+  P.~H. Lauritzen, J.~E. Truesdale, and C.~Hannay (2015), Impact of the
+  dynamical core on the direct simulation of tropical cyclones in a
+  high-resolution global model, \textit{Geophys. Res. Lett.}, \textit{42}(9),
+  3603--3608, \doi{10.1002/2015GL063974}.
+
+\bibitem[{\textit{Rhoades et~al.}(2016)\textit{Rhoades, Huang, Ullrich, and
+  Zarzycki}}]{RHUZ2016JAMC}
+Rhoades, A.~M., X.~Huang, P.~A. Ullrich, and C.~M. Zarzycki (2016),
+  Characterizing sierra nevada snowpack using variable-resolution cesm,
+  \textit{Journal of Applied Meteorology and Climatology}, \textit{55}(1),
+  173--196, \doi{10.1175/JAMC-D-15-0156.1}.
+
+\bibitem[{\textit{Sadourny}(1972)}]{S1972MWR}
+Sadourny, R. (1972), Conservative finite-difference approximations of the
+  primitive equations on quasi-uniform spherical grids, \textit{Mon. Wea.
+  Rev.}, \textit{100}, 136--144.
+
+\bibitem[{\textit{Simmons and Burridge}(1981)}]{SB1981MWR}
+Simmons, A.~J., and D.~M. Burridge (1981), An energy and angular-momentum
+  conserving vertical finite-difference scheme and hybrid vertical coordinates,
+  \textit{Mon. Wea. Rev.}, \textit{109}(4), 758--766.
+
+\bibitem[{\textit{Skamarock et~al.}(2014)\textit{Skamarock, Park, Klemp, and
+  Snyder}}]{SPKS2014JAS}
+Skamarock, W.~C., S.-H. Park, J.~B. Klemp, and C.~Snyder (2014), Atmospheric
+  kinetic energy spectra from global high-resolution nonhydrostatic
+  simulations, \textit{Journal of the Atmospheric Sciences}, \textit{71}(11),
+  4369--4381, \doi{10.1175/JAS-D-14-0114.1}.
+
+\bibitem[{\textit{Spiteri and Ruuth}(2002)}]{SR2002SIAM}
+Spiteri, R., and S.~Ruuth (2002), A new class of optimal high-order
+  strong-stability-preserving time discretization methods, \textit{SIAM Journal
+  on Numerical Analysis}, \textit{40}(2), 469--491,
+  \doi{10.1137/S0036142901389025}.
+
+\bibitem[{\textit{Staniforth et~al.}(2006)\textit{Staniforth, White, Wood,
+  Thuburn, Zerroukat, Cordero, Davies, and Diamantakis}}]{joyOfUM}
+Staniforth, A., A.~White, N.~Wood, J.~Thuburn, M.~Zerroukat, E.~Cordero,
+  T.~Davies, and .~M. Diamantakis (2006), Joy of u.m. 6.3 - model formulation,
+  \textit{UK Met Office Technical Note}, \textit{15}.
+
+\bibitem[{\textit{Starr}(1945)}]{S1945JAS}
+Starr, V.~P. (1945), A quasi-{L}agrangian system of hydrodynamical equations.,
+  \textit{J. Atmos. Sci.}, \textit{2}, 227--237.
+
+\bibitem[{\textit{Taylor et~al.}(2008)\textit{Taylor, Edwards, and
+  St-Cyr}}]{TES2008JPCS}
+Taylor, M., J.~Edwards, and A.~St-Cyr (2008), Petascale atmospheric models for
+  the community climate system model: new developments and evaluation of
+  scalable dynamical cores, \textit{J. Phys.: Conf. Ser.}, \textit{125},
+  \doi{10.1088/1742-6596/125/1/012023}.
+
+\bibitem[{\textit{Taylor}(2011)}]{T2011LNCSEb}
+Taylor, M.~A. (2011), Conservation of mass and energy for the moist atmospheric
+  primitive equations on unstructured grids, in: {P}.{H}. {L}auritzen, {R}.{D}.
+  {N}air, {C}. {J}ablonowski, {M}. {T}aylor ({E}ds.), {N}umerical techniques
+  for global atmospheric models, \textit{Lecture Notes in Computational Science
+  and Engineering, {S}pringer, 2010, in press.}, \textit{80}, 357--380,
+  \doi{10.1007/978-3-642-11640-7\_12}.
+
+\bibitem[{\textit{Taylor and Fournier}(2010)}]{TF2010JCP}
+Taylor, M.~A., and A.~Fournier (2010), A compatible and conservative spectral
+  element method on unstructured grids, \textit{J. Comput. Phys.},
+  \textit{229}(17), 5879 -- 5895, \doi{10.1016/j.jcp.2010.04.008}.
+
+\bibitem[{\textit{Thatcher and Jablonowski}(2016)}]{TJ2016GMD}
+Thatcher, D.~R., and C.~Jablonowski (2016), A moist aquaplanet variant of the
+  {H}eld--{S}uarez test for atmospheric model dynamical cores,
+  \textit{Geoscientific Model Development}, \textit{9}(4), 1263--1292,
+  \doi{10.5194/gmd-9-1263-2016}.
+
+\bibitem[{\textit{Thomas and Loft}(2000)}]{TL2000JSC}
+Thomas, S., and R.~Loft (2000), Parallel semi-implicit spectral element methods
+  for atmospheric general circulation models, \textit{J. Sci. Comput.},
+  \textit{15}, 499--518.
+
+\bibitem[{\textit{Thuburn}(2008)}]{T2008JCP}
+Thuburn, J. (2008), Some conservation issues for the dynamical cores of {NWP}
+  and climate models, \textit{J. Comput. Phys.}, \textit{227}, 3715 -- 3730.
+
+\bibitem[{\textit{Ullrich et~al.}(2014)\textit{Ullrich, Melvin, Jablonowski,
+  and Staniforth}}]{UMJS2014QJRMS}
+Ullrich, P.~A., T.~Melvin, C.~Jablonowski, and A.~Staniforth (2014), A proposed
+  baroclinic wave test case for deep and shallow-atmosphere dynamical cores,
+  \textit{Quart. J. Royal Meteor. Soc.}, \textit{140}(682), 1590--1602.
+
+\bibitem[{\textit{Ullrich et~al.}(2017)\textit{Ullrich, Jablonowski, Kent,
+  Lauritzen, Nair, Reed, Zarzycki, Hall, Dazlich, Heikes, Konor, Randall,
+  Dubos, Meurdesoif, Chen, Harris, K\"uhnlein, Lee, Qaddouri, Girard,
+  Giorgetta, Reinert, Klemp, Park, Skamarock, Miura, Ohno, Yoshida, Walko,
+  Reinecke, and Viner}}]{DCMIP16}
+Ullrich, P.~A., C.~Jablonowski, J.~Kent, P.~H. Lauritzen, R.~Nair, K.~A. Reed,
+  C.~M. Zarzycki, D.~M. Hall, D.~Dazlich, R.~Heikes, C.~Konor, D.~Randall,
+  T.~Dubos, Y.~Meurdesoif, X.~Chen, L.~Harris, C.~K\"uhnlein, V.~Lee,
+  A.~Qaddouri, C.~Girard, M.~Giorgetta, D.~Reinert, J.~Klemp, S.-H. Park,
+  W.~Skamarock, H.~Miura, T.~Ohno, R.~Yoshida, R.~Walko, A.~Reinecke, and
+  K.~Viner (2017), Dcmip2016: A review of non-hydrostatic dynamical core design
+  and intercomparison of participating models, \textit{Geoscientific Model
+  Development Discussions}, \textit{2017}, 1--49, \doi{10.5194/gmd-2}.
+
+\bibitem[{\textit{Williamson et~al.}(2012)\textit{Williamson, D.L., Blackburn,
+  Hoskins, Nakajima, Ohfuchi, Takahashi, Hayashi, Nakamura, Ishiwatari,
+  McGregor, Borth, Wirth, Frank, Bechtold, Wedi, Tomita, Satoh, Zhao, Held,
+  Suarez, Lee, Watanabe, Kimoto, Liu, Wang, Molod, Rajendran, Kitoh, , and
+  Stratton}}]{WetAl2012NCAR}
+Williamson, D.L., M.~Blackburn, B.~Hoskins, K.~Nakajima, W.~Ohfuchi,
+  Y.~Takahashi, Y.-Y. Hayashi, H.~Nakamura, M.~Ishiwatari, J.~McGregor,
+  H.~Borth, V.~Wirth, H.~Frank, P.~Bechtold, N.~Wedi, H.~Tomita, M.~Satoh,
+  M.~Zhao, I.~Held, M.~Suarez, M.-I. Lee, M.~Watanabe, M.~Kimoto, Y.~Liu,
+  Z.~Wang, A.~Molod, K.~Rajendran, A.~Kitoh, , and R.~Stratton (2012), The ape
+  atlas, \textit{NCAR Technical Note}, \textit{NCAR/TN-484+STR}, \doi{DOI:
+  10.5065/D6FF3QBR}.
+
+\bibitem[{\textit{Williamson et~al.}(2015)\textit{Williamson, Olson, Hannay,
+  Toniazzo, Taylor, and Yudin}}]{WOHTTV2015JAMES}
+Williamson, D.~L., J.~G. Olson, C.~Hannay, T.~Toniazzo, M.~Taylor, and V.~Yudin
+  (2015), Energy considerations in the community atmosphere model (cam),
+  \textit{J. Adv. Model. Earth Syst.}, \textit{7}(3), 1178--1188,
+  \doi{10.1002/2015MS000448}.
+
+\bibitem[{\textit{Zarzycki and Jablonowski}(2014)}]{ZJ2014JAMES}
+Zarzycki, C.~M., and C.~Jablonowski (2014), A multidecadal simulation of
+  {A}tlantic tropical cyclones using a variable-resolution global atmospheric
+  general circulation model, \textit{Journal of Advances in Modeling Earth
+  Systems}, \textit{6}(3), 805--828, \doi{10.1002/2014MS000352}.
+
+\bibitem[{\textit{Zarzycki et~al.}(2013)\textit{Zarzycki, Jablonowski, and
+  Taylor}}]{ZJT2013}
+Zarzycki, C.~M., C.~Jablonowski, and M.~A. Taylor (2013), Using
+  variable-resolution meshes to model tropical cyclones in the community
+  atmosphere model, \textit{Mon. Wea. Rev.}, \textit{142}(3), 1221--1239.
+
+\bibitem[{\textit{Zarzycki et~al.}(2014)\textit{Zarzycki, Levy, Jablonowski,
+  Overfelt, Taylor, and Ullrich}}]{ZetAl2014JCb}
+Zarzycki, C.~M., M.~N. Levy, C.~Jablonowski, J.~R. Overfelt, M.~A. Taylor, and
+  P.~A. Ullrich (2014), Aquaplanet experiments using cam's variable-resolution
+  dynamical core, \textit{J. Climate}, \textit{27}(14), 5481--5503,
+  \doi{10.1175/JCLI-D-14-00004.1}.
+
+\end{thebibliography}
