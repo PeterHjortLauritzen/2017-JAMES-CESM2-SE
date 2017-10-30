@@ -335,7 +335,7 @@ Let $\mathcal{P}^{(d)}_s$ be the surface pressure of a dry atmosphere  and $\mat
 \begin{equation}
 \eta^{(d)}=h(\mathcal{P}^{(d)},\mathcal{P}_s^{(d)}),
 \end{equation}
-where $h(\mathcal{P}_s^{(d)},\mathcal{P}_s^{(d)})=1$ and $h(\mathcal{P}t^{(d)},\mathcal{P}s^{(d)})=0$. Note that by removing the superscript $(d)$ from the equations above (so that the dry variable represent moist pressure variables) then the vertical coordinate is the usual hybrid-pressure coordinate widely used in hydrostatic global modeling \citep{SB1981MWR}. The top and bottom boundary conditions are that $\dot{\eta}\left({\mathcal{P}s^{(d)},\mathcal{P}s^{(d)}}\right)=0$ and $\dot{\eta}\left( \mathcal{P}t^{(d)},\mathcal{P}s^{(d)}\right)=0$. Note that using a dry-mass vertical coordinate simplifies the coupling to physics since the dry mass coordinate remains constant even if water leaves the column.
+where $h(\mathcal{P}_s^{(d)},\mathcal{P}_s^{(d)})=1$ and $h(\mathcal{P}_t^{(d)},\mathcal{P}_s^{(d)})=0$. Note that by removing the superscript $(d)$ from the equations above (so that the dry variable represent moist pressure variables) then the vertical coordinate is the usual hybrid-pressure coordinate widely used in hydrostatic global modeling \citep{SB1981MWR}. The top and bottom boundary conditions are that $\dot{\eta}\left({\mathcal{P}_s^{(d)},\mathcal{P}_s^{(d)}}\right)=0$ and $\dot{\eta}\left( \mathcal{P}_t^{(d)},\mathcal{P}_s^{(d)}\right)=0$. Note that using a dry-mass vertical coordinate simplifies the coupling to physics since the dry mass coordinate remains constant even if water leaves the column.
 \subsubsection{Dry pressure and dry atmosphere pressure}
 The observant reader will have noticed that we denote the dry atmosphere pressure $\mathcal{P}^{(d)}$ and not $p^{(d)}$. The moist pressure at given height $z'$ can be computed from the hydrostatic balance
 \begin{align}
@@ -372,18 +372,18 @@ The $\eta^{(d)}$-coordinate adiabatic and frictionless atmospheric primitive equ
 \begin{align}
 \frac{\partial \vec{v}}{\partial t} + \left( \zeta + f \right) {\hat{\vec{k}}} \times \vec{v}  + \nabla_{\eta^{(d)}} \left( \frac12 \vec{v}^2 + \Phi \right)  + \frac{1}{\rho} \nabla_{\eta^{(d)}} p &= 0,\label{E:PEmom} \\
 \frac{\partial T}{\partial t} + \vec{v} \cdot \nabla_{\eta^{(d)}} T  -  \frac{1}{c_p \rho} \omega  &= 0, \label{E:PEtemp} \\
-%\frac{\partial}{\partial t} \left(\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) + \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \vec{v} \right)  &= \nu \nabla^4_{\eta^{(d)}} \left(\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right), \label{E:PEcont} \\
-\frac{\partial}{\partial t} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} m^{(\ell)} \right) +  \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} m^{(\ell)} \vec{v} \right)  &= 0, \quad \ell \in \mathcal{L}_{all}, \label{E:PEq}
+%\frac{\partial}{\partial t} \left(\frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}\right) + \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} \vec{v} \right)  &= \nu \nabla^4_{\eta^{(d)}} \left(\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right), \label{E:PEcont} \\
+\frac{\partial}{\partial t} \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} m^{(\ell)} \right) +  \nabla_{\eta^{(d)}}\cdot   \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} m^{(\ell)} \vec{v} \right)  &= 0, \quad \ell \in \mathcal{L}_{all}, \label{E:PEq}
 \end{align}
 where $\Phi$ is the geopotential height ($\Phi=g\, z$, where $g$ is the gravitational constant), ${\hat{\vec{k}}}$ is the unit vector normal to the surface of the sphere, $\vec{v}=(u,v)$ is the velocity vector with $u$ being the zonal velocity component and $v$ the meridional velocity component, $\zeta = {\hat{\vec{k}}} \cdot {\nabla \times} \vec{v}$ is vorticity, $f$ Coriolis parameter, and $\omega = dp/Dt$ is the pressure vertical velocity with $d/dt=\frac{\partial }{\partial t}+\vec{v}\cdot \nabla$ being the material/total derivative. 
 
-The prognostic equations for $\vec{v}$, the temperature $T$, pseudo density of a dry atmosphere ${\frac{\partial {\mathcal{P}^{(d)}}}{\partial \eta^{(d)}}}$, and pseudo tracer density ${\frac{\partial {\mathcal{P}^{(d)}}\quad }{\partial \eta^{(d)}}} m^{(\ell)}$ are solved with the diagnostic equation for geopotential height (hydrostatic balance)
+The prognostic equations for $\vec{v}$, the temperature $T$, pseudo density of a dry atmosphere ${\frac{\partial {\mathcal{P}^{(d)}}}{\partial \eta^{(d)}}}$, and pseudo tracer density ${\frac{\partial {\mathcal{P}^{(d)}}}{\partial \eta^{(d)}}} m^{(\ell)}$ are solved with the diagnostic equation for geopotential height (hydrostatic balance)
 \begin{equation}
 \frac{\partial \Phi\quad }{\partial \eta^{(d)}}=-\frac{R^{(d)} \,T_v}{p}\frac{\partial p\quad }{\partial \eta^{(d)}},\label{eq:phi_1}
 \end{equation}
 where
 \begin{equation}
-\frac{\partial p\quad }{\partial \eta^{(d)}}=\frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
+\frac{\partial p\quad }{\partial \eta^{(d)}}=\frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
 \end{equation}
 For diagnosing vertical pressure velocity $\omega$ we note that
 \begin{align}
@@ -401,13 +401,13 @@ On the right-hand side of the equations of motion hyperviscosity terms are added
  \end{equation}
 The 4th-order hyperviscosity operator is computed by iteratively applying the Laplacian operator \eqref{eq:vec_diff}. 
 
-The pseudo-density is damped with $\nu_p \nabla^4\left\{ \frac{\partial p\quad }{\partial \eta^{(d)}}\right\}$ and temperature with $\nu_T \nabla^4 T$. The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), pressure-level thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and provided in Appendix \ref{app:nu}.
+The dry pseudo-density is damped with $\nu_p \nabla^4\left\{ \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}\right\}$ and temperature with $\nu_T \nabla^4 T$. The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), pressure-level thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and provided in Appendix \ref{app:nu}.
 
-The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nabla^4=\nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate pressure surfaces
+The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nabla^4=\nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate dry-mass surfaces
 \begin{equation}
-\nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\frac{\partial \Xi}{\partial p}\nu \nabla^4_{\eta_d}p,\qquad \Xi=\vec{v}, T,
+\nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\nu \frac{\partial \Xi\quad }{\partial \mathcal{P}^{(d)}} \nabla^4_{\eta_d}\mathcal{P}^{(d)},\qquad \Xi=\vec{v}, T,
 \end{equation}
-\citep[p.58 in ][]{CAM5} to reduce spurious diffusion over steep topography. In theory the damping of the pseudo-density should be zero if hyperviscosity is applied on pressure surfaces. However, for stability it is necessary to damp pressure-level thicknesses but instead of applying $\nabla^4$ to $\frac{\partial p\quad }{\partial \eta^{(d)}}$ it is applied to the difference between $\frac{\partial p\quad }{\partial \eta^{(d)}}$ and a smoothed version of $\frac{\partial p\quad }{\partial \eta^{(d)}}$ referred to as $\left( \frac{\partial p\quad }{\partial \eta^{(d)}}\right)^{(ref)}$. The reference/smoothed pressure-level thickness is defined in Appendix \ref{app:ref_dp}. 
+\citep[p.58 in ][]{CAM5} to reduce spurious diffusion over steep topography. In theory the damping of the pseudo-density should be zero if hyperviscosity is applied on pressure surfaces. However, for stability it is necessary to damp pressure-level thicknesses but instead of applying $\nabla^4$ to $\frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}$ it is applied to the difference between $\frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}$ and a smoothed version of $\frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}$ referred to as $\left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}$. The reference/smoothed pressure-level thickness is defined in Appendix \ref{app:ref_dp}. 
 
 In the top three layers second-order diffusion (Laplacian operator) is applied to the prognostic variables to provide a sponge layer. The sponge layer plays an important role in controlling the polar night jet in low top models \citep[see, e.g., ][]{L2011IJHPC}.
 
@@ -429,7 +429,7 @@ The conservation law for AAM
 \end{equation}
 (where $r$ is the mean radius of Earth, $\Omega$ angular velocity and $\varphi$ latitude), integrated over the entire domain is derived in Appendix \ref{app:conservation} and the final equation is
 \begin{equation}
-\frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{S}}\left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right) \mathcal{M} \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{S}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
+\frac{\partial}{\partial t}\int_{\eta=0}^{\eta=1}\iint_{\mathcal{S}}\left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right) \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} \right) \mathcal{M} \right] dA\, d\eta^{(d)}=-\iint_{\mathcal{S}}\left[ p_s \frac{\partial z_s}{\partial \lambda}\right] dA,\label{eq:aam_final}
 \end{equation}
 where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varphi$ is an infinitesimal spherical area. The equation clearly separates the AAM of each component of moist air. The term in the square brackets on the right-hand side of \eqref{eq:aam_final} is referred to as the mountain torque. In the absence of topography, $z_s=0m$, \eqref{eq:aam_final} states that the angular momentum integrated over the entire domain is constant for the continuous equations of motion. Note that the AAM can be separated into a part ($\mathcal{M}_r$) associated with the motion of the atmosphere relative to Earth's surface (also known as wind AAM) and another part ($\mathcal{M}_{\Omega}$) associated with the angular velocity $\Omega$ of Earth's surface (referred to as mass AAM)
 \begin{equation}
@@ -437,11 +437,11 @@ where $\mathcal{S}$ is the global domain and $dA=r^2\cos\varphi d\lambda d\varph
 \end{equation}
 The total energy equation integrated over the global domain is also derived in Appendix \ref{app:conservation}. The final equation is
 \begin{equation}
-\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \iint_\mathcal{S} \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[m^{(\ell)} \left(K+c_p^{(\ell)}T+\Phi_s  \right)\right]  dA d \eta^{(d)}=0.\label{eq:comprehensice_energy}
+\frac{1}{g}\frac{\partial }{\partial t}\int_{\eta=0}^{\eta=1} \iint_\mathcal{S} \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[m^{(\ell)} \left(K+c_p^{(\ell)}T+\Phi_s  \right)\right]  dA d \eta^{(d)}=0.\label{eq:comprehensice_energy}
 \end{equation}
 Note that the energy terms (inside square brackets) in \eqref{eq:comprehensice_energy} separate into contributions from each component of moist air
 \begin{equation}
-\left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
+\left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
 \end{equation}
 The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$.
 
@@ -1154,11 +1154,11 @@ which can also be written as
 \end{multline}
 by expanding $c_p$ using \eqref{eq:cp}, re-arranging terms and using that $\Phi_s=gz_s$ is time-independent and that 
 \begin{equation}
-p_s=\int_{\eta=0}^{\eta=1}\sum_{\ell \in \mathcal{L}_{all}}  \left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}}\right) m^{(\ell)}d\eta^{(\eta)}.
+p_s=\int_{\eta=0}^{\eta=1}\sum_{\ell \in \mathcal{L}_{all}}  \left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}}\right) m^{(\ell)}d\eta^{(\eta)}.
 \end{equation}
 Note that the energy terms (inside square brackets) in \eqref{eq:totEp2} separate into all the components of moist air
 \begin{equation}
-\left( \frac{\partial \mathcal{P}^{(d)}\quad }{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
+\left( \frac{\partial \mathcal{P}^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
 \end{equation}
 Similarly for the flux term in the second square brackets on the left-hand side of \eqref{eq:totEp2}. Integrating \eqref{eq:totEp2} over the entire sphere results in \eqref{eq:comprehensice_energy} given in the main text.
 
