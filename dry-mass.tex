@@ -102,7 +102,7 @@
 % Example: \authors{A. B. Author\affil{1}\thanks{Current address, Antartica}, B. C. Author\affil{2,3}, and D. E.
 % Author\affil{3,4}\thanks{Also funded by Monsanto.}}
 
-\authors{P. H. Lauritzen\affil{1}\thanks{1850 Table Mesa Drive, Boulder, Colodaro, USA}, R.D. Nair\affil{1}, A.R. Herrington\affil{2},P. Callaghan\affil{1}, S. Goldhaber\affil{1}, J.M. Dennis\affil{1}, Julio T. Bacmeister\affil{1}, B. Eaton\affil{1}, C.M. Zarzycki\affil{1}, Mark A. Taylor\affil{3}, A. Gettelman\affil{1},  R.B. Neale\affil{1}, B. Dobbins\affil{1}, K.A. Reed\affil{2}, T. Dubos\affil{4}}
+\authors{P. H. Lauritzen\affil{1}\thanks{1850 Table Mesa Drive, Boulder, Colodaro, USA}, R.D. Nair\affil{1}, A.R. Herrington\affil{2},P. Callaghan\affil{1}, S. Goldhaber\affil{1}, J.M. Dennis\affil{1}, J.T. Bacmeister\affil{1}, B. Eaton\affil{1}, C.M. Zarzycki\affil{1}, Mark A. Taylor\affil{3}, A. Gettelman\affil{1},  R.B. Neale\affil{1}, B. Dobbins\affil{1}, K.A. Reed\affil{2}, T. Dubos\affil{4}, C. Hannay\affil{1} and J.J. Tribbia\affil{1}}
 
  \affiliation{1}{National Center for Atmospheric Research}
  \affiliation{2}{School of Marine and Atmospheric Sciences, Stony Brook University, State University of New York, Stony Brook, New York}
@@ -1024,32 +1024,41 @@ Thus the discretization of the Laplacian for SE method can be obtained by simpli
    and discretized as in the case of (\ref{eq:Lap1}). 
    
 \subsection{Reference pressure for pressure-level thickness damping}\label{app:ref_dp}
-{\color{red}{Still working on this section}}\\
+Applying $\nabla^4$ damping to $\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)$ values directly leads to nonphysical model behavior in that physically meaningful gradients in level thicknesses along model surfaces are suppressed, particularly in the vicinity of topography. As an alternative to computing and applying the necessary correction terms to the damping operator, we construct smooth reference values which convey these gradients and apply the damping only to the deviations from these values. Since they are immune from damping processes and can have a significant effect on model behavior, these values must be as accurate as possible and should not impose any predetermined structure. The area weighted averages for each element are least affected by small scale errors and thereby contain the most accurate information available. However, directly computed element averages of $\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)$ cannot be used to determine the desired reference values. Averages of this variable or any other variable that cannot be adequately represented as a local linear function of height will contain a systematic bias in the vicinity of topography. To avoid this bias, which varies with $\nabla \Phi$, the reference values must be constructed from other available information. In the following, let $\langle \cdot \rangle$ denote element average values or derived values consistent with computed element averages, and let $M^{(d)}$ denote the pressure exerted by the weight of dry air.
 
-Applying $\Delta^4$ damping to $\left( \frac{\partial p}{}\right)$ values directly leads to nonphysical model behavior in that physically meaningful gradients in pressure-level thicknesses along model surfaces are suppressed, particularly in the vicinity of topography. As an alternative to computing and applying the necessary correction terms to the damping operator, we construct smooth reference values which convey these gradients and apply the damping only to the deviations from these values. Since they are immune from damping processes and can have a significant effect on model behavior, these values must be as accurate as possible and should not impose any predetermined structure. The area weighted averages for each element are least affected by small scale errors and thereby contain the most accurate information available. However, directly computed element averages ofcannot be used to determine the desired reference values. Averages of this variable or any other variable that cannot be adequately represented as a local linear function of height will contain a systematic bias in the vicinity of topography. To avoid this bias, which varies with, the reference values must be constructed from other available information. In the following, letdenote element average values or derived values consistent with computed element averages, and let \textit{p} denote the moist pressure.
-
-To obtain, we begin by smoothly interpolating,, andvalues onto the model grid points. From these, the corresponding average pressure-related values are constructed in two steps using the hydrostatic equation. First, define the function
-
+To obtain $\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}$, we begin by smoothly interpolating $\langle \Phi \rangle$, $\langle \Phi_s \rangle$, and $\langle T \rangle$ values onto the model grid points. From these, the corresponding average pressure-related values are constructed in two steps using the hydrostatic equation for dry air \eqref{eq:dry_atm_hydro}. First, define the function
+\begin{equation}
+\mu_k \equiv \frac{1}{\langle M^{(d)} \rangle} \left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k,
+\end{equation}
 and iterate from the surface upward to determine its values for each model layer
-
-where. Then iterate downward from the model top to determine the pressure values,
-
-whereand. At this point, we have a set of self-consistent element average values which satisfy the hydrostatic equation
-
-.
-
-These averages are not suitable for direct use as reference surface values because at the lower boundary they are consistent with the element average of surface geopotential , not with the actualvalues. To obtain the appropriate reference values corresponding to, first adjust the surface pressures
-
-, for
-
-, for.
-
-Then use the resulting change in surface pressures to determine the reference values for pressure-level thicknesses.
-
-.
-
-
- 
+\begin{equation}
+\mu_k=\frac{2\left( \langle \Phi \rangle_k-\langle \Phi \rangle_{k+1/2} \right)}{R^{(d)}\langle T \rangle_k},
+\end{equation}
+where $\langle \Phi \rangle_{nlev+1/2}=\langle \Phi_s \rangle$. Then iterate downward from the model top to determine the pressure values,
+\begin{align}
+\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k &= \langle M^{(d)} \rangle_{k-1/2}\left( \frac{2\mu_k}{2-\mu_k}\right),\\
+\langle M^{(d)} \rangle_{k}&=\langle M^{(d)} \rangle_{k-1/2}\left( \frac{2}{2-\mu_k}\right),\\
+\langle M^{(d)} \rangle_{k+1/2}&=\langle M^{(d)} \rangle_{k-1/2}\left( \frac{2+\mu_k}{2-\mu_k}\right),
+\end{align}
+where $\langle M^{(d)} \rangle_{1/2}=p^{(d)}_t$ and  $\langle M^{(d)} \rangle_{nlev+1/2}=\langle M^{(d)}_s \rangle$. At this point, we have a set of self-consistent element average values which satisfy the hydrostatic equation
+\begin{equation}
+\frac{\partial \langle \Phi \rangle}{\partial \eta^{(d)}}=-\frac{R^{(d)}\langle T\rangle}{\langle M^{(d)}\rangle}\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right).
+\end{equation}
+These averages are not suitable for direct use as reference surface values because at the lower boundary they are consistent with the element average of surface geopotential $\langle \Phi_s \rangle$, not with the actual $\Phi_s$ values. To obtain the appropriate reference values corresponding to $\Phi_s$, first adjust the surface pressures
+\begin{equation}
+\left( M^{(d)}_s \right)^{(ref)}=\langle M^{(d)}_s \rangle\left[ 1+\frac{1}{\langle T\rangle}\frac{\partial \langle T\rangle}{\partial \langle \Phi \rangle}\left( \Phi_s-\langle \Phi_s\rangle \right)\right]^{-\frac{1}{R^{(d)}\frac{\partial \langle T\rangle}{\partial \langle \Phi \rangle}}}\text{ for }\left( \frac{\partial \langle T\rangle}{\partial \langle \Phi \rangle}\right)_{nlev}\neq 0,
+\end{equation}
+and
+\begin{equation}
+\left( M^{(d)}_s \right)^{(ref)}=\langle M^{(d)}_s \rangle e^{-\left( \frac{\Phi_s-\langle \Phi_s\rangle}{R^{(d)}\langle T \rangle}\right)}\text{ for }\left( \frac{\partial \langle T\rangle}{\partial \langle \Phi \rangle}\right)_{nlev}= 0.
+\end{equation}
+Then use the resulting change in dry mass surface pressures to determine the reference values for dry-mass thicknesses
+\begin{equation}
+\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}_k=\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k+\left( \frac{\partial B}{\partial \eta^{(d)}}\right)_k\left[ \left( M^{(d)}_s \right)^{(ref)}-\langle M^{(d)}_s \rangle \right].
+\end{equation}
+%
+%
+% 
 \subsection{Hyperviscosity coefficients}\label{app:nu}
 The following hyperviscosity coefficients are used in CAM-SE:
 \begin{align}
