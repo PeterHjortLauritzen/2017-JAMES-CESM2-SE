@@ -1,0 +1,7 @@
+%   s:  2.24 SYPD (5 nodes  - 180 cores)                                                                                       
+%   m:  4.18 SYPD (10 nodes - 360 cores)                                                                                       
+%   l:  6.82 SYPD (15 nodes - 540 cores)                                                                                       
+%  xl: 13.48 SYPD (30 nodes - 1080 cores)                                                                                      
+% xxl: 16.66 SYPD (38 nodes - 1368 cores)                                                                                      
+%  3x: 30.92 SYPD (75 nodes - 2700 cores)                                                                                      
+%  4x: 53.36 SYPD (150 nodes- 5400 cores) 
