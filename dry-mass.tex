@@ -821,7 +821,23 @@ Figure \ref{fig:baro_wave} depicts day 10 of the moist baroclinic wave test usin
 \label{fig:baro_wave}
 \end{figure}
 
-\input{l2.tex}
+To provide a more quantitative measure of the difference between the moist baroclinic wave simulations, the $l_2$ difference norm of $p_s$ between two simulations is computed as the time varying global integral in spherical coordinates:
+
+\begin{equation}
+l_2\left(\,p_s(t)\,\right) = \left[ \frac{1}{4\pi}\int^{2\pi}_{0} \int^{\frac{\pi}{2}}_{-\frac{\pi}{2}} \ \left(\,p_{s_1}(\lambda,\varphi,t) - p_{s_0}(\lambda,\varphi,t)\,\right)^2 \, cos(\varphi) \, d\varphi \, d\lambda \right]^\frac{1}{2}.
+\end{equation}
+
+The $l_2$ difference norm between CAM-SE and CAM-HOMME is shown in Figure \ref{fig:l2norm} for the $1^{\circ}$ ($N_e=30$ and $N_p=4$) and $\frac{1}{4}^{\circ}$ ($N_e=120$ and $N_p=4$) resolution simulations. The $l_2$ norms for the $1^{\circ}$ and $\frac{1}{4}^{\circ}$ simulations have similar time varying magnitudes. As the baroclinic waves evolves, the $l_2$ norms grow to a maximum on the order of 1 hPa by day 15. To assess the significance of the $l_2$ norms, an $l_2$ norm that serves as an estimate of the uncertainty of a high resolution reference simulation is computed following \cite{JW2006QJR}. The uncertainty in the reference is taken as the $l_2$ between a pair of $\frac{1}{4}^{\circ}$ resolution moist baroclinic wave simulations using different dynamical cores, CAM-SE and CAM-FV. At a $\frac{1}{4}^{\circ}$ resolution, the moist baroclinic wave solutions are converged to within a tolerable level of error (not shown), and therefore comparison between dynamical cores serves as an estimate of the uncertainty in the reference solutions arising from model imperfections. 
+
+The black curve in Figure \ref{fig:l2norm} is the $l_2$ difference norm between CAM-SE and CAM-FV at approximately a $\frac{1}{4}^{\circ}$ resolution. $l_2$ values that fall below the uncertainty in the reference are considered insignificant. The $l_2$ between CAM-SE and CAM-HOMME generally lie near or below the uncertainty in the reference solution, indicating the differences between CAM-SE and CAM-HOMME are insignificant for the case of the moist baroclinic wave. This is consistent with the corresponding time varying, global minimum in $p_s$ for all the simulations, which illustrates that the differences between CAM-SE and CAM-HOMME are smaller than the differences arising from increasing the horizontal resolution.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{figs/l2.pdf}
+\caption{(Upper) $l_2$ difference norms of $p_s$ in the moist baroclinic wave simulations. $l_2$ values lying within the yellow region fall below the estimate of the uncertainty in the reference solution (black curve). (lower) Global minimum $p_s$ in the moist baroclinic wave simulations.}
+\label{fig:l2norm}
+\end{figure}
+
 \input{ape.tex}
 \subsubsection{Conservation}
 To assess the AAM conservation properties of the CAM-SE dynamical core, the diagnostics used in \cite{LBDL2014JAMES} are applied to the Aqua-planet simulation described in Section \ref{sec:APE}. In the dynamical core the column integrated wind and mass AAM are written to history tapes and the total integrals of AAM are computed as a post-processing step. The torques are obtained by subtracting the global integrals of AAM divided by the time-increment between the outputs of the AAM. For details on the discretized AAM diagnostics see \cite{LBDL2014JAMES}. These diagnostic outputs are part of the CESM2 release and are controlled with namelist variables.
