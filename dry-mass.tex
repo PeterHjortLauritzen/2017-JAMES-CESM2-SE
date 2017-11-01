@@ -271,9 +271,9 @@ The ideal gas law for the gaseous components, using Dalton's law of partial pres
 \begin{equation}
 p=p^{(d)}+p^{(wv)}=\rho^{(d)} R^{(d)} T+\rho^{(wv)} R^{(wv)} T,\label{eq:ig}
 \end{equation}
-where $p^{(d)}$ is the partial pressure exterted by dry air (the pressure dry air would exert if it alone would occupy the volume) and $p^{(wv)}$ is the partial pressure of water vapor (again, the pressure exerted by water vapor if it alone would occupy the volume). Note that the condensates do not exert a pressure (more in this in Section \ref{sec:dryairp}). We may write \eqref{eq:ig} in terms of $\rho^{(gas)}$ by multiplying \eqref{eq:ig} with $\frac{\rho^{(gas)}}{\rho^{(gas)}}$ and write the equation in terms of mixing ratios
+where $p^{(d)}$ is the partial pressure exerted by dry air (the pressure dry air would exert if it alone would occupy the volume) and $p^{(wv)}$ is the partial pressure of water vapor (again, the pressure exerted by water vapor if it alone would occupy the volume). Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). We may write \eqref{eq:ig} in terms of $\rho^{(gas)}$ by multiplying \eqref{eq:ig} with $\frac{\rho^{(gas)}}{\rho^{(gas)}}$ and write the equation in terms of mixing ratios
 \begin{equation}
-p=\rho R^{(d)} T\rho^{(gas)}\left( \frac{\rho^{(d)}}{\rho^{(gas)}}+\frac{\rho^{(wv)}}{\rho^{(gas)}}\frac{R^{(wv)}}{R^{(d)}}\right)=\frac{R^{(d)} \rho^{(gas)}T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)}\label{eq:ig2}.
+p=R^{(d)} T\rho^{(gas)}\left( \frac{\rho^{(d)}}{\rho^{(gas)}}+\frac{\rho^{(wv)}}{\rho^{(gas)}}\frac{R^{(wv)}}{R^{(d)}}\right)=\frac{R^{(d)} \rho^{(gas)}T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)}\label{eq:ig2}.
 \end{equation}
 where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\alpha^{(gas)}$ to get:
 \begin{equation}
@@ -331,7 +331,7 @@ The thermodynamic equation \eqref{eq:thermo} may also be written in terms of ful
 %
 \subsection{Vertical coordinate}\label{eq:vertical_coord}
 \subsubsection{Definition}
-Let $\frac{1}{g}M^{(d)}_s$ be the mass of dry air per unit area at the surface ($M^{(d)}_s$ is the hydrostatic dry air mass pressure at the surface) and $\frac{1}{g}M_t^{(d)}$ the weight of air per unit area in the column above the model top. We assume that there is no moisture or condensate above the model top so $p_t=M_t^{(d)}$. Consider a general, terrain-following, vertical coordinate $\eta^{(d)}$ that is a function of the weight of dry air $\frac{1}{g}M^{(d)}$ 
+Let $\frac{1}{g}M^{(d)}_s$ be the mass of a column of dry air per unit area at the surface ($M^{(d)}_s$ is the hydrostatic dry air mass pressure at the surface) and $\frac{1}{g}M_t^{(d)}$ the mass of air per unit area in the column above the model top. We assume that there is no moisture or condensate above the model top so $p_t=M_t^{(d)}$. Consider a general, terrain-following, vertical coordinate $\eta^{(d)}$ that is a function of the hydrostatic dry mass pressure $M^{(d)}$ 
 \begin{equation}
 \eta^{(d)}=h(M^{(d)},M_s^{(d)}),
 \end{equation}
@@ -341,13 +341,13 @@ The observant reader will have noticed that we denote the hydrostatic dry air ma
 
 The hydrostatic moist pressure at given height $z$ can be computed from the hydrostatic balance
 \begin{align}
-p(z)&=\int^{z'=\infty}_{z'=z}\rho\, g\, dz',\\
- &=\int^{z'=\infty}_{z'=z}\rho_d \left( \sum_{\ell \in \mathcal{L}_{all}} m_\ell \right)\, g\, dz',\\
+p(z)&=-\int^{z'=\infty}_{z'=z}\rho\, g\, dz',\\
+ &=-\int^{z'=\infty}_{z'=z}\rho_d \left( \sum_{\ell \in \mathcal{L}_{all}} m_\ell \right)\, g\, dz',\\
  &=\sum_{\ell \in \mathcal{L}_{all}} M^{(\ell)}(z),\label{eq:z'2}
 \end{align}
 where the right-hand side of \eqref{eq:z'2} is the weight of dry air, water vapor, cloud liquid, cloud ice, rain and snow per unit area above height $z$, respectively:
 \begin{equation}
-{M}^{(\ell)}(z)=\int^{z'=\infty}_{z'=z}\rho_d \, m_\ell \, g\, dz'\label{eq:z'}.
+{M}^{(\ell)}(z)=-\int^{z'=\infty}_{z'=z}\rho_d \, m_\ell \, g\, dz'\label{eq:z'}.
 \end{equation}
 Using Dalton's law of partial pressures on the left-hand side of \eqref{eq:z'2} one gets that the partial pressure at a certain height $z$ is
 \begin{equation}
@@ -395,12 +395,12 @@ For diagnosing vertical pressure velocity $\omega$ we note that
 \end{align}
 %
 \subsection{Hyperviscosity and frictional heating}\label{sec:hypvervisfric}
-The spectral-element method does not have implicit diffusion. Hyperviscosity operators are applied to the prognostic variables to dissipate energy near the grid scale. Hyperviscosity also damp the propagation of spurious grid-scale modes \citep{AW2009SIAM} and smooth the solution at element boundaries where the basis-functions are least smooth ($C^0$-continuous). For the uniform resolution configuration constant hyperviscosity coefficients are used on all elements whereas the variable resolution configuration uses either a scaling of the coefficients according to individual element length scale \citep{ZetAl2014JCb} or a tensor-based hyperviscosity operator approach \citep{GetAl2014GMD}.
+The spectral-element method does not have implicit diffusion. Hyperviscosity operators are applied to the prognostic variables to dissipate energy near the grid scale. Hyperviscosity also damps the propagation of spurious grid-scale modes \citep{AW2009SIAM} and smoothes the solution at element boundaries where the basis-functions are least smooth ($C^0$-continuous). For the uniform resolution configuration constant hyperviscosity coefficients are used on all elements whereas the variable resolution configuration uses either a scaling of the coefficients according to individual element length scale \citep{ZetAl2014JCb} or a tensor-based hyperviscosity operator approach \citep{GetAl2014GMD}.
 \subsubsection{Viscosity operator}\label{sec:hyper}
-On the right-hand side of the equations of motion hyperviscosity terms are added. For the momentum equations \eqref{E:PEmom} the viscous terms are as follows. By using the vector identity  $\nabla^2 \vec{v} = \nabla(\nabla \cdot \vec{v}) - \nabla \times (\nabla \times \vec{v}) $, the viscosity term splits into two terms. The first term damps divergent modes and the latter term damps rotational modes. Thereby one can damp divergent modes more (or less) than rotational modes by having different coefficients ($\nu_d$ and $\nu_v$, respectively) in front of the respective terms
+On the right-hand side of the equations of motion hyperviscosity terms are added. For the momentum equations \eqref{E:PEmom} the viscous terms are as follows. By using the vector identity  $\nabla^2 \vec{v} = \nabla(\nabla \cdot \vec{v}) - \nabla \times (\nabla \times \vec{v}) $, the viscosity term splits into two terms. The first term damps divergent modes and the latter term damps rotational modes. Thereby one can damp divergent modes more (or less) than rotational modes by having different coefficients ($\nu_{div}$ and $\nu_{vor}$, respectively) in front of the respective terms
  \begin{equation}
-  \nu_d \, \nabla(\nabla \cdot \vec{v}) -
-   \nu_v \,  \nabla \times (\nabla \times \vec{v}).\label{eq:vec_diff}
+  \nu_{div} \, \nabla(\nabla \cdot \vec{v}) -
+   \nu_{vor} \,  \nabla \times (\nabla \times \vec{v}).\label{eq:vec_diff}
  \end{equation}
 The 4th-order hyperviscosity operator is computed by iteratively applying the Laplacian operator \eqref{eq:vec_diff}. 
 
@@ -1057,22 +1057,22 @@ Thus the discretization of the Laplacian for SE method can be obtained by simpli
  In CAM-SE the vector viscosity is handled  using the vector Laplacian $\nu \nabla^2 \mathbf{v}$, 
  which is consistent with the curvilinear formulation of the momentum equation.  By using the vector identity 
  $\nabla^2 \mathbf{v} = \nabla(\nabla \cdot \mathbf{v}) - \nabla \times (\nabla \times \mathbf{v}) $, 
- the coefficient of viscosity $\nu$ may be split into the viscosity corresponding to the divergence part $\nu_d$
- and that for  the vorticity part $\nu_v$ such that 
+ the coefficient of viscosity $\nu$ may be split into the viscosity corresponding to the divergence part $\nu_{div}$
+ and that for  the vorticity part $\nu_{vor}$ such that 
  %
  \begin{equation}
-  \nu \nabla^2 \mathbf{v} = \nu_d \, \nabla(\nabla \cdot \mathbf{v}) -
-   \nu_v \,  \nabla \times (\nabla \times \mathbf{v}). \label{eq:vLap}
+  \nu \nabla^2 \mathbf{v} = \nu_{div} \, \nabla(\nabla \cdot \mathbf{v}) -
+   \nu_{vor} \,  \nabla \times (\nabla \times \mathbf{v}). \label{eq:vLap}
  \end{equation}
    %
    The SE discretization  of (\ref{eq:vLap}) is handled separately for each component using a vector test function
    $\vec{ \psi}$ and the weak formulation: 
    %
    \begin{eqnarray}
-       \nu_d  \int_{\Omega_e} \vec{\psi} \cdot   \nabla(\nabla \cdot \mathbf{v})  \,    d \Omega_e  & = & 
-       -  \nu_d \, \int_{\Omega_e} (\nabla \cdot \vec{\psi})   (\nabla \cdot \mathbf{v})   d \Omega_e \\
-         -   \nu_v  \int_{\Omega_e}     \vec{\psi} \cdot  \nabla \times (\nabla \times \mathbf{v})   \,    d \Omega_e  & = &
-                          -   \nu_v  \int_{\Omega_e} (\nabla \times      \vec{\psi} ) \cdot (\nabla \times \mathbf{v})    \,     d \Omega_e ,  
+       \nu_{div}  \int_{\Omega_e} \vec{\psi} \cdot   \nabla(\nabla \cdot \mathbf{v})  \,    d \Omega_e  & = & 
+       -  \nu_{div} \, \int_{\Omega_e} (\nabla \cdot \vec{\psi})   (\nabla \cdot \mathbf{v})   d \Omega_e \\
+         -   \nu_{vor}  \int_{\Omega_e}     \vec{\psi} \cdot  \nabla \times (\nabla \times \mathbf{v})   \,    d \Omega_e  & = &
+                          -   \nu_{vor}  \int_{\Omega_e} (\nabla \times      \vec{\psi} ) \cdot (\nabla \times \mathbf{v})    \,     d \Omega_e ,  
    \end{eqnarray}
    where the line integrals along the boundaries associated with weak formulation  vanishes for SE discretization. 
    The {\em rhs} of the above equations are converted into equivalent tensor form  for the divergence and curl terms,
