@@ -365,7 +365,7 @@ The partial pressure of dry air $p^{(d)}(z)$ at height $z$ will increase in the 
 \begin{equation}
 dp(z)=-\rho g \, dz = -\rho_d \left( \sum_{\ell \in \mathcal{L}_{all}} m_\ell\right)g\, dz = dM^{(d)}(z)\left( \sum_{\ell \in \mathcal{L}_{all}} m_\ell\right).
 \end{equation}
-In all, $M^{(d)}(z)$ refers to dry air partial pressure at height $z$ if there were no condensates present (i.e. air is a gas only) and similarly for water vapor. Henceforth we drop the notation of the vertical dependence (in this section we used $z$) on $M^{(\ell)}(z)=M^{(\ell)}$. Since $\eta^{(d)}$ is the vertical coordinate $M^{(\ell)}$ will henceforth refer to hydrostatic pressure for water form $\ell$   at $\eta^{(d)}$. The hydrostatic dry-mass pressure is not a directly measurable quantity but a theoretical construction for the dry-mass vertical coordinate. Only moist pressure is directly measurable.
+In all, $M^{(d)}(z)$ refers to dry air partial pressure at height $z$ if there were no condensates present (i.e. air is a gas only) and similarly for water vapor. Henceforth we drop the notation of the vertical dependence (in this section we used $z$) on $M^{(\ell)}(z)=M^{(\ell)}$. Since $\eta^{(d)}$ is the vertical coordinate $M^{(\ell)}$ will henceforth refer to hydrostatic pressure for water form $\ell$   at $\eta^{(d)}$. The hydrostatic dry-mass pressure is not a directly measurable quantity but a theoretical construction for the dry-mass vertical coordinate. Only moist pressure (or simply {\em{pressure}}) is directly measurable.
 %p_s=p^{(d)}+p^{(wv)}=\int
 
 %
@@ -786,11 +786,11 @@ where we have substituted the ideal gas law and used $\left( \frac{1}{1+m^{(wv)}
 \end{equation}
 where $z_t$ is the height of the model top computed by iteratively solving \eqref{eq:baroPmoist} with $p(\varphi,z)=p_t$ (assuming there is no moisture above the model top). To initialize the dry mass levels $M^{(d)}_s$ is needed. It is computed by integrating \eqref{eq:Upd} with lower integral bound $z=z_s=0\, m$ and approximating the integral using 20 point Gaussian quadrature. The dry air mass hydrostatic pressure is shown on Figure \ref{fig:baro_init}. The full dry-mass levels are given in terms of the hybrid coefficients ${M_k^{(d)}}(\varphi,z_k)=A_k p_t+B_k {M_s^{(d)}}(\varphi,z_k)$. The height, $z_{k}(\varphi)$, of the full dry-mass levels are computed by iteratively solving \eqref{eq:Upd} with ${M}^{(d)}(\varphi,z)={M}_{k}^{(d)}(\varphi,z_k)$. Once the heights are known the virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$ as is done for the moist vertical coordinate initialization. If we do the same for specific humidity then the moist surface pressure (which is a diagnostic when using dry-mass vertical coordinates) deviates more than 1 Pa in the tropics from the analytical value of 1000hPa  (see Figure \ref{fig:baro_init}). As a result a spurious zonal signal in surface pressure with the same amplitude as the initial gravity waves appears in the simulations. Hence specific humidity must be initialized more carefully in order to obtain a more balanced initial condition which is discussed in the next paragraph. 
 
-As for $M^{(d)}$, the weight of water vapor $M^{(wv)}$ per unit area can be written as
+As for $M^{(d)}$, the weight of water vapor $\frac{1}{g}M^{(wv)}$ per unit area can be written as
 \begin{equation}
-{M}^{(wv)}(\varphi,z)=-\int_z^{z_t}\frac{p(\varphi,z)}{R^{(d)} T_v(\varphi,z)}q^{(wv)}(\varphi,z)\, g\, dz,\label{eq:Upvw}
+\frac{1}{g}{M}^{(wv)}(\varphi,z)=-\int_z^{z_t}\frac{p(\varphi,z)}{R^{(d)} T_v(\varphi,z)}q^{(wv)}(\varphi,z)\, dz,\label{eq:Upvw}
 \end{equation}
-so that the moist pressure (in the absence of condensates) at half levels can be computed as the sum of the hydrostatic dry air and moisture mass pressure
+so that the moist pressure at half levels can be computed as the sum of the hydrostatic dry air and moisture mass pressure since there are no condensates present in the initial condition
 \begin{equation}
 p(\varphi,z_{k+1/2})={M}^{(d)}(\varphi,z_{k+1/2})+{M}^{(wv)}(\varphi,z_{k+1/2}),
 \end{equation}
