@@ -707,7 +707,7 @@ The details of the discretization of the dissipation operators are provided in A
 \subsection{Mimetic discretization}
 A numerical method is mimetic (or compatible) if key integral properties of divergence, gradient and curl-operators are mimicked in discretized space. The CAM-SE discretization satisfies the divergence/gradient adjoint relation
 \begin{equation}
-\int \phi \nabla \cdot \vec{v} \, d\mathcal{S}+\int \vec{v} \nabla \phi \, d\mathcal{S}=0
+\int \phi \nabla \cdot \vec{v} \, d\mathcal{S}+\int \vec{v} \cdot \nabla \phi \, d\mathcal{S}=0
 \end{equation}
 in  discretized space \citep{TF2010JCP}. This property can be used to show the inherent conservation properties of CAM-SE in terms of mass and energy in the horizontal discretization. This is discussed in detail in \cite{T2011LNCSEb} and hence not repeated here. 
 
@@ -725,7 +725,7 @@ The momentum, thermodynamic and dry air continuity equations are solved using a 
 
 {\color{red}{[Mark: How is tracer advection coupled to dry air continuity equation??]}} 
 
-The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}},{\tt{se\_rsplit}},
+The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}}, {\tt{se\_rsplit}},
 {\tt{se\_hypervis\_subcycle}}  so that the time-steps for vertical remapping $\Delta t_{remap}$, tracer advection $\Delta t_{trac}$ (RK3), RK5 time-stepping for non-tracers $\Delta t_{dyn}$, and hyperviscosity $\Delta t_{hyper}$ are
 \begin{align}
 \Delta t_{remap}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit}},\\
@@ -739,14 +739,15 @@ where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. 
  \centering
  \begin{tabular}{llcccc}
  \hline
-  Horizontal res. & $\Delta x_{ave}$  & $\Delta t_{phys}$ & {\tt{se\_nsplit}} & {\tt{se\_rsplit}} & {\tt{se\_hypervis\_subcycle}} \\
+ Horizontal res. & $\Delta x_{ave}$  & $\Delta t_{phys}$ & {\tt{se\_nsplit}} & {\tt{se\_rsplit}} & {\tt{se\_hypervis\_}} \\
+ &&&&&{\tt subcycle} \\
  \hline
    {\tt{ne}}16{\tt{np4}}  & $\sim$208km   & 1800s & 1 & 3 & 3  \\
    {\tt{ne}}30{\tt{np4}}  & $\sim$111km   & 1800s & 2 & 3 & 3  \\
    {\tt{ne}}60{\tt{np4}}  & $\sim$ 56km   & 900s  & 2 & 3 & 3  \\
    {\tt{ne}}120{\tt{np4}} & $\sim$28km    & 450s  & 2 & 3 & 3  \\
    {\tt{ne}}240{\tt{np4}} &  $\sim$14km   & 225s  & 2 & 3 & 3  \\
-   {\tt{ne}}0{\tt{np4}}  & $\sim$111km$\rightarrow$ $\sim$14km &  600s & 5 & 3 & 4  \\
+   {\tt{ne}}0{\tt{np4CONUS30x8}}  & $\sim$111km$\rightarrow$ $\sim$14km &  600s & 5 & 3 & 4  \\
  \hline
 % \multicolumn{2}{l}{$^{a}$Footnote text here.}
  \end{tabular}
@@ -763,7 +764,15 @@ The CAM parameterization package returns mixing ratio tendencies for tracers. We
 
 Generally modelers do not allow the tracer tendencies to drive the mixing ratio of tracers negative, however, this may happen using `ftype=0'. If the tendency drives a mixing ratio negative, the mixing ratio is set to zero. In this case, only a fraction of the entire tracer tendency is added, leading to an inconsistency in how much mass the physics package wants to remove and the amount of tracer mass actually removed in the physics-dynamics coupling code in the dynamical core.
 \subsubsection{`ftype=1' configuration}
-In this configuration the entire physics forcing is added to the dynamics state $\Delta t_{phys}F_X$ which is equivalent to having the physics module update the model state. This coupling method is used in CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0' configuration, this configuration always provides a closed mass budget for tracers in terms of physics tendencies being fully applied in the dynamical core. The disadvantage of using 'ftype=1' in CAM-SE is that the use of a long physics time-step results in spurious gravity waves appear due to large physics tendencies.
+In this configuration the entire physics forcing is added to the
+dynamics state $\Delta t_{phys}F_X$ which is equivalent to having the
+physics module update the model state. This coupling method is used in
+CAM-FV \citep{L2004MWR}. Note that contrary to the `ftype=0'
+configuration, this configuration always provides a closed mass budget
+for tracers in terms of physics tendencies being fully applied in the
+dynamical core. The disadvantage of using 'ftype=1' in CAM-SE is that
+the use of a long physics time-step results in the appearance of
+spurious gravity waves due to large physics tendencies.
 \subsubsection{`ftype=2' configuration}
 This configuration constitutes a hybrid approach where mass variables (tracers) use the `ftype=1' physics-dynamics coupling method and all other variables use the `ftype=0' method.
 
@@ -813,7 +822,7 @@ Using this method for initializing the mixing ratio for water vapor the moist su
 %a shows the dry surface pressure as a function of latitude numerically computed with \eqref{eq:Upd}. From this surface pressure the dry pressure at model levels are computed from \eqref{eq:ABs}. We then iteratively solve \eqref{eq:Upd} to find the height $z_k$ of the full levels and this $z_k$ is then used to initialize temperature, wind and water vapor mixing ratio using the analytic expressions given in Appendix \ref{app:analytic}. The moist surface pressure can then be computed with \eqref{eq:halfpfull}. As shown in Figure \ref{fig:baro_init}(b) the diagnostic moist surface pressure is less than a Pascal of the analytic moist surface pressure of 1000hPa and the zonal structure in moist surface pressure has a much smaller amplitude than the gravity waves initially propagating from the wind perturbation.
 
 \subsubsection{Simulation results}
-As part of the `CESM simpler models' effort started by \citet{CESM_SIMPLER_MODELS}, the moist baroclinic wave setup has been implemented rigorously in the CESM in the sense that the configuration easily runs from CESM without code configurations using the `{\bf{FKESSLER}} compset'. For instructions on how to run the moist baroclinic wave with Kessler microphysics see \citet{FKESSLER}. Since the test case configuration has been implemented in the full CESM, the dynamical core interacts with the physics module as in full climate model simulations. Hence the global energy fixer is invoked \citep{WOHTTV2015JAMES} and for the dynamical cores using a moist pressure vertical coordinate there is an adjustment of specific humidity to conserve water after the moist physics updates \citep[see Section 3.1.6 in ][]{CAM5}. The intent of this implementation is to evaluate the dynamical core in simplified setup but exactly as the dynamical core is configured for comprehensive climate simulations.
+As part of the `CESM simpler models' effort started by \citet{CESM_SIMPLER_MODELS}, the moist baroclinic wave setup has been implemented rigorously in the CESM in the sense that the configuration easily runs from CESM without code configurations using the `{\bf FKESSLER} compset'. For instructions on how to run the moist baroclinic wave with Kessler microphysics see \citet{FKESSLER}. Since the test case configuration has been implemented in the full CESM, the dynamical core interacts with the physics module as in full climate model simulations. Hence the global energy fixer is invoked \citep{WOHTTV2015JAMES} and for the dynamical cores using a moist pressure vertical coordinate there is an adjustment of specific humidity to conserve water after the moist physics updates \citep[see Section 3.1.6 in ][]{CAM5}. The intent of this implementation is to evaluate the dynamical core in simplified setup but exactly as the dynamical core is configured for comprehensive climate simulations.
 
 Figure \ref{fig:baro_wave} depicts day 10 of the moist baroclinic wave test using the CAM-FV \citep[Finite-Volume; ][]{L2004MWR} dynamical core, CAM-HOMME dynamical core based on a moist vertical coordinate and the new dynamical core version (CAM-SE). The CAM-HOMME and CAM-SE (CESM2.0-SE) dynamical cores not only differ in terms of vertical coordinates but also in terms of hyperviscosity and the formula used for the heat-capacity in the thermodynamic equation. CAM-HOMME uses $c_p^{(d)}$ whereas CAM-SE (CESM2.0-SE) uses the comprehensive formula \eqref{eq:cp} that includes the heat capacity of water vapor.
 
@@ -843,7 +852,7 @@ The black curve in Figure \ref{fig:l2norm} is the $l_2$ difference norm between 
 
 \input{ape.tex}
 \subsubsection{Conservation}
-To assess the AAM conservation properties of the CAM-SE dynamical core, the diagnostics used in \cite{LBDL2014JAMES} are applied to the Aqua-planet simulation described in Section \ref{sec:APE}. In the dynamical core the column integrated wind and mass AAM are written to history tapes and the total integrals of AAM are computed as a post-processing step. The torques are obtained by subtracting the global integrals of AAM divided by the time-increment between the outputs of the AAM. For details on the discretized AAM diagnostics see \cite{LBDL2014JAMES}. These diagnostic outputs are part of the CESM2 release and are controlled with namelist variables.
+To assess the AAM conservation properties of the CAM-SE dynamical core, the diagnostics used in \cite{LBDL2014JAMES} are applied to the Aqua-planet simulation described in Section \ref{sec:APE}. In the dynamical core the column integrated wind and mass AAM are written to history files and the total integrals of AAM are computed as a post-processing step. The torques are obtained by subtracting the global integrals of AAM divided by the time-increment between the outputs of the AAM. For details on the discretized AAM diagnostics see \cite{LBDL2014JAMES}. These diagnostic outputs are part of the CESM2 release and are controlled with namelist variables.
 
 As discussed in Section \ref{sec:aam} the total AAM torque from the dynamical core, in the absence of topography, should be small compared to the torque from the parameterizations. Figure \ref{fig:aam} shows that that is indeed the case for CAM-SE. The spurious torques from the dynamical core are approximately a factor 100 smaller than the physical torques from the parameterizations. These results are very similar to the dynamical core torques found in the dry Held-Suarez setup used in \citet{LBDL2014JAMES}.
 
@@ -856,7 +865,7 @@ Similarly to the AAM diagnostics, the total column-integrated moist energy is ou
 \label{fig:aam}
 \end{figure}
 \subsection{Performance}\label{sec:performance}
-In addition to the numerical changes described in the previous section, a number of changes to the computational structure of the SE dynamical core were also made which both reduce the computational cost at both modest and large processor count.  In particular, new communication operators were developed which reduces the amount of data movement between MPI ranks as well as through the memory hierarchy. Derivative operators were optimized to increase code vectorization, and the limiter operator was rewritten to reduce cost.  A more detailed description of the optimizations can be found in \cite{dennis2017}. The CAM-HOMME configuration is referred to as the {\em{original}} codebase and CAM-SE is referred to as the {\em{optimized}} codebase in this Section. So when comparing computational cost of CAM-HOMME and CAM-SE it reflects not only the code optimizations but also the numerous science changes in CAM-SE that require extra computational work (e.g., the heat capacity is a function of water loading tracers and therefore not constant, moist pressure is not a prognostic variable and must be diagnosed, the reference pressure computation is not in CAM-HOMME).
+In addition to the numerical changes described in the previous section, a number of changes to the computational structure of the SE dynamical core were also made which both reduce the computational cost at both modest and large processor count.  In particular, new communication operators were developed which reduces the amount of data movement between MPI ranks as well as through the memory hierarchy. Derivative operators were optimized to increase code vectorization, and the limiter operator was rewritten to reduce cost.  A more detailed description of the optimizations can be found in \cite{dennis2017}. The CAM-HOMME configuration is referred to as the {\em{original}} codebase and CAM-SE is referred to as the {\em{optimized}} codebase in this section. So when comparing computational cost of CAM-HOMME and CAM-SE it reflects not only the code optimizations but also the numerous science changes in CAM-SE that require extra computational work (e.g., the heat capacity is a function of water loading tracers and therefore not constant, moist pressure is not a prognostic variable and must be diagnosed, the reference pressure computation is not in CAM-HOMME).
 
 \begin{figure}[h]
 \centering
