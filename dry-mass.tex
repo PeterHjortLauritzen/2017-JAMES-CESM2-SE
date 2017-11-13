@@ -446,7 +446,8 @@ Note that the energy terms (inside square brackets) in \eqref{eq:comprehensice_e
 \begin{equation}
 \left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
 \end{equation}
-The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$.
+The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which set set to $\tt{.true.}$ in the code.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discretized equations of motion}\label{sec:discretized_eqs}
@@ -512,7 +513,7 @@ The moist mass-weighted velocity components, $\sum_{\ell \in \mathcal{L}_{all}} 
  \caption{The left panel shows the  Gauss-Lobatto-Legendre (GLL)   grid with $ N_p \times  N_p$ quadrature points defined
  on a standard element $[-1,1]^2$, where $N_p=4$. The right panel shows the cubed-sphere ($\mathcal{S}$) grid system tiled with 
  $6 N_e^2 $ spectral elements $\Omega_e$, where $N_e$ is the number of elements  in each coordinate direction
- on a panel. 
+ on a panel (in this case $N_e=5$). 
  Each element  $\Omega_e$ on $\mathcal{S}$ has the GLL grid structure.  }
  \label{fig:gll4}
 \end{figure}
@@ -553,14 +554,16 @@ The moist mass-weighted velocity components, $\sum_{\ell \in \mathcal{L}_{all}} 
  the following conservation law  on $\mathcal{S}$ for an arbitrary  scalar $\phi$:  
  %
  \begin{equation}
- \frac{\partial \phi }{\partial t}  + \nabla \cdot \mathbf{F}(\phi)  = S(\phi)   \quad   
- \Rightarrow   %\frac{\partial U }{\partial t}  + \nabla_h \cdot \mathbf{F}(U)  = S(U), 
-   \frac{\partial \phi }{\partial t}  + \frac{1}{\sqrt{G}} \left[   \frac{\partial  \sqrt{G} F^1}{\partial x^1}  + 
-   \frac{\partial  \sqrt{G} F^2}{\partial x^2}      \right]   = S(\phi),  
-  \label{eq:se1} 
+ \frac{\partial \phi }{\partial t}  + \nabla \cdot \mathbf{F}(\phi)  = S(\phi),
+ \label{eq:se1} 
+ \end{equation}
+where 
+\begin{equation}
+   \nabla \cdot \mathbf{F}(\phi) = \frac{1}{\sqrt{G}} \left[   \frac{\partial  \sqrt{G} F^1}{\partial x^1}  + 
+   \frac{\partial  \sqrt{G} F^2}{\partial x^2}      \right] .  
    \end{equation} 
   %
-  where the equation on the right side is a special case, the flux-form transport equation, with 
+In the special case of the flux-form transport equation the
    contravariant fluxes $(F^1, F^2) = (u^1 \phi , u^2 \phi)$, and $S(\phi)$  is an arbitrary source term.
 %  and  the gradient $\nabla_h = (\partial/\partial x^1, \partial/\partial x^2)$ defined on computational domain $\mathcal{C}$ corresponding
 %  to $\mathcal{S}$ under the gnomonic mapping.   Note that the flux-form  transport  equation  is a special case of (\ref{eq:se1}), with flux function
