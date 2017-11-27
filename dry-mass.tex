@@ -193,7 +193,7 @@ It is the purpose of this paper to provide a comprehensive documentation of the 
 
 
 \section{Introduction}
-Over the last two decades or so, the spectral-element (SE) method has been considered as a numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM} {\color{red}{other references needed?}}. The main motivations were the SE methods near perfect scalability, high-order accuracy for smooth problems, and mesh-refinement capabilities. For a while the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid and a mesh-refinement configuration with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZJT2013,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep[e.g., ][]{ELMNTT2012JC,ZJ2014JAMES,RetAl2015GRL,BetAl2016CC,RHUZ2016JAMC,GetAl2017JAMES}. CAM-SE's code base is in CAM and not HOMME. CAM-SE and HOMME codes have diverged significantly due to a  massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described herein.
+Over the last two decades or so, the spectral-element (SE) method has been considered as a numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM}. The main motivations were the SE methods near perfect scalability, high-order accuracy for smooth problems, and mesh-refinement capabilities. For a while the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid and a mesh-refinement configuration with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZJT2013,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep[e.g., ][]{ELMNTT2012JC,ZJ2014JAMES,RetAl2015GRL,BetAl2016CC,RHUZ2016JAMC,GetAl2017JAMES}. CAM-SE's code base is in CAM and not HOMME. CAM-SE and HOMME codes have diverged significantly due to a  massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described herein.
   \begin{figure}[h]
 \centering
  \includegraphics[scale=0.45]{figs/grids}
@@ -236,6 +236,7 @@ and a set referring to all condensates (non-gas components of water)
 \end{equation}
 The density of a unit volume of moist air is related to the dry air density through
 \begin{equation}
+\label{eq:rhosum}
 \rho=\rho^{(d)}\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
 \end{equation}
 Mixing ratios can also be specified in terms of density per density of moist air, in other words, specific/moist mixing ratios
@@ -255,31 +256,57 @@ Note that if water vapor undergoes a phase change to rain and leaves the column,
 
 %
 \subsection{Ideal gas law and virtual temperature}\label{sec:tv}
-In this section the ideal gas law is derived for moist air containing condensates. Part of that derivation is the definition of virtual temperature. A unit volume of moist air $V=1$ is the sum of the volume of dry air and the volumes of the different forms of water in the air
+In this section, the ideal gas law is derived for moist air containing condensates. In a parcel of moist air
+of volume $V$, the condensed phases occupy volumes $V^{(\ell)}$ with $\ell \in \mathcal{L}_{cond}$. Dry air and pure water vapor are
+assumed to be ideal perfect gases, and the gaseous part of moist air is assumed to be a perfect mixture of
+those gases. Therefore it is possible to assign a volume $V^{(d)}$ to dry air and $V^{(wv)}$ to water vapor, in proportion
+to their respective number of molecules. The total volume is $V=\sum_{\ell \in \mathcal{L}_{all}}V^{(\ell)}$. Now let 
 \begin{equation}
-V=\sum_{\ell \in \mathcal{L}_{all}} V^{(\ell)}.\label{eq:Volumes}
+\alpha^{(\ell)}\equiv \frac{V^{(\ell)}}{V\, \rho^{(\ell)}},
 \end{equation}
-Now let $\alpha\equiv \frac{1}{\rho}$ denote the specific volume of moist air, let $\alpha^{(gas)}$ be the specific volume of the gaseous components of moist air (the volume of water vapor and dry air per unit mass of water vapor and dry air), let $\alpha^{(cl)}$ be the specific volume of cloud liquid (i.e. volume occupied by unit mass of cloud liquid), and similarly for cloud ice, rain and snow. Then we can write \eqref{eq:Volumes} in terms of densities and specific volumes
+be the specific volume of each phase or component considered separately, let
 \begin{equation}
-\rho \alpha=\rho^{(gas)}\alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)},\label{eq:massV}
+\alpha^{(gas)}\equiv \frac{ V^{(d)} + V^{(wv)}}{V \left( \rho^{(d)} + \rho^{(wv)}\right)},
 \end{equation}
-where $\rho^{(gas)}=\rho^{(d)}+\rho^{(wv)}$. Note that $\alpha^{(\ell)}\neq \frac{1}{\rho^{(\ell)}}$ since $\rho^{(\ell)}$ is defined in terms mass of $\ell$ per unit volume of moist air and not mass of $\ell$ per unit volume of water phase $\ell$. Dividing \eqref{eq:massV} with $\rho^{(d)}$ and substituting \eqref{eq:mx} yields
+be the specific volume of the gaseous phase considered separately from the condensed phases, and let
 \begin{equation}
-  \left(\sum_\ell m^{(\ell)}\right) \alpha = \left( 1+m^{(wv)}\right) \alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\alpha^{(\ell)}.\label{eq:vol}
+\alpha\equiv \frac{1}{\rho},\label{eq:rhoalpha}
 \end{equation}
-The ideal gas law for the gaseous components, using Dalton's law of partial pressures, is
+be the total specific volume. Also, note that
 \begin{equation}
-p=p^{(d)}+p^{(wv)}=\rho^{(d)} R^{(d)} T+\rho^{(wv)} R^{(wv)} T,\label{eq:ig}
+\label{eq:sum1}
+1 = \sum_{\ell \in \mathcal{L}_{(all)}} \rho^{(\ell)}\alpha^{(\ell)} = \alpha^{(gas)}\rho^{(gas)} + \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}.
 \end{equation}
-where $p^{(d)}$ is the partial pressure exerted by dry air (the pressure dry air would exert if it alone would occupy the volume) and $p^{(wv)}$ is the partial pressure of water vapor (again, the pressure exerted by water vapor if it alone would occupy the volume). Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). We may write \eqref{eq:ig} in terms of $\rho^{(gas)}$ by multiplying \eqref{eq:ig} with $\frac{\rho^{(gas)}}{\rho^{(gas)}}$ and write the equation in terms of mixing ratios
+The ideal gas law applies to the gaseous component of air only. In that case, the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume)
 \begin{equation}
-p=R^{(d)} T\rho^{(gas)}\left( \frac{\rho^{(d)}}{\rho^{(gas)}}+\frac{\rho^{(wv)}}{\rho^{(gas)}}\frac{R^{(wv)}}{R^{(d)}}\right)=\frac{R^{(d)} \rho^{(gas)}T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)}\label{eq:ig2}.
+p^{(d)}V^{(gas)}=N^{(d)}N_A T,
 \end{equation}
-where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\alpha^{(gas)}$ to get:
+where $N_A$ is Avogadro's number and $N^{(d)}$ is the number of molecules of dry air. Now
 \begin{equation}
-p=\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)\alpha^{(gas)}}\label{eq:ig3}.
+N^{(d)}=\frac{V \rho^{(d)}}{\mathcal{M}^{(d)}},
 \end{equation}
-Using \eqref{eq:vol} to eliminate $\left(1+m^{(wv)}\right)\alpha^{(gas)}$ in \eqref{eq:ig3} and simplifying yields
+where $\mathcal{M}^{(d)}$ is the molar mass of dry air. Then the ideal gas law for the partial pressure of dry air can be written as
+\begin{equation}
+p^{(d)}V^{(gas)}=V\rho^{(d)}R^{(d)}T,
+\end{equation}
+where $R^{(d)}\equiv \frac{N_A}{\mathcal{M}^{(d)}}$ is the dry air gas constant. Similarly for the partial pressure of water vapor:
+\begin{equation}
+p^{(wv)}V^{(gas)}=V\rho^{(vw)}R^{(vw)}T,
+\end{equation}
+where $R^{(wv)}\equiv \frac{N_A}{\mathcal{M}^{(wv)}}$ is the gas constant for water vapor. According to Dalon's law of partial pressures, the total pressure exerted is equal to the sum of the partial pressures of the individual gases:
+\begin{equation}
+\label{eq:ptmp}
+p=\frac{V}{V^{(gas)}}\left( \rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T\right).
+\end{equation}
+Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). Now $\rho^{(\ell)}\alpha^{(\ell)}$ is the volume fraction $\frac{V^{(\ell)}}{V}$, especially:
+\begin{equation}
+\rho^{(gas)}\alpha^{(gas)}=\frac{V^{(gas)}}{V}.\label{eq:rhogas}
+\end{equation}
+Consequently, by substituting \eqref{eq:rhogas} into \eqref{eq:ptmp}, using \eqref{eq:mx} to write density in terms of mixing ratio, and simplifying yields
+\begin{equation}
+p=\rho^{(d)}\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\rho^{(gas)}\alpha^{(gas)}}\label{eq:ig3},
+\end{equation}
+where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Using \eqref{eq:sum1} to eliminate $\rho^{(gas)}\alpha^{(gas)}$ in \eqref{eq:ig3}, multiplying by $\frac{\rho}{\rho}$, and manipulating the denominator using \eqref{eq:mx}, \eqref{eq:rhosum} and \eqref{eq:rhoalpha} and simplifying  yields 
 \begin{equation}
 p=\rho R^{(d)} T_v\label{eq:igl},
 \end{equation}
@@ -287,11 +314,76 @@ where the virtual temperature is given by
 \begin{equation}
 T_v =T\left[ \frac{1+\frac{1}{\epsilon}m^{(wv)}}{1+m^{(wv)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\left(1-\frac{\alpha^{(\ell)}}{\alpha}\right)}\right].
 \end{equation}
-The ratio of the density of the condensates to the density of moist air are negligible (e.g., the terms $\frac{\alpha^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
+The ratios of the specific volume of the condensates to the total specific volume of moist air are negligible (e.g., the terms $\frac{\alpha^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
 \begin{equation}
-T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right).\label{eq:tv}
+T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right), \text{ if } V^{(\ell)}=0 \text{ for }\ell \in \mathcal{L}_{cond}.\label{eq:tv}
 \end{equation}
+
+%Even though the density of condensates can be $10^{3}$ larger than the density of the gaseous components of air, the fraction of a unit volume occupied by the condensates is negligible, i.e. $\alpha^{(gas)}\rho^{(gas)} \ll \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}$. Henceforth we assume that 
+%\begin{equation}
+%V^{(\ell)}=0, \text{ for }\ell \in \mathcal{L}_{cond}.
+%\end{equation}
+%Using Dalton's law of partial pressures,  the total gas pressure is the sum of the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume) and the partial pressure of water vapor
+%\begin{equation}
+%p=p^{(d)}+p^{(wv)},\label{eq:ig} %=\rho^{(d)} R^{(d)} T+\rho^{(wv)} R^{(wv)} T
+%\end{equation}
+%The ideal gas law for dry air is
+
+
+%e may write \eqref{eq:ig} in terms of $\rho^{(gas)}$ by multiplying \eqref{eq:ig} with $\frac{\rho^{(gas)}}{\rho^{(gas)}}$ and write the equation in terms of mixing ratios
+
+
+%In this section the ideal gas law is derived for moist air containing condensates. Part of that derivation is the definition of virtual temperature. A unit volume of moist air $V=1$ is the sum of the volume of dry air and the volumes of the different forms of water in the air
+%\begin{equation}
+%V=\sum_{\ell \in \mathcal{L}_{all}} V^{(\ell)}.\label{eq:Volumes}
+%\end{equation}
+%Now let $\alpha\equiv \frac{1}{\rho}$ denote the specific volume of moist air, let $\alpha^{(gas)}$ be the specific volume of the gaseous components of moist air (the volume of water vapor and dry air per unit mass of water vapor and dry air), let $\alpha^{(cl)}$ be the specific volume of cloud liquid (i.e. volume occupied by unit mass of cloud liquid), and similarly for cloud ice, rain and snow. Then we can write \eqref{eq:Volumes} in terms of densities and specific volumes
+%\begin{equation}
+%\rho \alpha=\rho^{(gas)}\alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)},\label{eq:massV}
+%\end{equation}
+%where $\rho^{(gas)}=\rho^{(d)}+\rho^{(wv)}$. Note that $\alpha^{(\ell)}\neq \frac{1}{\rho^{(\ell)}}$ since $\rho^{(\ell)}$ is defined in terms mass of $\ell$ per unit volume of moist air and not mass of $\ell$ per unit volume of water phase $\ell$. Dividing \eqref{eq:massV} with $\rho^{(d)}$ and substituting \eqref{eq:mx} yields
+%\begin{equation}
+%  \left(\sum_\ell m^{(\ell)}\right) \alpha = \left( 1+m^{(wv)}\right) \alpha^{(gas)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\alpha^{(\ell)}.\label{eq:vol}
+%\end{equation}
+%The ideal gas law for the gaseous components, using Dalton's law of partial pressures, is
+%\begin{equation}
+%p=p^{(d)}+p^{(wv)}=\rho^{(d)} R^{(d)} T+\rho^{(wv)} R^{(wv)} T,\label{eq:ig}
+%\end{equation}
+%where $p^{(d)}$ is the partial pressure exerted by dry air (the pressure dry air would exert if it alone would occupy the volume) and $p^{(wv)}$ is the partial pressure of water vapor (again, the pressure exerted by water vapor if it alone would occupy the volume). Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). We may write \eqref{eq:ig} in terms of $\rho^{(gas)}$ by multiplying \eqref{eq:ig} with $\frac{\rho^{(gas)}}{\rho^{(gas)}}$ and write the equation in terms of mixing ratios
+%\begin{equation}
+%p=R^{(d)} T\rho^{(gas)}\left( \frac{\rho^{(d)}}{\rho^{(gas)}}+\frac{\rho^{(wv)}}{\rho^{(gas)}}\frac{R^{(wv)}}{R^{(d)}}\right)=\frac{R^{(d)} \rho^{(gas)}T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\left(1+m^{(wv)}\right)}\label{eq:ig2}.
+%\end{equation}
+%where . Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\alpha^{(gas)}$ to get:
+
 \subsection{Thermodynamic equation}\label{sec:teqn}
+The second law of of thermodynamics states
+\begin{equation}
+\delta Q=T\delta s,\label{eq:slt}
+\end{equation}
+where $\delta Q$ is the aount of heat per unit mass that is supplied reversibly to the moist air, and $s$ is specific entropy of moist air. Intrducing specific internal energy $e$ and specific enthalphy $h=e+p\alpha$, the right-hand side of \eqref{eq:slt} can be written as
+\begin{align}
+T\delta s &=\delta e+p\delta \alpha,\\
+          &=\delta h-\alpha \delta p,
+\end{align}
+provided no phase change occurs. For each component
+\begin{equation}
+e^{(\ell)}=c^{(\ell)}_vT \text{ and } h^{(\ell)}=c^{(\ell)}_pT,
+\end{equation}
+where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gaseous components, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ hence $R^{(\ell)}=0$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of theconstituents of moist air,
+\begin{align}
+e&=c_vT, \text{ where } c_v=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
+h&=c_pT, \text{ where } c_p=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},
+\end{align}
+we get
+\begin{equation}
+h-e=p\alpha=RT,
+\end{equation}
+or $p=\rho RT$, where
+\begin{equation}
+R  =\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
+\end{equation}
+
+xxx\\
 The first law of thermodynamics for a mixture of dry air, water vapor, cloud liquid water, cloud ice, rain and snow is given by
 \begin{equation}
 \frac{\sum_{\ell\in \mathcal{L}_{all}} c_{v}^{(\ell)}\, m^{(\ell)}}{\sum_{\ell\in \mathcal{L}_{all}} m^{(\ell)}}\delta T+p\delta \alpha=\delta Q,\label{eq:1stT}
@@ -446,7 +538,7 @@ Note that the energy terms (inside square brackets) in \eqref{eq:comprehensice_e
 \begin{equation}
 \left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
 \end{equation}
-The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and moisture in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which set set to $\tt{.true.}$ in the code.
+The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and water vapor   in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which set set to $\tt{.true.}$ in the code.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -463,7 +555,7 @@ CAM-SE is based on a Lorenz vertical staggering -- the full level prognostic var
 \subsubsection{Pressure}\label{sec:pk}
 The half-level moist pressure is
 \begin{equation}
-p_{k+1/2}=p_t+\sum_{j=1}^{nlev}\Delta M^{(d)}_j \left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right),\label{eq:halfpfull}
+p_{k+1/2}=p_t+\sum_{j=1}^{k}\Delta M^{(d)}_j \left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right),\label{eq:halfpfull}
 \end{equation}
 where $p_t$ is the pressure at the model top, $\eta^{(d)}=0$.
 The full level moist pressure is obtained by averaging \citep{SB1981MWR}
@@ -473,7 +565,7 @@ p_k=\frac{p_{k+1/2}+p_{k-1/2}}{2}.\label{eq:pk}
 \subsubsection{Geopotential height}
 Discretizing \eqref{eq:phi_1} in the vertical yields
 \begin{equation}
-\Phi_{k+1/2}=\Phi_s+R^{(d)}\sum_j \left( \frac{T_k}{p_k}\right)\, \Delta p_j,
+\Phi_{k+1/2}=\Phi_s+R^{(d)}\sum_{j=k}^{nlev} \left[ \frac{(T_v)_j}{p_j}\right]\, \Delta p_j,
 \end{equation}
 where the full pressure $p_k$ is given in \eqref{eq:pk}. The half level geopotential is computed by averaging
 \begin{equation}
@@ -482,11 +574,11 @@ where the full pressure $p_k$ is given in \eqref{eq:pk}. The half level geopoten
 \subsubsection{Vertical pressure velocity}
 The vertical pressure velocity $\omega$ is obtained by discretizing \eqref{eq:omega}. The first term on the right-hand side of \eqref{eq:omega} can be computed by using the continuity equations for dry air mass and water masses in each layer \eqref{E:PEq}
 \begin{equation}
-\frac{\partial }{\partial t}\left[\sum_{j=1}^k \Delta M^{(d)}_j \left( \sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right)\right] = -\sum_{j=1}^k \nabla_{\eta^{(d)}}\cdot \left[ \Delta M^{(d)}_j\left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)} \right)\right],
+\frac{\partial }{\partial t}\left[\sum_{j=1}^k \Delta M^{(d)}_j \left( \sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right)\right] = -\sum_{j=1}^k \nabla_{\eta^{(d)}}\cdot \left[ \Delta M^{(d)}_j\left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)} \right)\vec{v}_j\right],
 \end{equation}
 so that the vertical pressure velocity at half-levels is given by
 \begin{equation}
-\omega_{k+1/2}=-\sum_{j=1}^k \nabla_{\eta^{(d)}}\cdot \left[ \Delta M^{(d)}_j\left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)} \right)\right]+\sum_{j=1}^k \vec{v}_k \cdot \nabla_{\eta^{(d)}}\left[ \Delta M^{(d)}_j\left( \sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right)\right],
+\omega_{k+1/2}=-\sum_{j=1}^k \nabla_{\eta^{(d)}}\cdot \left[ \Delta M^{(d)}_j\left(\sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)} \right)\vec{v}_j \right]+\sum_{j=1}^k \vec{v}_k \cdot \nabla_{\eta^{(d)}}\left[ \Delta M^{(d)}_j\left( \sum_{\ell \in \mathcal{L}_{all}} m_j^{(\ell)}\right)\right],
 \end{equation}
 and full level $\omega$ is
 \begin{equation}
@@ -666,14 +758,14 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
   we get a completely decoupled system of ODEs on  $\Omega_e$,  for each grid-point $(k,l)$ 
   %
   \begin{eqnarray}
-      M^e_{kl}\, \, \frac{d }{dt} \phi^e_{kl}(t) &= &  A^e_{kl}    + S^e_{kl}  \label{eq:se6} \\
-        M^e_{kl}  &=  & \int_{-1}^{1} \int_{-1}^{1} J_e  \, h_k(\xi^1)  \, h_l(\xi^2) \, d\xi^1  d\xi^2 = J_e(k,l) \, w_k \, w_l \\
+      \widetilde M^e_{kl}\, \, \frac{d }{dt} \phi^e_{kl}(t) &= &  A^e_{kl}    + S^e_{kl}  \label{eq:se6} \\
+        \widetilde M^e_{kl}  &=  & \int_{-1}^{1} \int_{-1}^{1} J_e  \, h_k(\xi^1)  \, h_l(\xi^2) \, d\xi^1  d\xi^2 = J_e(k,l) \, w_k \, w_l \\
           A^e_{kl}  &=  & \sum_{i=0}^N  J^{(1)}_e(i,l) \,  F^1_{i l} \, D_{ik}^{(1)}\, w_i  w_l  +
            \sum_{i=0}^N  J^{(2)}_e(k, i) \,  F^2_{k i} \, D_{l i}^{(2)} \, w_k  w_i \\
            S^e_{kl}  &=   &J_e(k,l) \, w_k w_l  \, S(U_{kl})
   \end{eqnarray}  
   %
-  %where $  M^e_{kl}$ is the so-called  mass matrix, $(F^1,F^2) = \mathbf{F}$  are  the  flux terms, 
+  %where $  \widetilde M^e_{kl}$ is the so-called  mass matrix, $(F^1,F^2) = \mathbf{F}$  are  the  flux terms, 
    where $J^{(i)}_e = J_e \,\partial \xi^i / \partial x^i$ is the metric term  and 
    $D^{(i)}_{lk}$ is the  derivative matrix $h'_k(\xi^i_l)$, 
   along the $x^i$-direction and  $ i \in \{1,  2\}$.  The ODEs  (\ref{eq:se6}) can be written in a formal matrix-vector form
@@ -681,10 +773,10 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
   \cite{KS2013book}: 
   %
  \begin{equation}
-    \mathbf{M}^e\, \, \frac{d }{dt} \Phi^e =   \mathbf{A}^e    + \mathbf{S}^e + \mathbf{B}^e,  \label{eq:se7} 
+    \widetilde{\mathbf{M}}^e\, \, \frac{d }{dt} \Phi^e =   \mathbf{A}^e    + \mathbf{S}^e + \mathbf{B}^e,  \label{eq:se7} 
  \end{equation}
       %
-      where $\mathbf{M}^e$ is the  so-called mass matrix,  which  is a diagonal  matrix with entries $M^e_{kl}$.    $\mathbf{B}^e$
+      where $\widetilde{\mathbf{M}}^e$ is the  so-called mass matrix,  which  is a diagonal  matrix with entries $\widetilde M^e_{kl}$.    $\mathbf{B}^e$
   indicates the boundary terms for the element 
   $\Omega_e$, which is a key component linking  the local and global problem (\ref{eq:se3}) and enforcing $C^0$ continuity
   for solutions across element boundaries.  
@@ -725,17 +817,18 @@ The momentum, thermodynamic and dry air continuity equations are solved using a 
 
 {\color{red}{[Mark: How is tracer advection coupled to dry air continuity equation??]}} 
 
-The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}}, {\tt{se\_rsplit}},
+The time-steps in CAM-SE are controlled with namelist variables {\tt{se\_nsplit}}, {\tt{se\_rsplit}}, {\tt{se\_qsplit}},
 {\tt{se\_hypervis\_subcycle}}  so that the time-steps for vertical remapping $\Delta t_{remap}$, tracer advection $\Delta t_{trac}$ (RK3), RK5 time-stepping for non-tracers $\Delta t_{dyn}$, and hyperviscosity $\Delta t_{hyper}$ are
 \begin{align}
 \Delta t_{remap}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit}},\\
-\Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}},\\
-\Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}},\\
+\Delta t_{tracer}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit}*\tt{se\_qsplit}},\\
+\Delta t_{dyn}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit}*\tt{se\_qsplit}},\\
+\Delta t_{hyper}&=\frac{\Delta t_{phys}}{\tt{se\_nsplit*se\_rsplit*se\_hypervis\_subcycle}*\tt{se\_qsplit}},\\
 \end{align}
 where $\Delta t_{phys}$ is the time-step used for computing physics tendencies. For the $1^\circ$ configuration ($N_e=30$, $N_p=4$ where $N_e$ is the number of elements in each coordinate direction on a panel and $N_p$ is the number of quadrature points along each coordinate direction in an element) the physics time-step is $\Delta t_{phys}=30 min$, and the subcycling parameters are {\tt{se\_nsplit}=2}, {\tt{se\_rsplit=3}} and {\tt{se\_hypervis\_subcycle=3}}. See Table \ref{table:subc} for other resolutions.
 
  \begin{table}
- \caption{The table shows physics time-step (column 3), sub-cycling parameters (columns 4-6) as a function of resolution (column 1-2). The horizontal resolution is specified in the format $ne30np4$ which refers to $N_e=30$ and $N_p=4$; similar for other resolutions.  $N_e=0$ denotes a variable-resolution configuration. The approximate average quadrature node spacing at the Equator, $\Delta x_{ave}$ (in kilometers), is also listed (column 2).}
+ \caption{The table shows physics time-step (column 3), sub-cycling parameters (columns 4-6) as a function of resolution (column 1-2). The horizontal resolution is specified in the format $ne30np4$ which refers to $N_e=30$ and $N_p=4$; similar for other resolutions.  $N_e=0$ denotes a variable-resolution configuration. The approximate average quadrature node spacing at the Equator, $\Delta x_{ave}$ (in kilometers), is also listed (column 2). For all configurations presented in this papper {\tt{se\_qsplit}}=1.}
  \centering
  \begin{tabular}{llcccc}
  \hline
@@ -760,7 +853,7 @@ CAM-SE uses a time-split approach in which dynamics advances the model state and
 \subsubsection{`ftype=0' configuration (default)}
 In this case, compute the physics tendencies and add $\Delta t_{remap}F_X$ to the state of $X$, advance the dynamics $\Delta t_{remap}$ seconds based on the updated state, add $\Delta t_{remap}F_X$ to the dynamics updated state of $X$ and advance the dynamics core, and so on. In other words, the forcing is split into $\frac{\Delta t_{phys}}{\Delta_{remap}}$ equal chunks and added throughout the dynamics. The `ftype=0'-option is used by default in CAM-SE and used for all simulations presented in this paper.
 
-The CAM parameterization package returns mixing ratio tendencies for tracers. We convert the mixing ratio tendencies to mass tendencies $F_x \Delta M^{(d)}_k$ since the prognostic variable for tracers in the dynamical core is $\Delta p_k m^{(d)}_k$.
+The CAM parameterization package returns mixing ratio tendencies for tracers. We convert the mixing ratio tendencies to mass tendencies $F_x \Delta M^{(d)}_k$ since the prognostic variable for tracers in the dynamical core is $\Delta M_k m^{(d)}_k$.
 
 Generally modelers do not allow the tracer tendencies to drive the mixing ratio of tracers negative, however, this may happen using `ftype=0'. If the tendency drives a mixing ratio negative, the mixing ratio is set to zero. In this case, only a fraction of the entire tracer tendency is added, leading to an inconsistency in how much mass the physics package wants to remove and the amount of tracer mass actually removed in the physics-dynamics coupling code in the dynamical core.
 \subsubsection{`ftype=1' configuration}
@@ -796,7 +889,7 @@ where we have substituted the ideal gas law and used $\left( \frac{1}{1+m^{(wv)}
 \begin{equation}
 \frac{1}{g}{M}^{(d)}(\varphi,z)=p_t-\int_z^{z_t}\frac{p(\varphi,z)}{R^{(d)} T_v(\varphi,z)}\left(1-q^{(wv)}(\varphi,z)\right) dz,\label{eq:Upd}
 \end{equation}
-where $z_t$ is the height of the model top computed by iteratively solving \eqref{eq:baroPmoist} with $p(\varphi,z)=p_t$ (assuming there is no moisture above the model top). To initialize the dry mass levels $M^{(d)}_s$ is needed. It is computed by integrating \eqref{eq:Upd} with lower integral bound $z=z_s=0\, m$ and approximating the integral using 20 point Gaussian quadrature. The dry air mass hydrostatic pressure is shown on Figure \ref{fig:baro_init}. The full dry-mass levels are given in terms of the hybrid coefficients ${M_k^{(d)}}(\varphi,z_k)=A_k p_t+B_k {M_s^{(d)}}(\varphi,z_k)$. The height, $z_{k}(\varphi)$, of the full dry-mass levels are computed by iteratively solving \eqref{eq:Upd} with ${M}^{(d)}(\varphi,z)={M}_{k}^{(d)}(\varphi,z_k)$. Once the heights are known the virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$ as is done for the moist vertical coordinate initialization. If we do the same for specific humidity then the moist surface pressure (which is a diagnostic when using dry-mass vertical coordinates) deviates more than 1 Pa in the tropics from the analytical value of 1000hPa  (see Figure \ref{fig:baro_init}). As a result a spurious zonal signal in surface pressure with the same amplitude as the initial gravity waves appears in the simulations. Hence specific humidity must be initialized more carefully in order to obtain a more balanced initial condition which is discussed in the next paragraph. 
+where $z_t$ is the height of the model top computed by iteratively solving \eqref{eq:baroPmoist} with $p(\varphi,z)=p_t$ (assuming there is no moisture above the model top). To initialize the dry mass levels $M^{(d)}_s$ is needed. It is computed by integrating \eqref{eq:Upd} with lower integral bound $z=z_s=0\, m$ and approximating the integral using 20 point Gaussian quadrature (high-order quadrature is necessary to reduce integral errors). The dry air mass hydrostatic pressure is shown on Figure \ref{fig:baro_init}. The full dry-mass levels are given in terms of the hybrid coefficients ${M_k^{(d)}}(\varphi)=A_k p_t+B_k {M_s^{(d)}}(\varphi)$. The height, $z_{k}(\varphi)$, of the full dry-mass levels are computed by iteratively solving \eqref{eq:Upd} with ${M}^{(d)}(\varphi,z_k)={M}_{k}^{(d)}(\varphi)$. Once the heights are known the virtual temperature and velocity components can be computed by evaluating the analytical expressions at $(\varphi,z_k)$ as is done for the moist vertical coordinate initialization. If we do the same for specific humidity then the moist surface pressure (which is a diagnostic when using dry-mass vertical coordinates) deviates more than 1 Pa in the tropics from the analytical value of 1000hPa  (see Figure \ref{fig:baro_init}). As a result a spurious zonal signal in surface pressure with the same amplitude as the initial gravity waves appears in the simulations. Hence specific humidity must be initialized more carefully in order to obtain a more balanced initial condition which is discussed in the next paragraph. 
 
 As for $M^{(d)}$, the weight of water vapor $\frac{1}{g}M^{(wv)}$ per unit area can be written as
 \begin{equation}
@@ -815,7 +908,7 @@ Using this method for initializing the mixing ratio for water vapor the moist su
 \begin{figure}[h]
 \centering
 \includegraphics[width=20pc]{figs/01_baro_init.pdf}
-\caption{(Upper) Zonally averaged dry (orange) and moist (blue) surface pressure as a function of latitude for the numerically computed initial condition for the moist baroclinic wave at $1^{\circ}$ horizontal resolution and 30 levels (CAM5 configuration). Due to increased water vapor towards the Equator the dry mass decreases whereas the moist surface pressure is constant. (lower) Same as the upper plot but showing moist surface pressure where water vapor has been initialized by evaluating the analytic specific humidity formula at full levels (purple) and initializing the mixing ratio for water vapor in terms of moist and dry mass coordinates at half levels which effectively integrates humidity over the layer (blue). Note that the upper and lower plots have different scales on the $y$-axis.}
+\caption{(Upper) Zonally averaged dry (orange) and moist (blue) surface pressure as a function of latitude for the numerically computed initial condition for the moist baroclinic wave. Due to increased water vapor towards the Equator the dry mass decreases whereas the moist surface pressure is constant. (lower) Same as the upper plot but showing moist surface pressure where water vapor has been initialized by evaluating the analytic specific humidity formula at full levels (purple) and initializing the mixing ratio for water vapor in terms of moist and dry mass coordinates at half levels which effectively integrates humidity over the layer (blue). The lower plot uses 30 levels (CAM5). Note that the upper and lower plots have different scales on the $y$-axis.}
 \label{fig:baro_init}
 \end{figure}
 
@@ -1053,7 +1146,7 @@ Thus the discretization of the Laplacian for SE method can be obtained by simpli
    Further simplification of (\ref{eq:Lap0})  leads to 
  %
    \begin{equation}
-     L^e_{kl} =  - ( M^e_{kl})^{-1} \left[ 
+     L^e_{kl} =  - ( \widetilde M^e_{kl})^{-1} \left[ 
            \sum_{i=0}^N  J^{(1)}_e(i,l) \,  \tilde{F}^1_{i l} \, D_{ik}^{(1)}\, w_i  w_l  +
            \sum_{i=0}^N  J^{(2)}_e(k, i) \,  \tilde{F}^2_{k i} \, D_{l i}^{(2)} \, w_k  w_i  \right], 
            \label{eq:Lap1}
@@ -1121,8 +1214,9 @@ and
 \end{equation}
 Then use the resulting change in hydrostatic dry air mass pressure at the surface to determine the reference values for dry-mass thicknesses
 \begin{equation}
-\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}_k=\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k+\left( \frac{\partial B}{\partial \eta^{(d)}}\right)_k\left[ \left( M^{(d)}_s \right)^{(ref)}-\langle M^{(d)}_s \rangle \right].
+\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}_k=\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k+\left( \frac{\partial B}{\partial \eta^{(d)}}\right)_k\left[ \left( M^{(d)}_s \right)^{(ref)}-\langle M^{(d)}_s \rangle \right],
 \end{equation}
+where $B$ is the hydrid coefficient.
 %
 %
 % 
