@@ -318,6 +318,7 @@ The ratios of the specific volume of the condensates to the total specific volum
 \begin{equation}
 T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right), \text{ if } V^{(\ell)}=0 \text{ for }\ell \in \mathcal{L}_{cond}.\label{eq:tv}
 \end{equation}
+Henceforth we assume that the volume of condensates is negligible compared to the gaseous components of air.
 
 %Even though the density of condensates can be $10^{3}$ larger than the density of the gaseous components of air, the fraction of a unit volume occupied by the condensates is negligible, i.e. $\alpha^{(gas)}\rho^{(gas)} \ll \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}$. Henceforth we assume that 
 %\begin{equation}
@@ -360,66 +361,80 @@ The second law of of thermodynamics states
 \begin{equation}
 \delta Q=T\delta s,\label{eq:slt}
 \end{equation}
-where $\delta Q$ is the aount of heat per unit mass that is supplied reversibly to the moist air, and $s$ is specific entropy of moist air. Intrducing specific internal energy $e$ and specific enthalphy $h=e+p\alpha$, the right-hand side of \eqref{eq:slt} can be written as
+where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, and $s$ is specific entropy of moist air. Introducing specific internal energy $e$ and specific enthalphy $h=e+p\alpha$, the right-hand side of \eqref{eq:slt} can be written as
 \begin{align}
 T\delta s &=\delta e+p\delta \alpha,\\
           &=\delta h-\alpha \delta p,
 \end{align}
 provided no phase change occurs. For each component
-\begin{equation}
-e^{(\ell)}=c^{(\ell)}_vT \text{ and } h^{(\ell)}=c^{(\ell)}_pT,
-\end{equation}
-where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gaseous components, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ hence $R^{(\ell)}=0$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of theconstituents of moist air,
 \begin{align}
-e&=c_vT, \text{ where } c_v=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
-h&=c_pT, \text{ where } c_p=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},
+e^{(\ell)}&=c^{(\ell)}_vT,\\
+h^{(\ell)}&=c^{(\ell)}_pT,
+\end{align}
+where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gaseous components, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ hence $R^{(\ell)}=0$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of the constituents of moist air,
+\begin{align}
+e&=c_vT,\\
+h&=c_pT,
+\end{align}
+where
+\begin{align}
+c_v=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
+c_p=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:cp}
 \end{align}
 we get
 \begin{equation}
 h-e=p\alpha=RT,
 \end{equation}
-or $p=\rho RT$, where
+where
 \begin{equation}
 R  =\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
 \end{equation}
-
-xxx\\
-The first law of thermodynamics for a mixture of dry air, water vapor, cloud liquid water, cloud ice, rain and snow is given by
+With the above definition of mass-weighted heat capacity and gas constant, the thermodynamic equation can be written as
 \begin{equation}
-\frac{\sum_{\ell\in \mathcal{L}_{all}} c_{v}^{(\ell)}\, m^{(\ell)}}{\sum_{\ell\in \mathcal{L}_{all}} m^{(\ell)}}\delta T+p\delta \alpha=\delta Q,\label{eq:1stT}
+\delta T-\frac{1}{\rho\, c_p}\delta p=\frac{1}{c_p}\delta Q.\label{eq:thermo2}
 \end{equation}
-where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, $\delta T$ and $\delta \alpha$ are the moist air temperature and specific volume changes, and $c_v^{(\ell)}$ is the heat capacity at constant volume for component $\ell$ of moist air. Note that
-\begin{eqnarray}
-\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)p\delta \alpha &=& p \delta \left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\alpha  \right],\label{eq:pdalpha}\\
-                                       &=& (1+m^{(wv)})p\delta \alpha^{(gas)},\label{eq:pdalpha2}\\
-                                       &=& \left(R^{(d)}+m^{(wv)}R^{(wv)}\right)\left(\delta T-\frac{T}{p}\delta p\right)\label{eq:dt}.
-\end{eqnarray}
-where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that the condensates are incompressible ($\delta \alpha^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$). Finally \eqref{eq:ig3} has been used to substitute for $\alpha^{(gas)}$ in \eqref{eq:dt}.
-Using \eqref{eq:dt} in the first law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_p^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
-\begin{equation}
-\delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\delta Q.\label{eq:thermo1}
-\end{equation}
-Equation \eqref{eq:thermo1} can be written in a more familiar form
-\begin{equation}
-\delta T-\frac{R}{c_p}\frac{T}{p}\delta p=\frac{1}{c_p}\delta Q\label{eq:thermo},
-\end{equation}
-if we define $c_p$ and $R$ as
-\begin{eqnarray}
-c_p&=&\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:cp} \\
-R  &=&\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
-\end{eqnarray}
-where $R^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$. Note that with these definitions of $c_p$ and $R$ the ideal gas law can be written as
+The ideal gas law can be written as \citep[which is consistent with equation 7.1 in ][]{B2003JAS}
 \begin{equation}
 p=\rho R T,\label{eq:ig4}
+\end{equation}
+where
+\begin{equation}
+p=\rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T,
 \end{equation}
 and 
 \begin{equation}
 c_p=R+c_v.
 \end{equation}
-The thermodynamic equation \eqref{eq:thermo} may also be written in terms of full density
-\begin{equation}
-\delta T-\frac{1}{\rho\, c_p}\delta p=\frac{1}{c_p}\delta Q\label{eq:thermo2}.
-\end{equation}
+%The first law of thermodynamics for a mixture of dry air, water vapor, cloud liquid water, cloud ice, rain and snow is given by
+%\begin{equation}
+%\frac{\sum_{\ell\in \mathcal{L}_{all}} c_{v}^{(\ell)}\, m^{(\ell)}}{\sum_{\ell\in \mathcal{L}_{all}} m^{(\ell)}}\delta T+p\delta \alpha=\delta Q,\label{eq:1stT}
+%\end{equation}
+%where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, $\delta T$ and $\delta \alpha$ are the moist air temperature and specific volume changes, and $c_v^{(\ell)}$ is the heat capacity at constant volume for component $\ell$ of moist air. Note that
+%\begin{eqnarray}
+%\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)p\delta \alpha &=& p \delta \left[ \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\alpha  \right],\label{eq:pdalpha}\\
+%                                       &=& (1+m^{(wv)})p\delta \alpha^{(gas)},\label{eq:pdalpha2}\\
+%                                       &=& \left(R^{(d)}+m^{(wv)}R^{(wv)}\right)\left(\delta T-\frac{T}{p}\delta p\right)\label{eq:dt}.
+%\end{eqnarray}
+%where, in \eqref{eq:pdalpha}, we have assumed that $m^{(\ell)}$ is constant. To get \eqref{eq:pdalpha2} we substituted \eqref{eq:vol} into the right-hand side of \eqref{eq:pdalpha} and assumed that the condensates are incompressible ($\delta \alpha^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$). Finally \eqref{eq:ig3} has been used to substitute for $\alpha^{(gas)}$ in \eqref{eq:dt}.
+%Using \eqref{eq:dt} in the first law of thermodynamics \eqref{eq:1stT}, substituting $R^{(d)}=c_p^{(d)}-c_v^{(d)}$ and $R^{(wv)}=c_p^{(wv)}-c_{v}^{(wv)}$, using that $c_p^{(\ell)}=c^{(\ell)}_v$ for the condensates (they are incompressible) and rearranging terms yields
+%\begin{equation}
+%\delta T-\frac{\left(R^{(d)}+m^{(wv)}R^{(wv)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\frac{T}{p}\delta p=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)}{\left(\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}\right)}\delta Q.\label{eq:thermo1}
+%\end{equation}
+%Equation \eqref{eq:thermo1} can be written in a more familiar form
+%\begin{equation}
+%\delta T-\frac{R}{c_p}\frac{T}{p}\delta p=\frac{1}{c_p}\delta Q\label{eq:thermo},
+%\end{equation}
+%if we define $c_p$ and $R$ as
+%\begin{eqnarray}
+%c_p&=&\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}, \\
+%R  &=&\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
+%\end{eqnarray}
+%where $R^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$. %%
+%
+%The thermodynamic equation \eqref{eq:thermo} may also be written in terms of full density
+%\begin{equation}
+%\delta T-\frac{1}{\rho\, c_p}\delta p=\frac{1}{c_p}\delta Q
+%\end{equation}
 %
 \subsection{Vertical coordinate}\label{eq:vertical_coord}
 \subsubsection{Definition}
