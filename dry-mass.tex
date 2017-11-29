@@ -550,9 +550,13 @@ The total energy equation integrated over the global domain is also derived in A
 \end{equation}
 Note that the energy terms (inside square brackets) in \eqref{eq:comprehensice_energy} separate into contributions from each component of moist air
 \begin{equation}
-\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].
+\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\sum_{\ell \in \mathcal{L}_{all}} \left[ m^{(\ell)}\left(K+c_p^{(\ell)}T+\Phi_s\right)\right].\label{eq:eterms}
 \end{equation}
-The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES}. In other words, the CAM energy fixer uses a dry total energy where the heat capacity for dry air is used for water vapor. The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and water vapor   in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which set set to $\tt{.true.}$ in the code.
+The total energy equation \eqref{eq:comprehensice_energy} shows that the equations of motion used in this paper conserve a moist total energy that includes condensates. That said, the CAM physics package energy fixer assumes that the `perfect' adiabatic dynamical core conserves an energy where $c_p^{(wv)}= c_p^{(d)}$, $c_p^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ and $m^{(\ell)}=0$ for $\ell\in \mathcal{L}_{cond}$ in \eqref{eq:comprehensice_energy} \citep{WOHTTV2015JAMES} in which case \eqref{eq:eterms} becomes
+\begin{equation}
+\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\left(1+m^{(wv)}\right)\left[ \left(K+c_p^{(d)}T+\Phi_s\right)\right].
+\end{equation}
+The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and water vapor   in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which set set to $\tt{.true.}$ in the code.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
