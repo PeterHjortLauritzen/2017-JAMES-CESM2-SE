@@ -1294,8 +1294,8 @@ The following hyperviscosity coefficients are used in CAM-SE:
 \begin{align}
 %\nu_T = \nu_{vor} &= 0.2\times \left(\frac{9\times 10^6}{N_e (N_p-1)}\right)^3\, \frac{m^4}{s},\\
 %\nu_p = \nu_{div} &= 1.0\times \left(\frac{9\times 10^6}{N_e (N_p-1)}\right)^3\, \frac{m^4}{s},
-\nu_T = \nu_{vor} &= 0.751\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},\\
-\nu_p = \nu_{div} &= 0.150\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},
+\nu_T = \nu_{vor} &= 0.150\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},\\
+\nu_p = \nu_{div} &= 0.751\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},
 \end{align}
 where $N_e=30$ and $N_e=120$ for the $1^\circ$ and $1/4^{\circ}$ horizontal resolution configurations. Note that mass-wind consistency may be violated if $\nu_p \neq \nu_{div}$. The term inside the parenthesis is the average grid spacing in kilometers and the scaling with resolution is what is used with MPAS \citep[Model for Prediction Across Scales; ][]{SPKS2014JAS}. The damping of temperature and vorticity in CAM-SE is similar to the damping in MPAS, i.e. MPAS uses a coefficient of 0.05 in front of the $(\cdot)^3$ term and CAM-SE uses 0.751.
 
