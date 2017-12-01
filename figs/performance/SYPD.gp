@@ -17,4 +17,4 @@ set key left Left reverse
 #set xrange [0:5400]
 set yrange [0:60]
 #set xtics ("0" 0,"1" 1000,"2" 2000,"3" 3000,"4" 4000,"5" 5000,"6" 6000)
-plot se(x) lw 2 notitle,homme(x) lw 2 notitle,'perf.dat' u 2:3 w p pt 7 lw 2 ps 1 title 'CAM-SE', 'perf.dat' u 2:4 w p pt 8 lw 2 ps 1 title 'CAM-HOMME'
+plot se(x) lw 4 notitle,homme(x) lw 4 notitle,'perf.dat' u 2:3 w p pt 7 lw 2 ps 1 title 'CAM-SE', 'perf.dat' u 2:4 w p pt 8 lw 2 ps 1 title 'CAM-HOMME'
