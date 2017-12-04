@@ -256,68 +256,88 @@ q^{(\ell)}&=\frac{m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
 Note that if water vapor undergoes a phase change to rain and leaves the column, then the specific/wet mixing ratios change but the dry mixing ratios do not.
 %
 \subsection{Ideal gas law and virtual temperature}\label{sec:tv}
+%In this section, the ideal gas law is derived for moist air containing condensates. In a parcel of moist air
+%of volume $V$, the condensed phases occupy volumes $V^{(\ell)}$ with $\ell \in \mathcal{L}_{cond}$. Dry air and pure water vapor are
+%assumed to be ideal perfect gases, and the gaseous part of moist air is assumed to be a perfect mixture of
+%those gases. Therefore it is possible to assign a volume $V^{(d)}$ to dry air and $V^{(wv)}$ to water vapor, in proportion
+%to their respective number of molecules. The total volume is $V=\sum_{\ell \in \mathcal{L}_{all}}V^{(\ell)}$. Now let 
+%\begin{equation}
+%\alpha^{(\ell)}\equiv \frac{V^{(\ell)}}{V\, \rho^{(\ell)}},
+%\end{equation}
+%be the specific volume of each phase or component considered separately, let
+%\begin{equation}
+%\alpha^{(gas)}\equiv \frac{ V^{(d)} + V^{(wv)}}{V \left( \rho^{(d)} + \rho^{(wv)}\right)},
+%\end{equation}
+%be the specific volume of the gaseous phase considered separately from the condensed phases, and let
+%\begin{equation}
+%\alpha\equiv \frac{1}{\rho},\label{eq:rhoalpha}
+%\end{equation}
+%be the total specific volume. Also, note that
+%\begin{equation}
+%\label{eq:sum1}
+%1 = \sum_{\ell \in \mathcal{L}_{(all)}} \rho^{(\ell)}\alpha^{(\ell)} = \alpha^{(gas)}\rho^{(gas)} + \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}.
+%\end{equation}
+
 In this section, the ideal gas law is derived for moist air containing condensates. In a parcel of moist air
-of volume $V$, the condensed phases occupy volumes $V^{(\ell)}$ with $\ell \in \mathcal{L}_{cond}$. Dry air and pure water vapor are
-assumed to be ideal perfect gases, and the gaseous part of moist air is assumed to be a perfect mixture of
-those gases. Therefore it is possible to assign a volume $V^{(d)}$ to dry air and $V^{(wv)}$ to water vapor, in proportion
-to their respective number of molecules. The total volume is $V=\sum_{\ell \in \mathcal{L}_{all}}V^{(\ell)}$. Now let 
+of volume $V$, the gaseous components of moist air (dry air and water vapor) occupy volume $V^{(gas)}$ and the the condensed phases occupy volume $v^{(cond)}=V-V^{(gas)}$. The ideal gas law applies to the gaseous component of air only. In that case, the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume)
 \begin{equation}
-\alpha^{(\ell)}\equiv \frac{V^{(\ell)}}{V\, \rho^{(\ell)}},
+p^{(d)}V^{(gas)}=N^{(d)}k_B T,
 \end{equation}
-be the specific volume of each phase or component considered separately, let
-\begin{equation}
-\alpha^{(gas)}\equiv \frac{ V^{(d)} + V^{(wv)}}{V \left( \rho^{(d)} + \rho^{(wv)}\right)},
-\end{equation}
-be the specific volume of the gaseous phase considered separately from the condensed phases, and let
-\begin{equation}
-\alpha\equiv \frac{1}{\rho},\label{eq:rhoalpha}
-\end{equation}
-be the total specific volume. Also, note that
-\begin{equation}
-\label{eq:sum1}
-1 = \sum_{\ell \in \mathcal{L}_{(all)}} \rho^{(\ell)}\alpha^{(\ell)} = \alpha^{(gas)}\rho^{(gas)} + \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}.
-\end{equation}
-The ideal gas law applies to the gaseous component of air only. In that case, the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume)
-\begin{equation}
-p^{(d)}V^{(gas)}=N^{(d)}N_A T,
-\end{equation}
-where $N_A$ is Avogadro's number and $N^{(d)}$ is the number of molecules of dry air. Now
+where $k_B$ is the Boltzmann constant and $N^{(d)}$ is the number of molecules of dry air. Now
 \begin{equation}
 N^{(d)}=\frac{V \rho^{(d)}}{\mathcal{M}^{(d)}},
 \end{equation}
-where $\mathcal{M}^{(d)}$ is the molar mass of dry air. Then the ideal gas law for the partial pressure of dry air can be written as
+where $\mathcal{M}^{(d)}$ is the molar mass of dry air, so the ideal gas law for the partial pressure of dry air can be written as
 \begin{equation}
 p^{(d)}V^{(gas)}=V\rho^{(d)}R^{(d)}T,
 \end{equation}
-where $R^{(d)}\equiv \frac{N_A}{\mathcal{M}^{(d)}}$ is the dry air gas constant. Similarly for the partial pressure of water vapor:
+where $R^{(d)}\equiv \frac{k_B}{\mathcal{M}^{(d)}}$ is the dry air gas constant. Similarly for the partial pressure of water vapor:
 \begin{equation}
 p^{(wv)}V^{(gas)}=V\rho^{(vw)}R^{(vw)}T,
 \end{equation}
-where $R^{(wv)}\equiv \frac{N_A}{\mathcal{M}^{(wv)}}$ is the gas constant for water vapor. According to Dalton's law of partial pressures, the total pressure exerted is equal to the sum of the partial pressures of the individual gases:
+where $R^{(wv)}\equiv \frac{k_B}{\mathcal{M}^{(wv)}}$ is the gas constant for water vapor. According to Dalton's law of partial pressures, the total pressure exerted is equal to the sum of the partial pressures of the individual gases:
 \begin{equation}
 \label{eq:ptmp}
 p=\frac{V}{V^{(gas)}}\left( \rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T\right).
 \end{equation}
-Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). Now $\rho^{(\ell)}\alpha^{(\ell)}$ is the volume fraction $\frac{V^{(\ell)}}{V}$, especially:
+Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). Moving $T$, $R^{(d)}$ and $\rho^{(d)}$ outside the parenthesis on the right-hand side of \eqref{eq:ptmp} yields
 \begin{equation}
-\rho^{(gas)}\alpha^{(gas)}=\frac{V^{(gas)}}{V}.\label{eq:rhogas}
+\label{eq:ptmp2}
+p=\frac{V}{V^{(gas)}}\rho^{(d)}R^{(d)}\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)T,
 \end{equation}
-Consequently, by substituting \eqref{eq:rhogas} into \eqref{eq:ptmp}, using \eqref{eq:mx} to write density in terms of mixing ratio, and simplifying yields
+where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Multiplying \eqref{eq:ptmp2} with $\rho/\rho$ and simplifying using \eqref{eq:mx}, and \eqref{eq:rhosum} yields
 \begin{equation}
-p=\rho^{(d)}\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\rho^{(gas)}\alpha^{(gas)}}\label{eq:ig3},
+\label{eq:ptmp3}
+p=\frac{V}{V^{(gas)}}\rho R^{(d)}\left(\frac{ 1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right)T,
 \end{equation}
-where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Using \eqref{eq:sum1} to eliminate $\rho^{(gas)}\alpha^{(gas)}$ in \eqref{eq:ig3}, multiplying by $\frac{\rho}{\rho}$, and manipulating the denominator using \eqref{eq:mx}, \eqref{eq:rhosum} and \eqref{eq:rhoalpha} and simplifying  yields 
+By defining the virtual temperature
 \begin{equation}
-p=\rho R^{(d)} T_v\label{eq:igl},
+T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right),\label{eq:tv}
 \end{equation}
-where the virtual temperature is given by
+and assuming that the volume of the condensates is zero $V=V^{(gas)}$ then \eqref{eq:ptmp3} can be written as
 \begin{equation}
-T_v =T\left[ \frac{1+\frac{1}{\epsilon}m^{(wv)}}{1+m^{(wv)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\left(1-\frac{\alpha^{(\ell)}}{\alpha}\right)}\right].
+p=\rho R^{(d)} T_v\label{eq:igl}.
 \end{equation}
-The ratios of the specific volume of the condensates to the total specific volume of moist air are negligible (e.g., the terms $\frac{\alpha^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
-\begin{equation}
-T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right), \text{ if } V^{(\ell)}=0 \text{ for }\ell \in \mathcal{L}_{cond}.\label{eq:tv}
-\end{equation}
+%
+%Now $\rho^{(\ell)}\alpha^{(\ell)}$ is the volume fraction $\frac{V^{(\ell)}}{V}$, especially:
+%\begin{equation}
+%\rho^{(gas)}\alpha^{(gas)}=\frac{V^{(gas)}}{V}.\label{eq:rhogas}
+%\end{equation}
+%Consequently, by substituting \eqref{eq:rhogas} into \eqref{eq:ptmp}, using \eqref{eq:mx} to write density in terms of mixing ratio, and simplifying yields
+%\begin{equation}
+%p=\rho^{(d)}\frac{R^{(d)} T\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)}{\rho^{(gas)}\alpha^{(gas)}}\label{eq:ig3},
+%\end{equation}
+%where $\epsilon\equiv \frac{R^{(d)}}{R^{(wv)}}$. Using \eqref{eq:sum1} to eliminate $\rho^{(gas)}\alpha^{(gas)}$ in \eqref{eq:ig3}, 
+%Multiplying by $\frac{\rho}{\rho}$, and manipulating the denominator using \eqref{eq:mx}, and \eqref{eq:rhosum}, and simplifying  yields 
+%
+%where the virtual temperature is given by
+%\begin{equation}
+%T_v =T\left[ \frac{1+\frac{1}{\epsilon}m^{(wv)}}{1+m^{(wv)}+\sum_{\ell\in \mathcal{L}_{cond}}m^{(\ell)}\left(1-\frac{\alpha^{(\ell)}}{\alpha}\right)}\right].
+%\end{equation}
+%The ratios of the specific volume of the condensates to the total specific volume of moist air are negligible (e.g., the terms $\frac{\alpha^{(\ell)}}{\alpha}$ are of order $10^{-3}$ or less) hence the formula for virtual temperature is simplified to
+%\begin{equation}
+%T_v =T\left( \frac{1+\frac{1}{\epsilon}m^{(wv)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right), \text{ if } V^{(\ell)}=0 \text{ for }\ell \in \mathcal{L}_{cond}.\label{eq:tv}
+%\end{equation}
 
 
 %Even though the density of condensates can be $10^{3}$ larger than the density of the gaseous components of air, the fraction of a unit volume occupied by the condensates is negligible, i.e. $\alpha^{(gas)}\rho^{(gas)} \ll \sum_{\ell \in \mathcal{L}_{cond}}\rho^{(\ell)}\alpha^{(\ell)}$. Henceforth we assume that 
@@ -375,7 +395,7 @@ provided no phase change occurs. For each component
 e^{(\ell)}&=c^{(\ell)}_vT,\\
 h^{(\ell)}&=c^{(\ell)}_pT+\alpha^{(\ell)}_0p,
 \end{align}
-where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gas phases, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$ and $\alpha^{(\ell)}$=0, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ (hence $R^{(\ell)}=0$) and $\alpha^{(\ell)}$ is the constant specific volume of condensate phase $\ell$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of the constituents of moist air,
+where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gas phases, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$ and $\alpha_0^{(\ell)}$=0, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ (hence $R^{(\ell)}=0$) and $\alpha_0^{(\ell)}$ is the constant specific volume of condensate phase $\ell$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of the constituents of moist air,
 \begin{align}
 e&=c_vT,\label{eq:e}\\
 h&=c_pT+\left(\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right) p\label{eq:h},
@@ -396,7 +416,7 @@ R  =\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \i
 \end{equation}
 Note that $c_p=R+c_v$. Using that $V-V^{(cond)}=V^{(gas)}$ we get
 \begin{equation}
-\frac{RT}{p}=\frac{V^{(gas)}}{\sum m^{(\ell)}}
+\frac{RT}{p}=\frac{V^{(gas)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}
 \end{equation}
 which is precisely \eqref{eq:ptmp} since
 \begin{align}
@@ -416,15 +436,7 @@ and when using \eqref{eq:plall} we finally get
 \end{equation}
 If we assume that the condensates do not occupy any volume then \eqref{eq:thermo1} can be written as
 \begin{equation}
-\delta T-\frac{1}{c_p\, \rho}\delta p=\frac{\delta Q}{c_p},\text{ if }V^{(cond)}=0,\label{eq:thermo2}
-\end{equation}
-and
-\begin{equation}
-p=\rho R T,\text{ if }V^{(cond)=0},\label{eq:ig4}
-\end{equation}
-since
-\begin{equation}
-\rho \equiv \frac{1}{V}\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}.
+\delta T-\frac{1}{c_p\, \rho}\delta p=\frac{\delta Q}{c_p},\text{ if }V^{(cond)}=0.\label{eq:thermo2}
 \end{equation}
 Henceforth we will assume that $V^{(cond)}=0$.
 %where
@@ -1408,19 +1420,20 @@ Substituting \eqref{eq:tmp3} on the right-hand side of \eqref{eq:tmp2} and addin
 \begin{equation}
 \frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_pT\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \mathbf{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=\frac{\partial}{\partial \eta^{(d)}}\left( z\frac{\partial p}{\partial t}\right).\label{eq:Etotp}
 \end{equation}
-This equation is in the same form as (5.7) in \cite{K1974MWR} but $\rho$, $c_p$ and $p$ include the effect of condensates. Noting that
-\begin{equation}
-c_pT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)=c_vT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)+g z \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),
-\end{equation}
-where we have used the ideal gas law on the form \eqref{eq:ig4}, chain rule and hydrostatic equation on the form \eqref{eq:phi_1}, the total energy equation can be written on the form
-\begin{equation}
-\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_vT+gz\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \mathbf{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=-\frac{\partial}{\partial \eta^{(d)}}\left( p\frac{\partial z}{\partial t}\right).\label{eq:Ecv}
-\end{equation}
-As an aside it is noted that in a $z$-based vertical coordinate (for a moment assume $\eta^{(d)}\equiv z$), if integrating \eqref{eq:Ecv} in the vertical and using that $z$ is constant at the model top ($z_{top}$) and surface ($z_s$) we get
-\begin{equation}
-\frac{\partial }{\partial t}\int_{z=z_s}^{z=z_{top}}\left(K+c_vT+gz\right)\rho dz+\nabla_z \cdot \int_{z=z_s}^{z=z_{top}} \mathbf{v} \left( K+gz+c_pT \right) \rho dz=0.\label{eq:totEz}
-\end{equation}
-Note the clear separation of kinetic ($K$), potential ($gz$) and internal ($c_vT$) energy. Integrating \eqref{eq:totEz} in the horizontal over the entire sphere the flux term drops out, and it is clear that the total energy is conserved for the frictionless and adiabatic system of equations.
+This equation is in the same form as (5.7) in \cite{K1974MWR} but $\rho$, $c_p$ and $p$ include the effect of condensates. 
+%Noting that
+%\begin{equation}
+%c_pT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)=c_vT\rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)+g z \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right),
+%\end{equation}
+%where we have used the ideal gas law on the form \eqref{eq:ig4}, chain rule and hydrostatic equation on the form \eqref{eq:phi_1}, the total energy equation can be written on the form
+%\begin{equation}
+%\frac{\partial }{\partial t}\left[ \rho \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right)\left(K+c_vT+gz\right)\right]+\nabla_{\eta^{(d)}} \left[ \rho \mathbf{v} \left( \frac{\partial z\quad }{\partial \eta^{(d)}}\right) \left( K+gz+c_pT \right) \right]=-\frac{\partial}{\partial \eta^{(d)}}\left( p\frac{\partial z}{\partial t}\right).\label{eq:Ecv}
+%\end{equation}
+%As an aside it is noted that in a $z$-based vertical coordinate (for a moment assume $\eta^{(d)}\equiv z$), if integrating \eqref{eq:Ecv} in the vertical and using that $z$ is constant at the model top ($z_{top}$) and surface ($z_s$) we get
+%\begin{equation}
+%\frac{\partial }{\partial t}\int_{z=z_s}^{z=z_{top}}\left(K+c_vT+gz\right)\rho dz+\nabla_z \cdot \int_{z=z_s}^{z=z_{top}} \mathbf{v} \left( K+gz+c_pT \right) \rho dz=0.\label{eq:totEz}
+%\end{equation}
+%Note the clear separation of kinetic ($K$), potential ($gz$) and internal ($c_vT$) energy. Integrating \eqref{eq:totEz} in the horizontal over the entire sphere the flux term drops out, and it is clear that the total energy is conserved for the frictionless and adiabatic system of equations.
 
 For the global integral of the total energy equation in a dry-mass vertical coordinate, we substitute the hydrostatic relation on the form \eqref{eq:phi_1} into \eqref{eq:Etotp}, integrate in the vertical and use that the pressure at the model top is constant,
 \begin{multline}
@@ -1570,7 +1583,7 @@ where $p_w=340$ $hPa$ is a pressure width parameter, $q_0=0.018$ $kg/kg$ is maxi
 
 
 \acknowledgments
-The National Center for Atmospheric Research is sponsored by the National Science Foundation. Herrington, Reed and Lauritzen are grateful to the NCAR Advance Study Program graduate visitor program for funding Herrington's 9-month visit to NCAR. We thank NCAR's Computational and Information Systems Lab (CISL) for providing computing support. Goldhaber was partially supported by the U.S. Department of Energy Office of Biological and Environmental Research, Work Package 12-015334 ``Multiscale Methods for Accurate, Efficient, and Scale-Aware Models of the Earth System''. Medeiros acknowledges support by the Regional and Global Climate Modeling Program of the U.S. Department of Energy's Office of Science,  Cooperative Agreement DE-FC02-97ER62402.
+The National Center for Atmospheric Research is sponsored by the National Science Foundation. Herrington, Reed and Lauritzen are grateful to the NCAR Advance Study Program graduate visitor program for funding Herrington's 9-month visit to NCAR. We thank NCAR's Computational and Information Systems Lab (CISL) for providing computing support. Goldhaber was partially supported by the U.S. Department of Energy Office of Biological and Environmental Research, Work Package 12-015334 ``Multiscale Methods for Accurate, Efficient, and Scale-Aware Models of the Earth System''. Medeiros acknowledges support by the Regional and Global Climate Modeling Program of the U.S. Department of Energy's Office of Science,  Cooperative Agreement DE-FC02-97ER62402. Benedict was funded by National Science Foundation (NSF) Rapid Response Research (RAPID) award AGS-1547910.
 
 
 %% ------------------------------------------------------------------------ %%
