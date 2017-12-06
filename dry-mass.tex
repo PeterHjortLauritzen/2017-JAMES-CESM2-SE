@@ -489,12 +489,12 @@ The observant reader will have noticed that we denote the mass of dry air per un
 The hydrostatic (moist) pressure at given height $z$ can be computed from the hydrostatic balance
 \begin{align}
 p(z)&=-g\int^{z'=\infty}_{z'=z}\rho\, dz',\\
- &=-g\int^{z'=\infty}_{z'=z}\rho_d \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\, dz',\\
+ &=-g\int^{z'=\infty}_{z'=z}\rho^{(d)} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\, dz',\\
  &=g\sum_{\ell \in \mathcal{L}_{all}} M^{(\ell)}(z),\label{eq:z'2}
 \end{align}
 where the right-hand side of \eqref{eq:z'2} is the mass of dry air, water vapor, cloud liquid, cloud ice, rain and snow per unit area above height $z$, respectively:
 \begin{equation}
-{M}^{(\ell)}(z)=-\int^{z'=\infty}_{z'=z}\rho_d \, m^{(\ell)} \, dz'\label{eq:z'}.
+{M}^{(\ell)}(z)=-\int^{z'=\infty}_{z'=z}\rho^{(d)} \, m^{(\ell)} \, dz'\label{eq:z'}.
 \end{equation}
 Using Dalton's law of partial pressures on the left-hand side of \eqref{eq:z'2}, one obtains the partial pressure at a certain height $z$ is
 \begin{equation}
@@ -502,15 +502,15 @@ p^{(d)}(z)+p^{(wv)}(z)=g\sum_{\ell \in \mathcal{L}_{all}} {M}^{(\ell)}(z).\label
 \end{equation}
 From \eqref{eq:dalton} it is clear that in the presence of condensate one can not equate $p^{(d)}(z)$ with $g{M}^{(d)}(z)$, nor $p^{(wv)}(z)$ with $g{M}^{(wv)}(z)$. The partial pressures of dry air and water vapor are both affected by the mass of the condensates even though the condensates do not exert a gas pressure. Hence the partial pressure of dry air $p^{(d)}(z)$ at height $z$ is different from force exerted by the mass of dry air in Earth's gravitational field $gM^{(d)}(z)$; and similar for moisture. The hydrostatic balance for dry air mass, written in terms of differentials, is given by
 \begin{equation}
-dM^{(d)}(z)=-g\, \rho_d\, dz,\label{eq:dry_atm_hydro}
+dM^{(d)}(z)=-g\, \rho^{(d)}\, dz,\label{eq:dry_atm_hydro}
 \end{equation}
 whereas, in a moist atmosphere (with condensates), a dry air partial pressure hydrostatic equation does not hold
 \begin{equation}
-dp^{(d)}(z)\ne -g\, \rho_d\, dz.
+dp^{(d)}(z)\ne -g\, \rho^{(d)}\, dz.
 \end{equation}
 The partial pressure of dry air $p^{(d)}(z)$ at height $z$ will increase in the presence of condensates whereas the mass of dry air does not. The differential of the (moist) pressure can be written in terms of the dry air mass (under the hydrostatic assumption) though:
 \begin{equation}
-dp(z)=-g\, \rho \, dz = -g\rho_d \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)\, dz = g\, dM^{(d)}(z)\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
+dp(z)=-g\, \rho \, dz = -g\rho^{(d)} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)\, dz = g\, dM^{(d)}(z)\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
 \end{equation}
 In all, $g\, M^{(d)}(z)$ is equal to $p^{(d)}(z)$ at height $z$ only if there are no condensates present (i.e. air is a gas only) and similarly for water vapor. Henceforth we drop the notation of the vertical dependence (in this section we used $z$) on $M^{(\ell)}(z)=M^{(\ell)}$. Since $\eta^{(d)}$ is the vertical coordinate, $M^{(\ell)}$ will henceforth refer to the mass per unit area of  water form $\ell$ above $\eta^{(d)}$. The weight of dry air per unit area $g M^{(d)}$ is not a directly measurable quantity but a theoretical construction for the dry-mass vertical coordinate. Only moist pressure (or simply {\em{pressure}}) is directly measurable.
 %p_s=p^{(d)}+p^{(wv)}=\int
@@ -935,7 +935,7 @@ For the validation of the new dynamical core version in a simplified setup, we u
 \subsubsection{Initialization of the moist baroclinic wave using a dry-mass vertical coordinate}
 The challenge is to extract dry-mass from the initial state defined in terms of (moist) pressure and preserve a balanced initial condition. Since the initial condition does not contain condensates we can assume that moist air is a gas which will simplify the derivations. First we write the dry atmosphere hydrostatic relation \eqref{eq:dry_atm_hydro} in terms of specific humidity, virtual temperature and (moist) pressure
 \begin{eqnarray}
-\frac{\partial M^{(d)}}{\partial z}&=&-\rho_d\, ,\\
+\frac{\partial M^{(d)}}{\partial z}&=&-\rho^{(d)}\, ,\\
 &=&-\frac{\rho}{1+m^{(wv)}},\\
 &=&-\frac{p}{R^{(d)}T_v}\frac{1}{\left( 1+m^{(wv)}\right)},\\
 &=&-\frac{p}{R^{(d)}T_v}\left(1-q^{(wv)}\right),
