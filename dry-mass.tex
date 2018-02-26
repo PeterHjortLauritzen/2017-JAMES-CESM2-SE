@@ -142,9 +142,9 @@
 %  Each must be 100 characters or less with no special characters or punctuation 
 
 \begin{keypoints}
-\item = enter point 1 here = 
-\item = enter point 2 here = 
-\item = enter point 3 here = 
+\item The CESM2.0 release of the spectral-element dynamical core (CAM-SE) is documented
+\item Model has comprehensive treatment of condensates and energy
+\item The CAM-SE model has been sped-up significantly compared to its predecessor CAM-HOMME
 \end{keypoints}
 
 %% ------------------------------------------------------------------------ %%
@@ -160,7 +160,7 @@
 %% \begin{abstract} starts the second page 
 
 \begin{abstract}
-It is the purpose of this paper to provide a comprehensive documentation of the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry air mass, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced, sped-up, and cleaned up as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (high-order method modeling environment) as an external code.
+It is the purpose of this paper to provide a comprehensive documentation of the new NCAR version of the spectral-element (SE) dynamical core as part of the CESM2.0 release. This version differs from previous releases of the SE dynamical core in several ways. Most notably the hybrid-sigma vertical coordinate is based on dry air mass, the condensates are dynamically active in the thermodynamic and momentum equations (also referred to as condensate loading), and the continuous equations of motion conserve a more comprehensive total energy that includes condensates. The code base has been significantly reduced, sped-up, and cleaned up as part of integrating SE as a dynamical core in the CAM (Community Atmosphere Model) repository rather than importing the SE dynamical core from HOMME (High-Order Method Modeling Environment) as an external code.
 \end{abstract}
 
 
@@ -279,7 +279,7 @@ Note that if water vapor undergoes a phase change to rain and leaves the column,
 %\end{equation}
 
 In this section, the ideal gas law is derived for moist air containing condensates. In a parcel of moist air
-of volume $V$, the gaseous components of moist air (dry air and water vapor) occupy volume $V^{(gas)}$ and the the condensed phases occupy volume $v^{(cond)}=V-V^{(gas)}$. The ideal gas law applies to the gaseous component of air only. In that case, the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume)
+of volume $V$, the gaseous components of moist air (dry air and water vapor) occupy volume $V^{(gas)}$ and the the condensed phases occupy volume $V^{(cond)}=V-V^{(gas)}$. The ideal gas law applies to the gaseous component of air only. In that case, the partial pressure of dry air (the pressure dry air would exert if it alone would occupy the volume)
 \begin{equation}
 p^{(d)}V^{(gas)}=N^{(d)}k_B T,
 \end{equation}
@@ -377,68 +377,145 @@ p=\rho R^{(d)} T_v\label{eq:igl}.
 %where . Since \eqref{eq:ig} holds for the gaseous components only we may substitute $\frac{1}{\rho^{(gas)}}$ with $\alpha^{(gas)}$ to get:
 
 \subsection{Thermodynamic equation}\label{sec:teqn}
-The second law of of thermodynamics states
+Let $S$ denote the total entropy of moist air
 \begin{equation}
-\delta Q=T\delta s,\label{eq:slt}
+S=\sum_{\ell \in \mathcal{L}_{all}}S^{(\ell)},
 \end{equation}
-where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, and $s$ is specific entropy of moist air. Introducing specific internal energy $e$ and specific enthalphy 
+where $S^{(\ell)}$ is the entropy of component $\ell$ of moist air. From the chain rule applied to each component separately we get
+\begin{align}
+dS&=\sum_{\ell \in \mathcal{L}_{all}}dS^{(\ell)},\\
+  &=\sum_{\ell \in \mathcal{L}_{all}}\left[ \frac{\partial S^{(\ell)}}{\partial E^{(\ell)}}dE^{(\ell)}+\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}dV^{(\ell)}\right],\label{eq:dS1}
+\end{align}
+where $V^{(\ell)}$ is the volume occupied by component $\ell$ of moist air and $E^{(\ell)}$ is the internal energy of $\ell$. If we assume that the condensates are incompressible, $dV^{(\ell)}=0$ for $\ell \in \mathcal{L}_{cond}$, then  \eqref{eq:dS1} becomes
 \begin{equation}
-h=e+p\alpha,\label{eq:enthalphy}
+dS  =\sum_{\ell \in \mathcal{L}_{all}}\frac{\partial S^{(\ell)}}{\partial E^{(\ell)}}dE^{(\ell)}+\sum_{\ell \in \mathcal{L}_{gas}}\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}dV^{(\ell)}.\label{eq:dS2}
 \end{equation}
-where $\alpha$ is specific volume of moist air, the right-hand side of \eqref{eq:slt} can be written as
-\begin{align}
-T\delta s &=\delta e+p\delta \alpha,\\
-          &=\delta h-\alpha \delta p,\label{eq:TdS}
-\end{align}
-provided no phase change occurs. For each component
-\begin{align}
-e^{(\ell)}&=c^{(\ell)}_vT,\\
-h^{(\ell)}&=c^{(\ell)}_pT+\alpha^{(\ell)}_0p,
-\end{align}
-where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gas phases, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$ and $\alpha_0^{(\ell)}$=0, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ (hence $R^{(\ell)}=0$) and $\alpha_0^{(\ell)}$ is the constant specific volume of condensate phase $\ell$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of the constituents of moist air,
-\begin{align}
-e&=c_vT,\label{eq:e}\\
-h&=c_pT+\left(\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right) p\label{eq:h},
-\end{align}
-where $V^{(cond)}=\sum_{\ell \in \mathcal{L}_{cond}} V^{(\ell)}=V-V^{(gas)}=\sum_{\ell \in \mathcal{L}_{cond}}m^{(\ell)}\alpha^{(\ell)}_0$ is the constant volume occupied by the condensates and
-\begin{align}
-c_v=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
-c_p=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.\label{eq:cp}
-\end{align}
-Our definitions of $h$ and $e$ should be consistent with the ideal gas law \eqref{eq:ptmp}. From \eqref{eq:e} and \eqref{eq:h} we get specific volume $\alpha$ using \eqref{eq:enthalphy}
-\begin{align}
-\alpha \equiv \frac{V}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} &=\frac{h-e}{p},\\
-      &=\frac{RT}{p}+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:tmpalpha}
-\end{align}
-where
+Using that $\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}=\frac{p^{(\ell)}}{T}$ for $\ell \in \mathcal{L}_{gas}$ and that
 \begin{equation}
-R  =\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
+dE^{(\ell)}=C_v^{(\ell)}dT,
 \end{equation}
-Note that $c_p=R+c_v$. Using that $V-V^{(cond)}=V^{(gas)}$ we get
+where $C_v^{(\ell)}$ is the heat capacity of $\ell$ at constant volume, then \eqref{eq:dS2} can be written as
 \begin{equation}
-\frac{RT}{p}=\frac{V^{(gas)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}
+\sum_{\ell \in \mathcal{L}_{all}}C_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}dS^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}p^{(\ell)}dV^{(\ell)},\label{eq:dS3}
 \end{equation}
-which is precisely \eqref{eq:ptmp} since
+Note that \eqref{eq:dS3} holds for each component $\ell$. Multiply each component version of \eqref{eq:dS3} with $\frac{N^{(\ell)}\mathcal{M}^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}$, using that $\rho^{(\ell)}=\frac{N^{(\ell)}\mathcal{M}^{(\ell)}}{V}$ and assuming that no phase changes are occurring ($dN^{(\ell)}$=0), then equation \eqref{eq:dS3} can be written as
+\begin{equation}
+\sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}\frac{\rho^{(\ell)}p^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}dV^{(\ell)},\label{eq:dS4}
+\end{equation}
+where $c_v^{(\ell)}=\frac{C_v^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}$ is the specific heat capacity for $\ell$ and $s^{(\ell)}=\frac{S^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}$ is specific entropy for $\ell$. To rewrite the last sum on the right-hand side of \eqref{eq:dS4}, we note that for gaseous components of moist air, $\ell \in \mathcal{L}_{gas}$,  
 \begin{align}
-p&=\frac{V}{V^{(gas)}}\left( \rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T\right),\\
- &=\frac{1}{V^{(gas)}}\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}R^{(\ell)}T,\\
- &=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}\right)}{V^{(gas)}}RT.\label{eq:plall}
+\frac{V^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}&=\frac{V^{(\ell)}+V^{(cond)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}-\frac{V^{(cond)}}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
+&=\alpha^{(\ell)}-\frac{V^{(\ell)}}{V}\frac{V}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
+&=\left( 1-\chi^{(cond)}\right) \alpha^{(\ell)},\label{eq:dS5}
 \end{align}
-Furthermore, substituting \eqref{eq:h} into $\delta Q=\delta h-\alpha \delta p$, the thermodynamic equation can be written as
+where the specific volume of $\ell$ and $\chi^{(cond)}\equiv \frac{V^{(cond)}}{V}$. Taking the differential of \eqref{eq:dS5}, and assume no phase changes ($N^{\ell}$ constant) then \eqref{eq:dS4} can be rewritten as
+%, and for the condensates
+%\begin{align}
+%\frac{V^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}&=\frac{V^{(\ell)}}{V}\frac{V}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
+%&=\chi^{(cond)}\alpha^{(\ell)}.\label{eq:dS6}
+%\end{align
+\begin{equation}
+\sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}\rho^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(\ell)}\right) \alpha^{(\ell)}\right].\label{eq:dS7tmp}
+\end{equation}
+Using \eqref{eq:mx} equation \eqref{eq:dS7tmp} can be written as
+\begin{equation}
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(\ell)}\right) \alpha^{(\ell)}\right].\label{eq:dS7}
+\end{equation}
+Henceforth we assume that the volume of condensates is zero, $V^{(cond)}=0$ i.e. $\chi^{(\ell)}=0$. Consequently we can rewrite \eqref{eq:dS7} as
 \begin{align}
-\delta Q&=c_p\delta T+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p-\alpha \delta p,\\
-        &=c_p\delta T+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p-\frac{V}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} \delta p,\\
-        &=c_p\delta T-\frac{V^{(gas)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p,
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}c_v^{(\ell)}dT &= T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} p^{(\ell)}d\alpha^{(\ell)},\\
+&= T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} d\left[p^{(\ell)} \alpha^{(\ell)}\right]+\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)}\alpha^{(\ell)}dp^{(\ell)},\\
+&= T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} d\left[R^{(\ell)} T\right]+\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} \alpha^{(\ell)}dp^{(\ell)},\label{eq:dS8}
 \end{align}
-and when using \eqref{eq:plall} we finally get
+again using the chain rule and the ideal gas law \eqref{eq:ptmp} with $\frac{V}{V^{(gas)}}=1$. Using that $c_p^{(\ell)}=R^{(\ell)}+c_v^{(\ell)}$ and rearranging terms in \eqref{eq:dS8} yields
 \begin{equation}
-\delta T-\frac{RT}{c_p\, p}\delta p=\frac{\delta Q}{c_p},\label{eq:thermo1}
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT + \sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} \alpha^{(\ell)}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},
 \end{equation}
-If we assume that the condensates do not occupy any volume then \eqref{eq:thermo1} can be written as
+which can be written as
 \begin{equation}
-\delta T-\frac{1}{c_p\, \rho}\delta p=\frac{\delta Q}{c_p},\text{ if }V^{(cond)}=0.\label{eq:thermo2}
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT + \frac{1}{\rho_d}\sum_{\ell \in \mathcal{L}_{gas}}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},\label{eq:ptmp8}
 \end{equation}
-Henceforth we will assume that $V^{(cond)}=0$.
+since $m^{(\ell)} \alpha^{(\ell)}=\frac{m^{(\ell)}}{\rho^{(\ell)}}=\rho^{(d)}$. Dividing \eqref{eq:ptmp8} with $\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}$ and using \eqref{eq:rhosum} results in
+\begin{equation}
+\frac{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} + \frac{1}{\rho}dp=\frac{T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}.\label{eq:ptmp9}
+\end{equation}
+%\sum_{\ell \in \mathcal{L}_{all}}dQ^{(\ell)}, 
+%\end{equation}
+%where $dQ^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}ds^{(\ell)}$ is the amount of heat per unit mass that is supplied reversibly to component $\ell$ of moist air. 
+If we define 
+\begin{align}
+R  &=\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
+c_v&=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
+c_p&=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:cp}
+\end{align}
+where $R^{(\ell)}\equiv 0$ for the condensates, then the thermodynamic equation can be written in compact form
+\begin{equation}
+\delta T-\frac{RT}{c_p\, p}\delta p=\frac{d Q}{c_p},\label{eq:thermo1}
+\end{equation}
+where $dQ=\frac{T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}$ is is the amount of heat per unit mass that is supplied reversibly to moist air. Note that \eqref{eq:thermo1} includes the effect of condensates but assumes that the condensates are incompressible and that their volume is zero.
+%\subsection{old - thermodynamic section version - to be removed}
+%The second law of of thermodynamics states
+%\begin{equation}
+%\delta Q=T\delta s,\label{eq:slt}
+%\end{equation}
+%where $\delta Q$ is the amount of heat per unit mass that is supplied reversibly to the moist air, and $s$ is specific entropy of moist air. Introducing specific internal energy $e$ and specific enthalphy 
+%\begin{equation}
+%h=e+p\alpha,\label{eq:enthalphy}
+%\end{equation}
+%where $\alpha$ is specific volume of moist air, the right-hand side of \eqref{eq:slt} can be written as
+%\begin{align}
+%T\delta s &=\delta e+p\delta \alpha,\\
+%          &=\delta h-\alpha \delta p,\label{eq:TdS}
+%\end{align}
+%provided no phase change occurs. For each component
+%\begin{align}
+%e^{(\ell)}&=c^{(\ell)}_vT,\\
+%h^{(\ell)}&=c^{(\ell)}_pT+\alpha^{(\ell)}_0p,
+%\end{align}
+%where the specific heats $c_v^{(\ell)}$ and $c_p^{(\ell)}$ are assumed constant. For the gas phases, $c_p^{(\ell)}-c_v^{(\ell)}=R^{(\ell)}$ and $\alpha_0^{(\ell)}$=0, while for the condensates, which are assumed incompressible, $c_p^{(\ell)}=c_v^{(\ell)}$ (hence $R^{(\ell)}=0$) and $\alpha_0^{(\ell)}$ is the constant specific volume of condensate phase $\ell$. Assuming that specific energy and enthalphy are mass-weighted sums of specific energy and enthalphy of the constituents of moist air,
+%\begin{align}
+%e&=c_vT,\label{eq:e}\\
+%h&=c_pT+\left(\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\right) p\label{eq:h},
+%\end{align}
+%where $V^{(cond)}=\sum_{\ell \in \mathcal{L}_{cond}} V^{(\ell)}=V-V^{(gas)}=\sum_{\ell \in \mathcal{L}_{cond}}m^{(\ell)}\alpha^{(\ell)}_0$ is the constant volume occupied by the condensates and
+%\begin{align}
+%c_v=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
+%c_p=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.%\label{eq:cp}
+%\end{align}
+%Our definitions of $h$ and $e$ should be consistent with the ideal gas law \eqref{eq:ptmp}. From \eqref{eq:e} and \eqref{eq:h} we get specific volume $\alpha$ using \eqref{eq:enthalphy}
+%\begin{align}
+%\alpha \equiv \frac{V}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} &=\frac{h-e}{p},\\
+%      &=\frac{RT}{p}+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:tmpalpha}
+%\end{align}
+%where
+%\begin{equation}
+%R  =\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}.
+%\end{equation}
+%Note that $c_p=R+c_v$. Using that $V-V^{(cond)}=V^{(gas)}$ we get
+%\begin{equation}
+%\frac{RT}{p}=\frac{V^{(gas)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}}
+%\end{equation}
+%which is precisely \eqref{eq:ptmp} since
+%\begin{align}
+%p&=\frac{V}{V^{(gas)}}\left( \rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T\right),\\
+% &=\frac{1}{V^{(gas)}}\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}R^{(\ell)}T,\\
+% &=\frac{\left(\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}\right)}{V^{(gas)}}RT.\label{eq:plall}
+%\end{align}
+%Furthermore, substituting \eqref{eq:h} into $\delta Q=\delta h-\alpha \delta p$, the thermodynamic equation can be written as
+%\begin{align}
+%\delta Q&=c_p\delta T+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p-\alpha \delta p,\\
+%        &=c_p\delta T+\frac{V^{(cond)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p-\frac{V}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} \delta p,\\
+%        &=c_p\delta T-\frac{V^{(gas)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}\delta p,
+%\end{align}
+%and when using \eqref{eq:plall} we finally get
+%\begin{equation}
+%\delta T-\frac{RT}{c_p\, p}\delta p=\frac{\delta Q}{c_p},%\label{eq:thermo1}
+%\end{equation}
+%If we assume that the condensates do not occupy any volume then \eqref{eq:thermo1} can be written as
+%\begin{equation}
+%\delta T-\frac{1}{c_p\, \rho}\delta p=\frac{\delta Q}{c_p},\text{ if }V^{(cond)}=0.\label{eq:thermo2}
+%\end{equation}
+%Henceforth we will assume that $V^{(cond)}=0$.
 %where
 %\begin{equation}
 %p=\rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T,
@@ -716,7 +793,7 @@ In the special case of the flux-form transport equation the
 %  to $\mathcal{S}$ under the gnomonic mapping.   Note that the flux-form  transport  equation  is a special case of (\ref{eq:se1}), with flux function
 %  $(F^1, F^2) = (u^1 U,  u^2 U)$.
 
-  
+
 \subsection{\normalsize SE spatial discretization in 2D}
 
 %In order to describe the spectral-element (SE) horizontal discretization as used in CAM-SE, we consider the
@@ -786,6 +863,7 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
  \[   w_k =  \frac{2}{N(N+1) \, [P_N(\xi_k)]^2 },
  \] 
   where  $P_N(\xi)$ is the  Legendre polynomial of degree $N$. 
+
    For the SE discretization it is customary to use  Lagrange polynomials  $h_k(\xi)$,   with roots at  the 
  GLL   quadrature points $\xi_k$, as basis functions.  This setup provides  discrete orthogonality 
  for  the basis function $h_k(\xi)$,  which   is formally defined as: 
@@ -809,7 +887,10 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
  \end{equation}
  %
  where $\phi^e_{kl}(t) = \phi^e(\xi_k^1, \xi_l^2,t) $ are  the nodal grid-point values of the solution, and  defining the  test function as
-  $\psi(\xi^1,\xi^2) = h_k(\xi^1) \, h_l(\xi^2)$. By using (\ref{eq:se4}) and the discrete orthogonality property of $h_k(\xi)$, 
+  $\psi(\xi^1,\xi^2) = h_k(\xi^1) \, h_l(\xi^2)$.\\ 
+
+
+ By using (\ref{eq:se4}) and the discrete orthogonality property of $h_k(\xi)$, 
   we get a completely decoupled system of ODEs on  $\Omega_e$,  for each grid-point $(k,l)$ 
   %
   \begin{eqnarray}
@@ -823,7 +904,9 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
   %where $  \widetilde M^e_{kl}$ is the so-called  mass matrix, $(F^1,F^2) = \mathbf{F}$  are  the  flux terms, 
    where $J^{(i)}_e = J_e \,\partial \xi^i / \partial x^i$ is the metric term  and 
    $D^{(i)}_{lk}$ is the  derivative matrix $h'_k(\xi^i_l)$, 
-  along the $x^i$-direction and  $ i \in \{1,  2\}$.  The ODEs  (\ref{eq:se6}) can be written in a formal matrix-vector form
+  along the $x^i$-direction and  $ i \in \{1,  2\}$. 
+
+ The ODEs  (\ref{eq:se6}) can be written in a formal matrix-vector form
   for  $\Omega_e$  following
   \cite{KS2013book}: 
   %
@@ -1059,8 +1142,8 @@ Similarly to the AAM diagnostics, the total column-integrated moist energy is ou
 \label{fig:aam}
 \end{figure}
 \subsection{Performance}\label{sec:performance}
-In addition to the numerical changes described in the previous section, a number of changes to the computational structure of the SE dynamical core were also made which both reduce the computational cost at both modest and large processor count.  In particular, new communication operators were developed which reduces the amount of data movement between MPI ranks as well as through the memory hierarchy. Derivative operators were optimized to increase code vectorization, and the limiter operator was rewritten to reduce cost.  A more detailed description of the optimizations can be found in \cite{dennis2017}. The CAM-HOMME configuration is referred to as the {\em{original}} codebase and CAM-SE is referred to as the {\em{optimized}} codebase in this section. So when comparing computational cost of CAM-HOMME and CAM-SE it reflects not only the code optimizations but also the numerous science changes in CAM-SE that require extra computational work (e.g., the heat capacity is a function of water loading tracers and therefore not constant, (moist) pressure is not a prognostic variable and must be diagnosed, the reference pressure computation is not in CAM-HOMME).
-
+In addition to the numerical changes described in the previous section, a number of changes to the computational structure of the SE dynamical core were also made which both reduce the computational cost at both modest and large processor count.  In particular, new communication operators were developed which reduces the amount of data movement between MPI ranks as well as through the memory hierarchy. Derivative operators were optimized to increase code vectorization, and the limiter operator was rewritten to reduce cost.  The CAM-HOMME configuration is referred to as the {\em{original}} codebase and CAM-SE is referred to as the {\em{optimized}} codebase in this section. So when comparing computational cost of CAM-HOMME and CAM-SE it reflects not only the code optimizations but also the numerous science changes in CAM-SE that require extra computational work (e.g., the heat capacity is a function of water loading tracers and therefore not constant, (moist) pressure is not a prognostic variable and must be diagnosed, the reference pressure computation is not in CAM-HOMME).
+%A more detailed description of the optimizations can be found in \cite{dennis2017}. 
 \begin{figure}[h]
 \centering
  \includegraphics[scale=0.45]{figs/aqua-perf}
@@ -1462,7 +1545,10 @@ The thermodynamic equation, momentum equations and dry air-mass continuity equat
 \vec{\Lambda}^{(3)} &= \vec{\Lambda}^{(0)} + \tfrac{\Delta t}{3} \vec{\Upsilon}(\vec{\Lambda}^{(2)}), \\
 \vec{\Lambda}^{(4)} &= \vec{\Lambda}^{(0)} + \tfrac{2 \Delta t}{3} \vec{\Upsilon}(\vec{\Lambda}^{(3)}), \nonumber \\
 \vec{\Lambda}^{(5)} &= -\tfrac{1}{4} \vec{\Lambda}^{(0)} + \tfrac{5}{4} \vec{\Lambda}^{(1)} + \tfrac{3 \Delta t}{4} \vec{\Upsilon}(\vec{\Lambda}^{(4)}), \nonumber
-\end{align} where $\vec{\Upsilon}(\vec{\Lambda})$ denotes the discrete right-hand-side terms of the equations of motion.  The resulting method is linearly and non-linearly third-order accurate.  The scheme possesses a stability region which is provably optimal in terms of its extent along the imaginary axis among all 5-stage 3rd-order Runge-Kutta schemes, $[-i\sqrt{15}, i\sqrt{15}]$.  Since the largest eigenvalue of the 1D 4th-order spectral element spatial discretization ($N_p = 4$) is $i \sqrt{10/3}$, the resulting scheme satisfies a Courant-Friedrichs-Lewy condition given by
+\end{align} where $\vec{\Upsilon}(\vec{\Lambda})$ denotes the discrete right-hand-side terms of the equations of motion.  The resulting method is linearly and non-linearly third-order accurate. \newpage
+
+
+ The scheme possesses a stability region which is provably optimal in terms of its extent along the imaginary axis among all 5-stage 3rd-order Runge-Kutta schemes, $[-i\sqrt{15}, i\sqrt{15}]$.  Since the largest eigenvalue of the 1D 4th-order spectral element spatial discretization ($N_p = 4$) is $i \sqrt{10/3}$, the resulting scheme satisfies a Courant-Friedrichs-Lewy condition given by
 \begin{align}
 \frac{c \Delta t}{\Delta x} \leq \frac{3}{\sqrt{2}}, \qquad \mbox{(1D condition)},
 \end{align} where $\Delta x$ denotes the average distance between degrees of freedom (equal to $3 \times \Delta x_e$, the width of a spectral element), $c$ is the gravity wave speed, and $\Delta t$ is the timestep size.  As dimension splitting is not employed in CAM-SE, in 2D and on a uniformly spaced grid this condition is restricted by a further factor of $1/\sqrt{2}$ to
@@ -1583,7 +1669,7 @@ where $p_w=340$ $hPa$ is a pressure width parameter, $q_0=0.018$ $kg/kg$ is maxi
 
 
 \acknowledgments
-The National Center for Atmospheric Research is sponsored by the National Science Foundation. Herrington, Reed and Lauritzen are grateful to the NCAR Advance Study Program graduate visitor program for funding Herrington's 9-month visit to NCAR. We thank NCAR's Computational and Information Systems Lab (CISL) for providing computing support. Goldhaber was partially supported by the U.S. Department of Energy Office of Biological and Environmental Research, Work Package 12-015334 ``Multiscale Methods for Accurate, Efficient, and Scale-Aware Models of the Earth System''. Medeiros acknowledges support by the Regional and Global Climate Modeling Program of the U.S. Department of Energy's Office of Science,  Cooperative Agreement DE-FC02-97ER62402. Benedict was funded by National Science Foundation (NSF) Rapid Response Research (RAPID) award AGS-1547910.
+The National Center for Atmospheric Research is sponsored by the National Science Foundation. Herrington, Reed and Lauritzen are grateful to the NCAR Advance Study Program graduate visitor program for funding Herrington's 9-month visit to NCAR. We thank NCAR's Computational and Information Systems Lab (CISL) for providing computing support. Goldhaber was partially supported by the U.S. Department of Energy Office of Biological and Environmental Research, Work Package 12-015334 ``Multiscale Methods for Accurate, Efficient, and Scale-Aware Models of the Earth System''. Medeiros acknowledges support by the Regional and Global Climate Modeling Program of the U.S. Department of Energy's Office of Science,  Cooperative Agreement DE-FC02-97ER62402. Benedict was funded by National Science Foundation (NSF) Rapid Response Research (RAPID) award AGS-1547910. The data presented in this manuscript is available at {\url{https://github.com/PeterHjortLauritzen/2017-JAMES-CESM2-SE.git}}.
 
 
 %% ------------------------------------------------------------------------ %%
