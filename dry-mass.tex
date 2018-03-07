@@ -195,7 +195,7 @@ It is the purpose of this paper to provide a comprehensive documentation of the 
 
 
 \section{Introduction}
-Over the last two decades or so, the spectral-element (SE) method has been considered as a numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM,CH2016APJAS}. The main motivations were the SE methods near perfect scalability \citep{DetAl2012IJHPCA}, GPU acceleration \citep[e.g.][]{AWWGIJHPCA,AetAl2017IJHPCA}, high-order accuracy for smooth problems, and mesh-refinement capabilities. For some time the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid as well as a mesh-refinement capability with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZJT2013,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep[e.g., ][]{ELMNTT2012JC,ZJ2014JAMES,RetAl2015GRL,BetAl2016CC,RHUZ2016JAMC,GetAl2017JAMES}. CAM-SE's code base is in CAM and not HOMME. CAM-SE and HOMME codes have diverged significantly due to a  massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described herein.
+Over the last two decades or so, the spectral-element (SE) method has been considered as a numerical method for the fluid flow solver in  global weather/climate models \citep{FT2004MWR,BWTF2006MWR,KG2012JCP,GKC2013SIAM,CH2016APJAS}. The main motivations were the SE methods near perfect scalability \citep{DetAl2012IJHPCA}, GPU acceleration \citep[e.g.][]{AWWGIJHPCA,AetAl2017IJHPCA}, high-order accuracy for smooth problems, and mesh-refinement capabilities. For some time the Community Earth System Model \citep[CESM; ][]{CESM1} has supported a SE dynamical core option in the atmosphere component CAM \citep[Community Atmosphere Model; ][]{CAM5} discretized on a cubed-sphere grid (Figure \ref{fig:grids}a). The SE dynamical core in CAM supports uniform resolution grids based on the equi-angular gnomonic cubed-sphere grid as well as a mesh-refinement capability with local increases in resolution through conformal mesh-refinement as shown on Figure \ref{fig:grids}b {\citep{FT2004MWR,BWTF2006MWR,ZetAl2014JC,ZetAl2014JCb}. The dynamical core code resided in the High-Order Methods Modeling environment (HOMME), a framework for developing new generation computationally efficient and petascale capable dynamical cores based on the SE method \citep{TL2000JSC,TES2008JPCS}, the discontinuous Galerkin method \citep{NCT2009CF} and finite-volume method \citep{ELGT2012PCS,LTOUNGK2017MWR}. Previously, the SE dynamical core was imported into CAM as an external code base. Consequently any updates to the HOMME code base would have to be imported into CAM and pass regression tests in both HOMME and CAM. We refer to this setup as CAM-HOMME, which has been extensively tested in AMIP-style climate simulations \citep[e.g., ][]{ELMNTT2012JC,ZJ2014JAMES,RetAl2015GRL,BetAl2016CC,RHUZ2016JAMC,GetAl2017JAMES}. CAM-SE's code base is in CAM and not HOMME. CAM-SE and HOMME codes have diverged significantly due to a  massive code clean-up to satisfy software engineering standards in CAM (and make the code more user-friendly for the community) as well as considerable science changes described herein.
   \begin{figure}[h]
 \centering
  \includegraphics[scale=0.45]{figs/grids}
@@ -224,7 +224,7 @@ Before writing the continuous equations of motion using a dry-mass vertical coor
 
 Thereafter the dry mass vertical coordinate is defined in section \ref{eq:vertical_coord}. Details on viscosity and frictional heating are presented in section \ref{sec:hypvervisfric} and global conservation properties derived in section \ref{sec:aam}.
 \subsection{Representation of water phases in terms of dry and wet (specific) mixing ratios}\label{sec:mixing_ratios}
-Define the dry mixing ratios for the water variables (vapor 'wv', cloud liquid 'cl', cloud ice 'ci', rain 'rn' and snow 'sw')
+{\color{red}{Equation \eqref{eq:mx} defines}} the dry mixing ratios for the water variables (vapor 'wv', cloud liquid 'cl', cloud ice 'ci', rain 'rn' and snow 'sw')
 \begin{equation}
 m^{(\ell)}\equiv \frac{\rho^{(\ell)}}{\rho^{(d)}}, \text{ where }\ell=`wv`,`cl`,`ci`,`rn`,`sw`,\label{eq:mx}
 \end{equation}
@@ -305,7 +305,7 @@ where $R^{(wv)}\equiv \frac{k_B}{\mathcal{M}^{(wv)}}$ is the gas constant for wa
 \label{eq:ptmp}
 p=\frac{V}{V^{(gas)}}\left( \rho^{(d)}R^{(d)}T+\rho^{(wv)}R^{(wv)}T\right).
 \end{equation}
-Note that the condensates do not exert a gas pressure (more in this in Section \ref{sec:dryairp}). Moving $T$, $R^{(d)}$ and $\rho^{(d)}$ outside the parenthesis on the right-hand side of \eqref{eq:ptmp} yields
+Note that the condensates do not exert a gas pressure ({\color{red}{see}} Section \ref{sec:dryairp}). Moving $T$, $R^{(d)}$ and $\rho^{(d)}$ outside the parenthesis on the right-hand side of \eqref{eq:ptmp} yields
 \begin{equation}
 \label{eq:ptmp2}
 p=\frac{V}{V^{(gas)}}\rho^{(d)}R^{(d)}\left( 1+\frac{1}{\epsilon}m^{(wv)}\right)T,
@@ -395,7 +395,7 @@ where $V^{(\ell)}$ is the volume occupied by component $\ell$ of moist air and $
 \begin{equation}
 dS  =\sum_{\ell \in \mathcal{L}_{all}}\frac{\partial S^{(\ell)}}{\partial E^{(\ell)}}dE^{(\ell)}+\sum_{\ell \in \mathcal{L}_{gas}}\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}dV^{(\ell)}.\label{eq:dS2}
 \end{equation}
-Using that $\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}=\frac{p^{(\ell)}}{T}$ for $\ell \in \mathcal{L}_{gas}$ and that
+Using that $\frac{\partial S^{(\ell)}}{\partial V^{(\ell)}}=\frac{p^{(\ell)}}{T}$ for $\ell \in \mathcal{L}_{gas}$, {\color{red}{$\frac{\partial S^{(\ell)}}{\partial E^{(\ell)}} = \frac{1}{T}$}} and that
 \begin{equation}
 dE^{(\ell)}=C_v^{(\ell)}dT,
 \end{equation}
@@ -410,23 +410,23 @@ Note that \eqref{eq:dS3} holds for each component $\ell$. Multiply each componen
 where $c_v^{(\ell)}=\frac{C_v^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}$ is the specific heat capacity for $\ell$ and $s^{(\ell)}=\frac{S^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}$ is specific entropy for $\ell$. To rewrite the last sum on the right-hand side of \eqref{eq:dS4}, we note that for gaseous components of moist air, $\ell \in \mathcal{L}_{gas}$,  
 \begin{align}
 \frac{V^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}&=\frac{V^{(\ell)}+V^{(cond)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}-\frac{V^{(cond)}}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
-&=\alpha^{(\ell)}-\frac{V^{(\ell)}}{V}\frac{V}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
+&=\alpha^{(\ell)}-\frac{V^{(cond)}}{V}\frac{V}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
 &=\left( 1-\chi^{(cond)}\right) \alpha^{(\ell)},\label{eq:dS5}
 \end{align}
-where the specific volume of $\ell$ and $\chi^{(cond)}\equiv \frac{V^{(cond)}}{V}$. Taking the differential of \eqref{eq:dS5}, and assume no phase changes ($N^{\ell}$ constant) then \eqref{eq:dS4} can be rewritten as
+where {\color{red}{$\alpha^{(\ell)} = \frac{V}{N^{(\ell)}{\mathcal{M}^{(\ell)}}}$}} the specific volume of component $\ell$ and $\chi^{(cond)}\equiv \frac{V^{(cond)}}{V}$. Taking the differential of \eqref{eq:dS5}, and assume no phase changes ($N^{\ell}$ constant) then \eqref{eq:dS4} can be rewritten as
 %, and for the condensates
 %\begin{align}
 %\frac{V^{(\ell)}}{N^{(\ell)}\mathcal{M}^{(\ell)}}&=\frac{V^{(\ell)}}{V}\frac{V}{N^{(\ell)}\mathcal{M}^{(\ell)}},\\
 %&=\chi^{(cond)}\alpha^{(\ell)}.\label{eq:dS6}
 %\end{align
 \begin{equation}
-\sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}\rho^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(\ell)}\right) \alpha^{(\ell)}\right].\label{eq:dS7tmp}
+\sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}\rho^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}\rho^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(cond)}\right) \alpha^{(\ell)}\right].\label{eq:dS7tmp}
 \end{equation}
 Using \eqref{eq:mx} equation \eqref{eq:dS7tmp} can be written as
 \begin{equation}
-\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(\ell)}\right) \alpha^{(\ell)}\right].\label{eq:dS7}
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}c_v^{(\ell)}dT = T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)}p^{(\ell)}d\left[ \left( 1-\chi^{(cond)}\right) \alpha^{(\ell)}\right].\label{eq:dS7}
 \end{equation}
-Henceforth we assume that the volume of condensates is zero, $V^{(cond)}=0$ i.e. $\chi^{(\ell)}=0$. Consequently we can rewrite \eqref{eq:dS7} as
+Henceforth we assume that the volume of condensates is zero, $V^{(cond)}=0$ i.e. $\chi^{(cond)}=0$. Consequently we can rewrite \eqref{eq:dS7} as
 \begin{align}
 \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}c_v^{(\ell)}dT &= T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} p^{(\ell)}d\alpha^{(\ell)},\\
 &= T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}-\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} d\left[p^{(\ell)} \alpha^{(\ell)}\right]+\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)}\alpha^{(\ell)}dp^{(\ell)},\\
@@ -434,15 +434,15 @@ Henceforth we assume that the volume of condensates is zero, $V^{(cond)}=0$ i.e.
 \end{align}
 again using the chain rule and the ideal gas law \eqref{eq:ptmp} with $\frac{V}{V^{(gas)}}=1$. Using that $c_p^{(\ell)}=R^{(\ell)}+c_v^{(\ell)}$ and rearranging terms in \eqref{eq:dS8} yields
 \begin{equation}
-\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT + \sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} \alpha^{(\ell)}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT - \sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} \alpha^{(\ell)}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},
 \end{equation}
 which can be written as
 \begin{equation}
-\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT + \frac{1}{\rho_d}\sum_{\ell \in \mathcal{L}_{gas}}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},\label{eq:ptmp8}
+\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT - \frac{1}{\rho_d}\sum_{\ell \in \mathcal{L}_{gas}}dp^{(\ell)}=T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)},\label{eq:ptmp8}
 \end{equation}
 since $m^{(\ell)} \alpha^{(\ell)}=\frac{m^{(\ell)}}{\rho^{(\ell)}}=\rho^{(d)}$. Dividing \eqref{eq:ptmp8} with $\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}$ and using \eqref{eq:rhosum} results in
 \begin{equation}
-\frac{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} + \frac{1}{\rho}dp=\frac{T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}.\label{eq:ptmp9}
+\frac{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} c_p^{(\ell)}dT}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}} - \frac{1}{\rho}dp=\frac{T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)}}.\label{eq:ptmp9}
 \end{equation}
 %\sum_{\ell \in \mathcal{L}_{all}}dQ^{(\ell)}, 
 %\end{equation}
@@ -453,7 +453,7 @@ R  &=\frac{\sum_{\ell \in \mathcal{L}_{all}} R^{(\ell)} m^{(\ell)}}{\sum_{\ell \
 c_v&=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_v^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\\
 c_p&=\frac{\sum_{\ell \in \mathcal{L}_{all}} c_p^{(\ell)}m^{(\ell)}}{\sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}},\label{eq:cp}
 \end{align}
-where $R^{(\ell)}\equiv 0$ for the condensates, then the thermodynamic equation can be written in compact form
+where $R^{(\ell)}\equiv 0$ for the condensates, then {\color{red}{using \eqref{eq:ptmp}}} the thermodynamic equation can be written in compact form
 \begin{equation}
 \delta T-\frac{RT}{c_p\, p}\delta p=\frac{d Q}{c_p},\label{eq:thermo1}
 \end{equation}
@@ -560,7 +560,8 @@ where $dQ=\frac{T \sum_{\ell \in \mathcal{L}_{all}}m^{(\ell)} ds^{(\ell)}}{\sum_
 %
 \subsection{Vertical coordinate}\label{eq:vertical_coord}
 \subsubsection{Definition}
-Let $M^{(d)}_s$ be the mass of a column of dry air per unit area at the surface (i.e. the weight of dry air at the surface per unit area is $g\, M^{(d)}_s$, where $g$ is the gravitational acceleration; assumed constant) and $M_t^{(d)}$ is the mass of air per unit area in the column above the model top. Note that weight differs from mass in that weight constitutes the force exerted by the matter when it is in a gravitational field whereas mass is the amount of matter (which is invariant and does not depend on $g$). The SI unit for $M^{(d)}_s$ is $kg/m^2$ and the weight $g\, M^{(d)}_s$ is $\frac{1}{s^2}\frac{kg}{m}\equiv Pa$ (pressure). We assume that there is no moisture or condensate above the model top so $p_t=g\, M_t^{(d)}$. Consider a general, terrain-following, vertical coordinate $\eta^{(d)}$ that is a function of the dry air mass $M^{(d)}$ 
+Let $M^{(d)}_s$ be the mass of a column of dry air per unit area at the surface (i.e. the weight of dry air at the surface per unit area is $g\, M^{(d)}_s$, where $g$ is the gravitational acceleration; assumed constant) and $M_t^{(d)}$ is the mass of air per unit area in the column above the model top. Note that weight differs from mass in that weight constitutes the force exerted by the matter when it is in a gravitational field whereas mass is the amount of matter (which is invariant and does not depend on $g$). The SI unit for $M^{(d)}_s$ is $kg/m^2$ and the weight $g\, M^{(d)}_s$ is $\frac{1}{s^2}\frac{kg}{m}\equiv Pa$ (pressure). {\color{red}{We assume that the composition of dry air is constant and that there is no moisture}} above the model top so $p_t=g\, M_t^{(d)}$. Consider a general, terrain-following, vertical coordinate $\eta^{(d)}$ that is a function of the dry air mass $M^{(d)}$ 
+%We assume that there is no moisture or condensate 
 \begin{equation}
 \eta^{(d)}=h(M^{(d)},M_s^{(d)}),
 \end{equation}
@@ -570,21 +571,23 @@ The observant reader will have noticed that we denote the mass of dry air per un
 
 The hydrostatic (moist) pressure at given height $z$ can be computed from the hydrostatic balance
 \begin{align}
-p(z)&=-g\int^{z'=\infty}_{z'=z}\rho\, dz',\\
- &=-g\int^{z'=\infty}_{z'=z}\rho^{(d)} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\, dz',\\
+p(z)&=g\int^{z'=\infty}_{z'=z}\rho\, dz',\\
+ &=g\int^{z'=\infty}_{z'=z}\rho^{(d)} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)} \right)\, dz',\\
  &=g\sum_{\ell \in \mathcal{L}_{all}} M^{(\ell)}(z),\label{eq:z'2}
 \end{align}
 where the right-hand side of \eqref{eq:z'2} is the mass of dry air, water vapor, cloud liquid, cloud ice, rain and snow per unit area above height $z$, respectively:
 \begin{equation}
-{M}^{(\ell)}(z)=-\int^{z'=\infty}_{z'=z}\rho^{(d)} \, m^{(\ell)} \, dz'\label{eq:z'}.
+{M}^{(\ell)}(z)=\int^{z'=\infty}_{z'=z}\rho^{(d)} \, m^{(\ell)} \, dz'\label{eq:z'}.
 \end{equation}
 Using Dalton's law of partial pressures on the left-hand side of \eqref{eq:z'2}, one obtains the partial pressure at a certain height $z$ is
 \begin{equation}
 p^{(d)}(z)+p^{(wv)}(z)=g\sum_{\ell \in \mathcal{L}_{all}} {M}^{(\ell)}(z).\label{eq:dalton}
 \end{equation}
-From \eqref{eq:dalton} it is clear that in the presence of condensate one can not equate $p^{(d)}(z)$ with $g{M}^{(d)}(z)$, nor $p^{(wv)}(z)$ with $g{M}^{(wv)}(z)$. The partial pressures of dry air and water vapor are both affected by the mass of the condensates even though the condensates do not exert a gas pressure. Hence the partial pressure of dry air $p^{(d)}(z)$ at height $z$ is different from force exerted by the mass of dry air in Earth's gravitational field $gM^{(d)}(z)$; and similar for moisture. The hydrostatic balance for dry air mass, written in terms of differentials, is given by
+From \eqref{eq:dalton} it is clear that in the presence of condensate one can not equate $p^{(d)}(z)$ with $g{M}^{(d)}(z)$, nor $p^{(wv)}(z)$ with $g{M}^{(wv)}(z)$. The partial pressures of dry air and water vapor are both affected by the mass of the condensates even though the condensates do not exert a gas pressure. Hence the partial pressure of dry air $p^{(d)}(z)$ at height $z$ is different from force exerted by the mass of dry air in Earth's gravitational field $gM^{(d)}(z)$; and similar for moisture. {\color{red}{A physical explanation is that when hydrometeors are falling at terminal velocity, the gravitational force pulling the hydrometeors downward is compensating by the upward frictional force of the gaseous atmosphere on the hydrometeors. This compensating force adds to the atmospheric pressure.}}
+
+The hydrostatic balance for dry air mass, written in terms of differentials, is given by
 \begin{equation}
-dM^{(d)}(z)=-g\, \rho^{(d)}\, dz,\label{eq:dry_atm_hydro}
+dM^{(d)}(z)=-g\rho^{(d)}\, dz,\label{eq:dry_atm_hydro}
 \end{equation}
 whereas, in a moist atmosphere (with condensates), a dry air partial pressure hydrostatic equation does not hold
 \begin{equation}
@@ -594,7 +597,7 @@ The partial pressure of dry air $p^{(d)}(z)$ at height $z$ will increase in the 
 \begin{equation}
 dp(z)=-g\, \rho \, dz = -g\rho^{(d)} \left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right)\, dz = g\, dM^{(d)}(z)\left( \sum_{\ell \in \mathcal{L}_{all}} m^{(\ell)}\right).
 \end{equation}
-In all, $g\, M^{(d)}(z)$ is equal to $p^{(d)}(z)$ at height $z$ only if there are no condensates present (i.e. air is a gas only) and similarly for water vapor. Henceforth we drop the notation of the vertical dependence (in this section we used $z$) on $M^{(\ell)}(z)=M^{(\ell)}$. Since $\eta^{(d)}$ is the vertical coordinate, $M^{(\ell)}$ will henceforth refer to the mass per unit area of  water form $\ell$ above $\eta^{(d)}$. The weight of dry air per unit area $g M^{(d)}$ is not a directly measurable quantity but a theoretical construction for the dry-mass vertical coordinate. Only moist pressure (or simply {\em{pressure}}) is directly measurable.
+In all, $g\, M^{(d)}(z)$ is equal to $p^{(d)}(z)$ at height $z$ {\color{red}{only if there are no condensates present at higher levels}}  (i.e. air is a gas only) and similarly for water vapor. Henceforth we drop the notation of the vertical dependence (in this section we used $z$) on $M^{(\ell)}(z)=M^{(\ell)}$. Since $\eta^{(d)}$ is the vertical coordinate, $M^{(\ell)}$ will henceforth refer to the mass per unit area of  water form $\ell$ above $\eta^{(d)}$. The weight of dry air per unit area $g M^{(d)}$ is not a directly measurable quantity but a theoretical construction for the dry-mass vertical coordinate. Only moist pressure (or simply {\em{pressure}}) is directly measurable.
 %p_s=p^{(d)}+p^{(wv)}=\int
 
 %
@@ -633,7 +636,9 @@ On the right-hand side of the equations of motion hyperviscosity terms are added
  \end{equation}
 The 4th-order hyperviscosity operator is computed by iteratively applying the Laplacian operator \eqref{eq:vec_diff} \citep[for a detailed derivation with metric terms see, e.g., ][]{U2014GMD}. 
 
-The dry air mass layer thickness is damped with $\nu_p \nabla^4\left\{ \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right\}$ and temperature with $\nu_T \nabla^4 T$. The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), level-thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and provided in Appendix \ref{app:nu}.
+The dry air mass layer thickness is damped with $\nu_p \nabla^4\left\{ \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right\}$ and temperature with $\nu_T \nabla^4 T$. {\color{red}{The damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), level-thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution dependent and provided in Appendix \ref{app:nu}. These coefficients were determined empirically for stability and may have to be increased for specific applications such as data-assimilation cycling where additional damping to remove short-wavelengths due to imbalances may be necessary. Note that the viscosity coefficient for pressure and tracers should be the same otherwise the model is no longer 'free-stream' preserving (i.e. a constant mixing ratio is preserved; also referred to as mass-wind consistency in the literature). The dispersion properties of CAM-SE with hyperviscosity are similar to A-grid models. There are no computational modes, but the grid scale modes are erratic with large phase errors \citep{AW2009SIAM,A2014JCP}. Empirically we have found that increasing $\nu_{div}$ and $\nu_p$ compared to  $\nu_T$ and $\nu_{vor}$ is effective at damping grid-scale modes and noise associated with the SE basis functions being $C^0$ at element edges  while not making the total kinetic energy spectrum too dissipative at the high wavenumbers..}}
+
+%The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), level-thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and provided in Appendix \ref{app:nu}.
 
 The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nabla^4=\nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate dry-mass surfaces
 \begin{equation}
@@ -648,11 +653,11 @@ In the top three layers second-order diffusion (Laplacian operator) is applied t
 Let $\delta \mathbf{v}$ be the change in the velocity vector due to diffusion of momentum. Then the change in kinetic energy due to hyperviscosity applied to $\mathbf{v}$ is $\frac{1}{2}\rho \mathbf{v} \cdot \delta \mathbf{v}$. This kinetic energy is converted to a heating rate by adding a heating term $\delta \mathcal{T}$ in the thermodynamic equation corresponding to the kinetic energy change
 \begin{equation}
 \rho c_p \delta \mathcal{T}=-\frac{1}{2}\rho \mathbf{v} \cdot \delta \mathbf{v} \Rightarrow
- \delta \mathcal{T}=-\frac{1}{c_p}\left(\mathbf{v}\cdot \delta \mathbf{v}\right),\label{eq:tcp}
+ \delta \mathcal{T}=-\frac{1}{2 c_p}\left(\mathbf{v}\cdot \delta \mathbf{v}\right),\label{eq:tcp}
 \end{equation}
 \citep[p.71 in ][]{CAM5}. As shown in the results section \ref{sec:APE} this term is rather large and therefore important for good energy conservation characteristics of the dynamical core.
 
-Before discretizing the equations of motion some important conservation properties of the equations are discussed. For models intended for long simulations, it is beneficial to have good energy conservation properties to minimize non-local restoration of global energy via  global energy fixers \citep[e.g.][]{T2008JCP}. As an aside, it is noted that the global energy fixers take up a significant fraction of runtime at ultra-high resolution as the operations require global communications. Good AAM conservation may be important for the simulation of the Quasi-Biennial Oscillation (QBO) although the accurate simulation of the QBO also depends on vertical resolution, location of model top, and parameterizations \citep[such as nonorographic gravity wave drag; ][]{RSB2014JGR}. For the simulation of superrotating atmospheres (e.g., Venus), however, the conservation of angular momentum is crucial \citep{LCGPSWLJ2012JGR}. Below we discuss the conservation properties of the moist equations of motion used in this paper.
+Before discretizing the equations of motion some important conservation properties of the equations are discussed. For models intended for long simulations, it is beneficial to have good energy conservation properties to minimize non-local restoration of global energy via  global energy fixers \citep[e.g.][]{T2008JCP}. As an aside, it is noted that the global energy fixers take up a significant fraction of runtime at ultra-high resolution as the operations require global communications. Good AAM conservation may be important for the simulation of the Quasi-Biennial Oscillation (QBO) although the accurate simulation of the QBO also depends on vertical resolution, location of model top, {\color{red}{model dissipation (numerical and physical)}} and parameterizations \citep[such as nonorographic gravity wave drag {\color{red}{and convection parameterization}}; ][]{RSB2014JGR}. For the simulation of superrotating atmospheres (e.g., Venus), however, the conservation of angular momentum is crucial \citep{LCGPSWLJ2012JGR}. Below we discuss the conservation properties of the moist equations of motion used in this paper.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Global conservation: AAM and energy}\label{sec:aam}
 The conservation law for AAM
@@ -675,7 +680,7 @@ where $K=\frac{1}{2}\mathbf{v}\cdot \mathbf{v}$. Note that the energy terms (ins
 \begin{equation}
 \left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}} \right)\left(1+m^{(wv)}\right)\left[ \left(K+c_p^{(d)}T+\Phi_s\right)\right].
 \end{equation}
-The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and water vapor   in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. In the model code this is controlled with the logical parameter $\tt{lcp\_moist}$ which is set to $\tt{.true.}$ in the code.
+The discrepancy between the more comprehensive energy formula \eqref{eq:comprehensice_energy} and the CAM physics formula for total energy is about 0.5 $W/m^2$ \citep{T2011LNCSEb}. By only including dry air and water vapor   in $\rho$ and setting $c_p^{(wv)}= c_p^{(d)}$ in the equations of motion, the dynamical core (in the absence of truncation errors) will conserve the energy used in CAM physics. {\color{red}{CAM-SE's total energy can be made consistent with CAM physics (described above) and it is enabled/disabled in the model code with the  logical parameter $\tt{lcp\_moist}$.}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -686,9 +691,9 @@ In the vertical the atmosphere is discretized into $nlev$ floating Lagrangian la
 \begin{equation}
 M^{(d)}_{k+1/2}=A_{k+1/2}M^{(d)}_t+B_{k+1/2}M_s^{(d)},\label{eq:ABs}
 \end{equation}
-and similarly for full levels $k$. Note that if the $`d`$ is removed from the above equation and multiplied by gravity then the levels would be based on (moist) pressure, i.e. the vertical coordinate becomes the usual hybrid vertical coordinate used in many global hydrostatic models (assuming no condensates). Every ${\tt{se\_rsplit}}$ dynamics time-steps the prognostic variables on the floating Lagrangian levels are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
+and similarly for full levels $k$ {\color{red}{where $A_k=\frac{1}{2}\left( A_{k+1/2}+A_{k-/12}\right)$ and $B_k=\frac{1}{2}\left( B_{k+1/2}+B_{k-/12}\right)$}. Note that if the $`d`$ is removed from the above equation and multiplied by gravity then the levels would be based on (moist) pressure, i.e. the vertical coordinate becomes the usual hybrid vertical coordinate used in many global hydrostatic models (assuming no condensates). Every ${\tt{se\_rsplit}}$ dynamics time-steps the prognostic variables on the floating Lagrangian levels are remapped to the dry-mass reference coordinate \eqref{eq:ABs} (see Section \ref{sec:verticalRemappin}). 
 
-CAM-SE is based on a Lorenz vertical staggering -- the full level prognostic variables are $\mathbf{v}_k$ (velocity vector), $T_k$ (temperature), $\Delta M^{(d)}_k=M^{(d)}_{k+1/2}-M^{(d)}_{k-1/2}$ (dry air mass per unit area in layer $k$), and $\Delta M^{(d)}_k m_k^{(\ell)}$ (tracer mass per unit area in a layer). At the level interfaces, the geopotential, (moist) pressure, vertical velocity and density are defined. In the equations of motion, the full level (moist) pressure, geopotential height, vertical velocity and density are needed and choices must be made on how these variables are derived (in discretized space) from the prognostic variables. Here we use the energy and angular momentum conserving method of \citet{SB1981MWR} to compute these quantities at full levels. For simplicity, we do not consider the discretization in the horizontal in this section.
+CAM-SE is based on a Lorenz vertical staggering -- the full level prognostic variables are $\mathbf{v}_k$ (velocity vector), $T_k$ (temperature), $\Delta M^{(d)}_k=M^{(d)}_{k+1/2}-M^{(d)}_{k-1/2}$ (dry air mass per unit area in layer $k$), and $\Delta M^{(d)}_k m_k^{(\ell)}$ (tracer mass per unit area in a layer). At the level interfaces, the geopotential, (moist) pressure, and vertical velocity are defined. In the equations of motion, the full level (moist) pressure, geopotential height, vertical velocity and density are needed and choices must be made on how these variables are derived (in discretized space) from the prognostic variables. Here we use the energy and angular momentum conserving method of \citet{SB1981MWR} to compute these quantities at full levels. For simplicity, we do not consider the discretization in the horizontal in this section.
 \subsubsection{Pressure}\label{sec:pk}
 The half-level (moist) pressure is
 \begin{equation}
@@ -1089,7 +1094,7 @@ The black curve in Figure \ref{fig:l2norm} is the $l_2$ difference norm between 
 \subsection{CAM6 aqua-planet simulations}\label{sec:APE}
 The 'CESM simpler models' effort also supports aqua-planet configurations \citep{MWO2016JAMES}. The aqua-planet configurations \citep{NH2000ASL} refer to an ocean covered planet with no axial tilt -- a planet in a perpetual equinox and devoid of continents. The aqua-planet compsets designate a fixed, zonally-symmetric SST distribution, modeled after the present day SST distribution on Earth ('QOBS' in \cite{NH2000ASL}). The lack of a seasonal cycle allows one to compute robust statistics from a shorter simulation, and the absence of land removes any influence of discretized topography or interactions with the land model from the simulations. The aqua-planet configurations are therefore an indispensable tool for testing design choices in global atmospheric models.
 
-To understand how the design choices adopted by CAM-SE influence the aqua-planet solutions compared to its predecessor, CAM-HOMME, we ran a pair of simulations using the CAM6 physics package for 4.5 years at $~1^\circ$ horizontal resolution ($N_e=30$ and $N_p=4$) and 32 levels in the vertical. Figure~\ref{fig:kespectra} shows the total kinetic energy spectrum at the 200 hPa level in the two simulations. Compared to CAM-HOMME, the slope of the kinetic energy spectrum in CAM-SE is shallower for wavenumbers larger than 30, bringing the solutions closer to the empirically \citep{NG1985JAS} and theoretically \citep{C1971JAS} determined slope of -3 at synoptic scales. The increased kinetic energy at smaller scales is primarily the result of committing to smaller viscosity coefficients in CAM-SE (not shown).
+To understand how the design choices adopted by CAM-SE influence the aqua-planet solutions compared to its predecessor, CAM-HOMME, we ran a pair of simulations using the CAM6 physics package for 4.5 years at $~1^\circ$ horizontal resolution ($N_e=30$ and $N_p=4$) and 32 levels in the vertical {\color{red}{(model top is at approximately 3.6Pa)}}. Figure~\ref{fig:kespectra} shows the total kinetic energy spectrum at the 200 hPa level in the two simulations. Compared to CAM-HOMME, the slope of the kinetic energy spectrum in CAM-SE is shallower for wavenumbers larger than 30, bringing the solutions closer to the empirically \citep{NG1985JAS} and theoretically \citep{C1971JAS} determined slope of -3 at synoptic scales. The increased kinetic energy at smaller scales is primarily the result of committing to smaller viscosity coefficients in CAM-SE (not shown).
 
  Figure~\ref{fig:dzonal}a shows the zonally averaged total precipitation rate in CAM-HOMME (purple) and CAM-SE (red) averaged over the final 4 years of the simulations. The differences between the two simulations is provided as the purple curve of Figure~\ref{fig:dzonal}b. CAM-SE has increased precipitation at the equator, with a peak difference of 3 mm/day. An approximate 1 mm/day reduction in precipitation occurs on the flanks of the equator (Figure~\ref{fig:dzonal}). CAM-HOMME has twin Inter-Tropical Convergence Zones (ITCZ) straddling the equator, which is a common feature of the tropics in general circulation models (GCMs; \cite{BGN2010JCLIM}; \cite{MWO2016JAMES}), but appears absent from the CAM-SE simulations (Figure~\ref{fig:dzonal}). The total precipitation rate in the model is the sum of the precipitation from the convective parameterizations, and that due to large-scale condensation. The deep convective precipitation rate indicates that the double-ITCZ does exist in CAM-SE (not shown), but is masked by the large increase in total precipitation rate at the equator (Figure~\ref{fig:dzonal}b) primarily due to an increase in large-scale condensation (not shown).
 
@@ -1136,7 +1141,7 @@ One of the motivations for moving to a dry-mass vertical coordinate is to make t
 \subsubsection{Conservation}
 To assess the AAM conservation properties of the CAM-SE dynamical core, the diagnostics used in \cite{LBDL2014JAMES} are applied to the Aqua-planet simulation described in Section \ref{sec:APE}. In the dynamical core the column integrated wind and mass AAM are written to history files and the total integrals of AAM are computed as a post-processing step. The torques are obtained by subtracting the global integrals of AAM divided by the time-increment between the outputs of the AAM. For details on the discretized AAM diagnostics see \cite{LBDL2014JAMES}. These diagnostic outputs are part of the CESM2 release and are controlled with namelist variables.
 
-As discussed in Section \ref{sec:aam} the total AAM torque from the dynamical core, in the absence of topography, should be small compared to the torque from the parameterizations. Figure \ref{fig:aam} shows that that is indeed the case for CAM-SE. The spurious torques from the dynamical core are approximately a factor 100 smaller than the physical torques from the parameterizations. These results are very similar to the dynamical core torques found in the dry Held-Suarez setup used in \citet{LBDL2014JAMES}.
+As discussed in Section \ref{sec:aam} the total AAM torque from the dynamical core, in the absence of topography, should be small {\color{red}{(ideally zero)}} compared to the torque from the parameterizations {\color{red}{which is not spurious}}. Figure \ref{fig:aam} shows that that is indeed the case for CAM-SE. The spurious torques from the dynamical core are approximately a factor 100 smaller than the physical torques from the parameterizations. These results are very similar to the dynamical core torques found in the dry Held-Suarez setup used in \citet{LBDL2014JAMES}.
 
 Similarly to the AAM diagnostics, the total column-integrated moist energy is output at various places in the dynamical core and physics parameterizations. The dynamical core conserves the moist total energy, equation \eqref{eq:comprehensice_energy}, to about 0.1$W/m^2$. The frictional heating term described in section \ref{sec:frictional_heating} is approximately 0.4$W/m^2$ and hence an important term for total moist energy conservation. As mentioned in section \ref{sec:aam} the CAM physics energy fixer enforces a different energy than the comprehensive moist energy. This inconsistency should be removed in future CAM versions, however this is not a trivial modification to the CAM physics package. The discrepancy between the two definitions of energy is approximately 0.5$W/m^2$ \citep[similar to what ][ found when just including the correct heat capacity for water vapor in the total energy equation]{T2011LNCSEb}. A detailed energy analysis will be the subject of a future publication.
 %
@@ -1167,7 +1172,7 @@ Note that for this comparison we use the same Aquaplanet CAM6 configuration, whi
 \begin{figure}[h]
 \centering
  \includegraphics[scale=0.5]{figs/percent}
- \caption{(a) Fraction of time spent in several different sub-components of CAM for the $1^\circ$ horizontal resolution Aquaplanet simulation on Cheyenne (see text for more details). (b) Throughput in terms of simulated years per day as a function of number of nodes. The curved lines are parabolic Least-Squares fit to the data points. Note that for the right-most data-point there is only one element in the horizontal per processor (150 nodes is 5400 processors and there are $6\times N_e^2=6\times 30^2=5400$ elements in the horizontal).}
+ \caption{Fraction of time spent in several different sub-components of CAM for the $1^\circ$ horizontal resolution Aquaplanet simulation on Cheyenne (see text for more details).}
  \label{fig:percent}
 \end{figure}
 \begin{figure}[h]
@@ -1420,7 +1425,7 @@ Then use the resulting change in weight of dry air per unit area at the surface 
 \begin{equation}
 \left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}_k=\left( \frac{\partial \langle M^{(d)}\rangle}{\partial \eta^{(d)}}\right)_k+\left( \frac{\partial B}{\partial \eta^{(d)}}\right)_k\left[ \left( M^{(d)}_s \right)^{(ref)}-\langle M^{(d)}_s \rangle \right],
 \end{equation}
-where $B$ is the hydrid coefficient.
+where $B$ is the hybrid coefficient.
 %
 %
 % 
@@ -1432,7 +1437,7 @@ The following hyperviscosity coefficients are used in CAM-SE:
 \nu_T = \nu_{vor} &= 0.150\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},\\
 \nu_p = \nu_{div} &= 0.751\times \left(\frac{30}{N_e}1.1\times 10^5\right)^3\, \frac{m^4}{s},
 \end{align}
-where $N_e=30$ and $N_e=120$ for the $1^\circ$ and $1/4^{\circ}$ horizontal resolution configurations. Note that mass-wind consistency may be violated if $\nu_p \neq \nu_{div}$. The term inside the parenthesis is the average grid spacing in kilometers and the scaling with resolution is what is used with MPAS \citep[Model for Prediction Across Scales; ][]{SPKS2014JAS}. The damping of temperature and vorticity in CAM-SE is similar to the damping in MPAS, i.e. MPAS uses a coefficient of 0.05 in front of the $(\cdot)^3$ term and CAM-SE uses 0.751.
+where $N_e=30$ and $N_e=120$ for the $1^\circ$ and $1/4^{\circ}$ horizontal resolution configurations. Note that mass-wind consistency may be violated if $\nu_p \neq \nu_q$ where $nu_q$ is the viscosity coefficient for tracers. The term inside the parenthesis is the average grid spacing in kilometers and the scaling with resolution is what is used with MPAS \citep[Model for Prediction Across Scales; ][]{SPKS2014JAS}. The damping of temperature and vorticity in CAM-SE is similar to the damping in MPAS, i.e. MPAS uses a coefficient of 0.05 in front of the $(\cdot)^3$ term and CAM-SE uses 0.751.
 
 In the top three levels (sponge layer) the prognostic variables are damped with a Laplacian damping (second-order viscosity)
 \begin{equation}

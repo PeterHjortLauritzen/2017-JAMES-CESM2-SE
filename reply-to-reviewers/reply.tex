@@ -75,6 +75,13 @@ additonal modifications to the CAM physics routines.
 
 \item {\color{red}{Also in section 2.6: You make reference to the ``specific damping coefficients''. Shouldn't these be runtime-parameters? I presume that the best value of the damping will depend on the application (for example, data assimilation cycling may benefit from additional damping to remove short-wavelength waves due to imbalances) and may not be a simple function of resolution.}}
 
+The authors agree. The `specific' coefficients where determined emperically for stability and may have to be increased for specific applications. The sentence\\
+
+`The specific damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), level-thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution specific and provided in Appendix A.3.'\\
+
+has been replaced with \\
+
+`The damping coefficients for divergence ($\nu_{div}$), vorticity ($\nu_{vor}$), level-thickness ($\nu_p$) and temperature $(\nu_T)$ are resolution dependent and provided in Appendix A.3. These coefficients were determined empirically for stability and may have to be increased for specific applications such as data-assimilation cycling where additional damping to remove short-wavelengths due to imbalances may be necessary.'
 
 \item {\color{red}{ Section 3.3: I am unfamiliar with the spectral element method. In traditional finite-differencing schemes there is a well defined way for each grid point to be influenced by its neighbors. How does each element communicate with one another? Is it by the shared points on the edges of each element? Also, if indeed it is only by the edge points, then wouldn't a broader domain of dependence (with more points) be needed for a higher-order method?}}
 
@@ -86,23 +93,39 @@ Canuto2007:  my favorite book for SE
 
 \item {\color{red}{Section 3.4: It is claimed that the SE method is energy- and mass- conserving. However the damping applied to the mass and temperature fields is said to not be energy conservative. How can you claim the method is energy conserving? Indeed, we see later (section 4.2.1) that even the adiabatic core is not energy conserving the way that mass-conservative schemes are able to conserve mass down to computational rounding error. Further, is the damping applied to the mass field mass-conserving? }}
 
+To our knowledge we do not claim strict energy conservation so perhaps our wording is not clear. For the frictionless equations of motion (i.e. no hyperviscosity terms) the SE discretization is energy conserving to time-truncation errors. The hyper-viscosity on momentum is converted into heating so that energy is conserved with respect to momentum diffusion. Energy conservation is violated by hyperviscosity on temperature and pressure (a detailed energy analysis of CAM-SE is the subject of a manuscript currently in preparation). The damping applied to mass is mass-conserving to computational rounding error.\\
+
+No changes to manuscript yet!
 
 \item {\color{red}{Section 4.2: Can you check to be sure that greater divergence damping does decrease the (resolved) vertical motion in your simulations? One might expect that much of the vertical motion will be parameterized in either case. Furthermore it is not necessarily true that increasing the divergence damping will lead to weaker precipitation systems:\\ 
 
 
 Zhao, Ming, Isaac M. Held, and Shian-Jiann Lin. ``Some counterintuitive dependencies of tropical cyclone frequency on parameters in a GCM.'' Journal of the Atmospheric Sciences 69, no. 7 (2012): 2272-2283.}}
 
+Adam
+
 
 \item {\color{red}{Section 4.2.1: Again, we see that the dynamical core does not actually conserve angular momentum, but instead that it merely has a spurious imbalance smaller than that of the physics. }}
 
+Correct!
 
 \item {\color{red}{Figure 6: It is difficult to get a sense of the physical scales in the kinetic energy spectrum plot. Could either a second axis showing physical wavelengths, or a line indicating 6dx or 4dx scales, be added to the plot?}}
 
+Adam
+
 \item {\color{red}{Figure 7: Some of the colours, especially blue and purple, and red and magenta, are hard to tell apart. }}
+
+Adam
 
 \item {\color{red}{Section 4.3: The performance gains in CAM-SE over CAM-HOMME are excellent. Is this due to code optimization, or have there been science-related changes that could also lead to speedups? Also, tracer advection can be a major cost in many numerical models. How many tracers are used for these benchmark tests, and how efficient is the tracer advection compared to the rest of the dynamics?}}
 
+John
+
 \item {\color{red}{Appendix B: we see that the continuous equations are indeed mass, angular momentum, and energy conserving. How might the discretization affect these conservation relations? In particular, I had thought that the vector-invariant momentum equation (49) is not angular-momentum conserving; and the angular momentum conservation law (B.3) does not make the shallow-atmosphere approxmiation used in the rest of the text.}}
+
+In (B.3) $r$ is the mean radius of Earth so the equation does make the shallow atmosphere approximation.\\
+
+Ram?
 
 \end{itemize}  
 \newpage
@@ -132,47 +155,131 @@ Regular gnomonic, equ-angular gnomonic and hybrid approach compared in:
 Done! Plots (a) and (b) are now centered over the US. (a) now show $N_e=30$ and (b) shows the elements of the actual Conus grid.
 
 \item {\color{red}{L.80-102: From these two paragraphs, both motivating the utility of the dry-mass vertical coordinate, it somehow becomes clear that also the physical parameterizations are involved. But it is not sufficiently clear that for a fully consistent formulation of this CAM-SE and physics, also the physical parameterizations need (in part) to be reformulated so that the same definitions of cp and energy are in use through the whole model. Please add a statement that clarifies already here that (a) an adaptation of the physics is necessary for a fully consistent model, and that (b) this adaptation is not treated in this paper, but will follow later.}}
+
 \item {\color{red}{L129: The first sentence is a bit awkward to read. Why not ``Equation 1 defines ... `` L159: ``... (more on this ...) ``}}
+
+`Define the dry mixing ratios ...' changes to `Equation (1) defines the dry mixing ratios ...'\\
+
+`(more on this ...)' changes to (see Section 2.4.2 ...)'
+
 \item {\color{red}{Eq. 22 and 23: For completeness one could add that (23) also uses $\partial S^{(l)}/\partial E^{(l)} = 1/T$}}
+
+Added.
+
 \item {\color{red}{ Eq.26: ...$\alpha^{(l)} - V(cond)/V$  ...}}
+
+Added. {\color{blue}{Is (26) correct. Julio?}}
+
 \item {\color{red}{L175: ... where $\alpha^{(l)} = V/N^{(l)}M^{(l)}$ is the ...}}
+
+Corrected.
+
 \item {\color{red}{Eq.28 and 29: ... $d [(1-\xi^{(cond)})\alpha^{(l)}]$. }}
+
+Corrected.
+
 \item {\color{red}{L177: ... i.e. $\xi^{(cond)} = 0.$}}
+
+Corrected.
+
 \item {\color{red}{Eq.33-35: left hand side, 2nd term has wrong sign }}
+
+Corrected.
+
 \item {\color{red}{Eq.33: ... - $\sum m^{(l)}\alpha^{(l)} p^{(l)}$ = ...}}
+
+Sign corrected (previous bullet point) but the term is, to our knowledge, correct $\sum_{\ell \in \mathcal{L}_{gas}}m^{(\ell)} \alpha^{(\ell)}dp^{(\ell)}$.
+
 \item {\color{red}{Eq.34: ... -$1/\\rho^{(d)}\sum dp^{(l)} = $...}}
+
+Corrected.
+
 \item {\color{red}{Eq.35: ... -$1/\rho dp = $...}}
+
+Corrected.
+
 \item {\color{red}{L182: ... then using (13) the ...}}
+
+Done
+
 \item {\color{red}{L195: ... We assume that the composition of dry air is constant and that there is no moisture ...}}
+
+Done
+
 \item {\color{red}{Eq. 41, 42, 44: The integral of dz is in the increasing direction of z, so that dz is positive. With $\rho$ and $g$ being positive, and for a positive pressure, the signs should be changed:}}
+
+Done
+
 \item {\color{red}{Eq.41: $p(z) = g$  ...}}
+
+Done
+
 \item {\color{red}{Eq.42: $=g$...}}
+
+Done
+
 \item {\color{red}{Eg.44: $M^{(l)}(z)$ = <Integral>}}
+
+Done
+
 \item {\color{red}{L213-219: As physical explanation one could add that when hydrometeors are falling at terminal velocity, the gravitational force pulling the hydrometeors downward is compensating by the upward frictional force of the gaseous atmosphere on the hydrometeors. This compensating force adds to the atmospheric pressure.}}
+
+Added to manuscript.
+
 \item {\color{red}{Eq.46: M is mass, not weight: $dM^{(d)}(z) = -\rho^{(d)} dz,$}}
+
+Corrected
+
 \item {\color{red}{L225: ... only if there are no condensates present at higher levels ...}}
+
+Added to manuscript.
+
 \item {\color{red}{L261: Numbering of appendices: currently the subsections of appendix A are numbered as A.1, A.2 and A.3. This numbering is also used for equations in Appendix A. Please use a different numbering of the appendix sections, e.g. A.a, A.b and A.c.}}
+
+It is author's understanding that this change is up to the journal.
+
 \item {\color{red}{Please add a reference to Appendix A.1. I couldn't find any.}}
+
+Appendix A.1 is referenced implicitly through the reference to Appendix A.
+
 \item {\color{red}{L261-264: Please add here the consequences of formally allowing different values for the viscosities $\nu_p, \nu_T, \nu_{div}$ and $\nu_{vor}$. I think it is important to know that the mass-wind consistency requires $\nu_p =\nu_{div}$, which is now ``hidden'' in the appendix A.3. What would be the consequence of $\nu_T \neq \nu_{vor}$?}}
+
+Tracer / tracer-mass consistency requires $\nu_p = \nu_q$ (there was a typo in the manuscript; $\nu_p =\nu_{div}$), that is, the hyper-viscosity applied to density has to be the same as the hyper-viscosity applied to tracers.\\
+
+There are no constraints on the hyper-viscosity coefficients applied to velocity, $\nu_{div}$ and $\nu$.  Also, no constraints of the hyper-viscosity applied to temperature.\\
+
+To reduce noise we have emperically found it effective to use a larger $\nu_{div}$ and $\nu_p$ compared to $\nu_T$ and $\nu_{vor}$ to damp computational modes and noise associated with the SE basis functions being $C^0$ at element boundaries.
+
+Changes to the manuscript: appended 'Note that the viscosity coefficient for pressure and tracers should be the same otherwise the model is no longer 'free-stream' preserving (i.e. a constant mixing ratio is preserved; also referred to as mass-wind consistency in the literature). The dispersion properties of CAM-SE with hyperviscosity are similar to A-grid models. There are no computational modes, but the grid scale modes are erratic with large phase errors \citep{AW2009SIAM}. Empirically we have found that increasing $\nu_{div}$ and $\nu_p$ compared to  $\nu_T$ and $\nu_{vor}$ is effective at damping grid-scale modes and noise associated with the SE basis functions being $C^0$ at element edges while not making the total kinetic energy spectrum too dissipative at the high wavenumbers.' after line 264.
+
 \item {\color{red}{Further it would be interesting to get insight in the factors between the viscosities. Why is it that CAM- SE needs ($\nu_p$, $\nu_{div}$) = 5($\nu_T$, $\nu_{vor}$)? Does CAM-SE have numerical modes in divergence? If you have some insight, it would be great to share it with the reader.}}
 
-"The dispersion properties of CAM-SE with hyperviscosity are similar to A-grid models.
-There are no computational modes, but the grid scale modes are erratic with large
-large phase errors and $\nu_{div}$ is chosen to damp these modes.  "
-
-References: 
-
-The Ainsworth 2009 reference in this paper is for the 2nd order wave equation.  A better reference 
-would be Ainsworth's 2013 JCP paper ( 10.1016/j.jcp.2013.11.003 ), where he has analytic dispersion
-for the 1st order wave equation more appropriate as a model for CAM.
-As for tuning $\nu_{div}$, Paul Ullrich's latest paper would be a 
-good reference, although I think it was just submitted so it might not be citable.  
+See answer to previous bullet point.
 
 \item {\color{red}{L279 and Eq.59: without factor 1/2.}}
+
+Missing 1/2 added to equation 59.
+
 \item {\color{red}{L290-293: Also convection parameterizations matter, as a forcing for resolved waves, and the dissipation (numerical and physical) matters for the QBO.}}
+
+Sentence at L290 has beedreplaced with:
+
+`Good AAM conservation may be important for the simulation of the Quasi-Biennial Oscillation (QBO) although the accurate simulation of the QBO also depends on vertical resolution, location of model top, model dissipation (numerical and physical) and parameterizations \citep[such as nonorographic gravity wave drag and convection parameterization; ][]{RSB2014JGR}. '
+
 \item {\color{red}{L323-324: The sentence ``In the model code this is controlled ... `` is not really clear. What exactly is meant by ``this'' and what is meant be ``.true.''?}}
-\item {\color{red}{L.333: ``... and similarly for full levels k. ... ``: Please specify how $A_k$ and $B_k$ are defined for full levels.}}
+
+Clarified by replacing sentence with:\\
+
+`CAM-SE's total energy can be made consistent with CAM physics (described above) and it is enabled/disabled in the model code with the  logical parameter $\tt{lcp\_moist}$.'
+
+\item {\color{red}{L.333: ``... and similarly for full levels k. ... ``: Please specify how $A_k$ and $B_k$ are defined for full levels.}}\\
+
+Appended 'where $A_k=\frac{1}{2}\left( A_{k+1/2}+A_{k-/12}\right)$ and $B_k=\frac{1}{2}\left( B_{k+1/2}+B_{k-/12}\right)$'\\
+
 \item {\color{red}{L.342: ``... and density ...'': Later Eq.73 shows that density is defined on the full levels, not on the interface levels as stated on this line. What is correct?}}
+
+Density is a derived variable and defined at full levels. Manuscript text corrected by removing denisty from L342.
+
 \item {\color{red}{Section ``3.5 Temporal discretization'':
 This section details the rational for using different time stepping schemes for different equations or operations. What is missing is to point out if there exist any links between the schemes. In particular I am wondering how tracer mass conservation and mass-wind consistency is achieved with different schemes for advection and the continuity equation. Does the ``faster'' dynamics provide dry-air mass flux information from its se\_rsplit dynamics steps to the ``slower'' tracer advection step?}}
 
@@ -182,17 +289,65 @@ For mass / tracer-mass consistency, the dynamics computes a mean flux (averaged 
 the 5 Runge-Kutte stages.  This mean flux is then used by all 3 tracer RK stages.
 
 \item {\color{red}{L545-550: Tracer concentrations need to be positive definite as outlined, which may require some sort of limiters. When water tracers are involved, such mechanisms, however, not only affect the tracer budgets, but generally also the energetics. Does CAM-SE relate tracer tendency limitations to the energetics? Or does ``setting to zero'' of a mixing ratio necessarily cause an energetic inconsistency? It would be valuable to have some explanation on this aspect.}}
+
+In the dycore, since there are no phase changes, the latent heat contained in the tracers is proportional to their mass, and thus does not change (as long as we conserve mass).  And since the limiter conserves mass (and dissipates variance) I did not see any impact on the energetics.\\
+
+No changes to manuscript yet!\\
+
+{\color{blue}{Ram: I am not completety sure this is an exhaustive and correct answer. What is your opinion?}}    
+
 \item {\color{red}{L586: ... Appendix D. When ...}}
+
+The LaTeX style from JAMES adds `:' after the referece to the Appendix. Asking journal to fix.
+
 \item {\color{red}{L701: Please specify the model top of the 32 level version used here.}}
+
+Top is at approxmately 3.6Pa. Added to text.
+
 \item {\color{red}{L706: ``... reducing the explicit diffusion coefficients used in CAM-SE'': Are all viscosity coefficients reduced equally? Or does the benefit origin from a more selective reduction ($\nu_{div}$ or $\nu_{vor}$)?}}
+
+See answer to comment to L261-264.
+
 \item {\color{red}{L803-806: If the explanations outlined in Fig.8 holds, the same effects should unfold in realistic experiments, though they might be less visible.}}
+
+Agreed.
+
 \item {\color{red}{L830-835: What is the expectation for the physical torque? Is the observed wind torque consistent with AAM variations of the atmosphere, or does Fig.9 show some inconsistency in the physics?}}
-\item {\color{red}{L873: ... cores/node. The x-axis ...}}
-\item {\color{red}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, phyiscs \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}
+
+The torque from physics is not total AAM conserving so Figure 9 is not showing inconsistency from physics. The purpose of comparing the physics torque to the dynamical core torque is to show that the spurious torque from dynamics is much less than the `physical' torque from physics.
+
+Sentece in L830 changed to:\\
+
+As discussed in Section 2.7 the total AAM torque from the dynamical core, in the absence of topography, should be small {\color{red}{(ideally zero)}} compared to the torque from the parameterizations {\color{red}{which is not spurious}}.
+
+\item {\color{red}{L873: ... cores/node. The x-axis ...}}\\
+
+Dennis!
+
+\item {\color{red}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, phyiscs \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}\\
+
+Dennis
+
 \item {\color{red}{L1315: probably ... (2014) ...}}
+
+Fixed.
+
 \item {\color{red}{Figure 7: The colors for CAM-SE and CAM-SE-ppmlimiter are difficult to distinguish. Please find better colors.}}
+
+Adam.
+
 \item {\color{red}{Figure 8a: Use bigger font!}}
+
+Adam.
+
 \item {\color{red}{Figure 11: There is only one panel \# ``(a)'' not needed, and the text for panel (b), which obviously has become Figure 12, must be deleted.}}
+
+Fixed.
+
+\end{itemize}
+\section{Other changes}
+\begin{itemize}
+\item {\color{red}{J.-F.: you should rewrite the title, maybe something like NCAR release of CAM-SE in CESM2.0}}
 \end{itemize}
 \bibliographystyle{abbrv}
 \bibliography{bib}
