@@ -104,7 +104,21 @@ No changes to manuscript yet!
 
 Zhao, Ming, Isaac M. Held, and Shian-Jiann Lin. ``Some counterintuitive dependencies of tropical cyclone frequency on parameters in a GCM.'' Journal of the Atmospheric Sciences 69, no. 7 (2012): 2272-2283.}}
 
-Adam
+Thank you for this inciteful comment. It is interesting - I actually used the word 'intuitive' to describe the response of omega to the divergence damping coefficient. We have looked into both the mean (Figure~\ref{fig:denergy}) and extreme (Figure~\ref{fig:pdfvisc}) values of omega, and find that the magnitudes decrease for the larger divergence damping coefficient, overall. The response is intuitive. Some counter-intuitive responses may certailny occur in a different configuration/resolution, esepcially one permitting the formation of tropical cyclones. A line has been inserted (line XXX) pointing to \cite{ZHL2012JAS}, acknowledging that the response to divergence damping coefficient is not always intuitive.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{figs/temp_denergy_SE_v_SE-oldvisc.pdf}
+\caption{Departure of the components of the zonally averaged dry static energy budget between CAM-SE-lovisc and CAM-SE. Anomalous latent heat associated with (a) convective precipitation and (b) large-scale precipitation (c), the dynamical component of the anomolous divergence of the flux of dry static energy by the mean vertical circulion, and (d) the residual component from the sum of (a), (b) and (c). Dotted lines refer to twice the standard deviation associated with low frequency (monthly) variablity. The term in (c) is proportional to the change in omega, and is indicates anomolous heating owing to a reduction in the divergence of the mean vertical advective flux of dry static energy.}
+\label{fig:denergy}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=20pc]{figs/temp_pdf_SE_v_SE-oldvisc.pdf}
+\caption{Probabilty densitiy distribution of the upward omega, everywhere in the model, for CAM-SE and CAM-SE-lovisc. Computed from a single year of six-hourly output.}
+\label{fig:pdfvisc}
+\end{figure}
 
 
 \item {\color{red}{Section 4.2.1: Again, we see that the dynamical core does not actually conserve angular momentum, but instead that it merely has a spurious imbalance smaller than that of the physics. }}
@@ -117,7 +131,7 @@ Adam
 
 \item {\color{red}{Figure 7: Some of the colours, especially blue and purple, and red and magenta, are hard to tell apart. }}
 
-Adam
+We have changed the colors so as to be more readable.
 
 \item {\color{red}{Section 4.3: The performance gains in CAM-SE over CAM-HOMME are excellent. Is this due to code optimization, or have there been science-related changes that could also lead to speedups? Also, tracer advection can be a major cost in many numerical models. How many tracers are used for these benchmark tests, and how efficient is the tracer advection compared to the rest of the dynamics?}}
 
@@ -336,11 +350,11 @@ Fixed.
 
 \item {\color{red}{Figure 7: The colors for CAM-SE and CAM-SE-ppmlimiter are difficult to distinguish. Please find better colors.}}
 
-Adam.
+We have changed the colors as to be more readable.
 
 \item {\color{red}{Figure 8a: Use bigger font!}}
 
-Adam.
+The font size has been increased.
 
 \item {\color{red}{Figure 11: There is only one panel \# ``(a)'' not needed, and the text for panel (b), which obviously has become Figure 12, must be deleted.}}
 
