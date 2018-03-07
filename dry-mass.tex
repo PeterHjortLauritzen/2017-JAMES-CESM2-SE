@@ -642,7 +642,7 @@ The dry air mass layer thickness is damped with $\nu_p \nabla^4\left\{ \frac{\pa
 
 The horizontal hyperviscosity operator can be applied on $\eta_d$-surfaces, $\nabla^4=\nabla^4_{\eta_d}$, but it may be advantageous to apply the hyperviscosity operator on approximate dry-mass surfaces
 \begin{equation}
-\nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}-\nu \frac{\partial \Xi\quad }{\partial M^{(d)}} \nabla^4_{\eta_d}M^{(d)},\qquad \Xi=\mathbf{v}, T,
+\nu \nabla^4 \Xi =\nu \nabla^4_{\eta_d}\Xi -\nu \frac{\partial \Xi\quad }{\partial M^{(d)}} \nabla^4_{\eta_d}M^{(d)},\qquad \Xi=\mathbf{v}, T,
 \end{equation}
 \citep[p.58 in ][]{CAM5} to reduce spurious diffusion over steep topography. In theory the damping of dry-mass layer thickness should be zero if hyperviscosity is applied on dry-mass surfaces. However, for stability it is necessary to damp dry-mass layer thickness, but instead of applying $\nabla^4$ to $\frac{\partial M^{(d)}}{\partial \eta^{(d)}}$ it is applied to the difference between $\frac{\partial M^{(d)}}{\partial \eta^{(d)}}$ and a smoothed version of $\frac{\partial M^{(d)}}{\partial \eta^{(d)}}$ referred to as $\left( \frac{\partial M^{(d)}}{\partial \eta^{(d)}}\right)^{(ref)}$. The reference/smoothed dry-mass layer thickness is defined in Appendix \ref{app:ref_dp}. 
 
