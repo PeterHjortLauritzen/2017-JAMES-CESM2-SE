@@ -941,8 +941,10 @@ Therefore  the problem (\ref{eq:se3}) can be solved locally for each
      \begin{equation}
   \frac{d }{dt} \phi(t) =   DSS(\phi).  \label{eq:se8}
        \end{equation}
-
 The details of the discretization of the dissipation operators are provided in Appendix \ref{sec:dissipation}.
+
+{\color{red}{Note that nodes on the element boundary are shared between elements and that after each Runge-Kutta step the shared nodes will have different values. The elements are coupled by averaging the the two solutions at the shared nodes (so the halo communicated between elements is only one node deep). The solution is therefore only $C^0$ at element boundaries. The ability to obtain high-order accuracy with only edge point communication is an attractive feature of the spectral element method \cite{MadayPatera87,canuto2007}.}}
+
 %
 \subsection{Mimetic discretization}
 A numerical method is mimetic (or compatible) if key integral properties of divergence, gradient and curl-operators are mimicked in discretized space. The CAM-SE discretization satisfies the divergence/gradient adjoint relation

@@ -35,12 +35,14 @@ Changes to the manuscript:
 {\color{red}{
 While interesting from a design standpoint, I am not convinced that the change from moist-mass to a dry-mass vertical coordinate represents an improvement to the model, despite the great effort that would be required for this change, inside and outside of the core. The main justification given is that it makes a number of parts of the model ``easier'', although it is not clear that this is the case. While it may eliminate the need to rescale tracer masses, now the mass effect of water vapor and the condensates needs to be explicitly added in when computing the pressure-gradient force, among other considerations. It is also mentioned in Section 4.2 that many parts of the physics would need to be re-written to work with dry mass; most notably, the use of dry mass leads to the inequality of the hydrostatic assumption in (47), which is a very common assumption in models (presumably more common than the assumption that pressure surfaces do not change). }}\\
 
-The reformulation of the dynamical core in dry-mass vertical coordinates is a first step towards a more comprehensive treatment of energy in the Earth systemas a whole. Casting equations of motion in a dry-mass vertical coordinate system provides a clear separation between the energy associated with all forms of water in the atmosphere. We agree that, though cumbersome, this could be done in a moist-mass vertical coordinate too. We argue that the physical parameterization package should operate with a dry-mass vertical coordinate in order to, for example, properly account for the work done by water when is leaves the column.\\
+The reformulation of the dynamical core in dry-mass vertical coordinates is a first step towards a more comprehensive treatment of energy in CESM as a whole. Casting equations of motion in a dry-mass vertical coordinate system provides a clear separation between the energy associated with all forms of water in the atmosphere. We agree that, though cumbersome, this could be done in a moist-mass vertical coordinate too. We argue that the physical parameterization package should operate with a dry-mass vertical coordinate in order to, for example, more easily/clearly account for the work done by water when it leaves the column.\\
+
+Changes to manuscript: {\color{blue}{none at this point}}\\
 
 {\color{red}{
-Other than the moist-mass effects, have there been any fundamental improvements to the discretization in CAM-SE? Some of the changes demonstrated in the paper are just re-configuration of runtime parameters. Figure 6 shows a major change in the kinetic energy spectrum, but this should be simply due to the new choice of parameters, and doesn't seem to be due to fundamental improvments in the solver. }}\\
+Other than the moist-mass effects, have there been any fundamental improvements to the discretization in CAM-SE? Some of the changes demonstrated in the paper are just re-configuration of runtime parameters. Figure 6 shows a major change in the kinetic energy spectrum, but this should be simply due to the new choice of parameters, and doesn't seem to be due to fundamental improvements in the solver. }}\\
 
-The changes are in the equation's of motion (comprehensive and energetically consistent treatment of all forms of water), hyperviscosity (applied to approximate pressure-levels rather than $\eta$, and different pressure-level thickness damping) and vertical remapping. The basic spectral-element solver remains the same. The code-base has been significantly optimized and cleaned up (and moved into the CAM ripository).
+The changes are in the equations of motion (comprehensive and energetically consistent treatment of all forms of water), hyperviscosity (applied to approximate pressure-levels rather than $\eta$, and different pressure-level thickness damping) and vertical remapping. The basic spectral-element solver remains the same. The code-base has been significantly optimized and cleaned up (and moved into the CAM repository).\\
 
 Changes to the manuscript: In the Introduction, paragraph 2, we have added the following sentence: `The basic spectral-element method has not been changed but we present changes to the details of how hyperviscosity is applied and the vertical remapping that are not specific to the dry-mass vertical coordinate.' 
 
@@ -62,14 +64,16 @@ Sentence replaced with `While the appropriate thermodynamics of moist air is wel
 \item {\color{red}{Section 2.5: Is there a justification for using T as the prognostic variable instead of potential temperature, which is conserved in adiabatic flows? This is important because the calculation of omega can be quite delicate (Holton 2004, 3.5.1), and must be accurately computed to ensure energy conservation in this equation.}}
 
 This is mostly done for historical reasons.  CAM has long relied on a
-discrete hydrostatic integral consitent with a prognostic temperature
+discrete hydrostatic integral consistent with a prognostic temperature
 and conventional pressure gradient \cite{CAM5}. The
 discrete system conserves energy to time truncation error even with
 moisture \cite{T2011LNCSEb}.  We are currently 
-evaluating a potential temperatue formulation which requires the
-pressure gradient to be written in terms of exner pressure and a
+evaluating a potential temperature formulation which requires the
+pressure gradient to be written in terms of Exner pressure and a
 different discretization of the hydrostatic integral, requiring
-additonal modifications to the CAM physics routines.
+additional modifications to the CAM physics routines.\\
+
+That said, the potential temperature and Exner pressure formulation is ill-conditioned for high-top applications (above the homopause) and CAM-SE is currently being implemented into WACCM and WACCM-x (which are high top models).
 
 
 
@@ -85,11 +89,9 @@ has been replaced with \\
 
 \item {\color{red}{ Section 3.3: I am unfamiliar with the spectral element method. In traditional finite-differencing schemes there is a well defined way for each grid point to be influenced by its neighbors. How does each element communicate with one another? Is it by the shared points on the edges of each element? Also, if indeed it is only by the edge points, then wouldn't a broader domain of dependence (with more points) be needed for a higher-order method?}}
 
-The ability to obtain high-order accuracy with only edge point communication is an
-attractive feature of the spectral element method \cite{MadayPatera87,canuto2007}.  
+Changes to the manuscript: The following text has been added to the end of Section 3.3\\
 
-MadayPatera87: modern form of SE, first high-order convergence proof
-Canuto2007:  my favorite book for SE
+'Note that nodes on the element boundary are shared between elements and that after each Runge-Kutta step the shared nodes will have different values. The elements are coupled by averaging the the two solutions at the shared nodes (so the halo communicated between elements is only one node deep). The solution is therefore only $C^0$ at element boundaries. The ability to obtain high-order accuracy with only edge point communication is an attractive feature of the spectral element method \cite{MadayPatera87,canuto2007}.'
 
 \item {\color{red}{Section 3.4: It is claimed that the SE method is energy- and mass- conserving. However the damping applied to the mass and temperature fields is said to not be energy conservative. How can you claim the method is energy conserving? Indeed, we see later (section 4.2.1) that even the adiabatic core is not energy conserving the way that mass-conservative schemes are able to conserve mass down to computational rounding error. Further, is the damping applied to the mass field mass-conserving? }}
 
@@ -125,7 +127,7 @@ John
 
 In (B.3) $r$ is the mean radius of Earth so the equation does make the shallow atmosphere approximation.\\
 
-Ram?
+{\color{blue}{Ram, do you have any suggestions?}}
 
 \end{itemize}  
 \newpage
