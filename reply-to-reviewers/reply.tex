@@ -128,7 +128,8 @@ We have changed the colors so as to be more readable.
 
 \item {\color{red}{Section 4.3: The performance gains in CAM-SE over CAM-HOMME are excellent. Is this due to code optimization, or have there been science-related changes that could also lead to speedups? Also, tracer advection can be a major cost in many numerical models. How many tracers are used for these benchmark tests, and how efficient is the tracer advection compared to the rest of the dynamics?}}
 
-John
+The performance gains in CAM-SE over CAM-HOMME are almostly entirely due to improvements in code optimization. The new dry-mass formulation should actually be slower then the previous formulation if no code optimizations had been undertaken.  The number of advected tracers is 5 in this case.  The vast majority of the performance gains were a direct result of improving the cache behavior in the advection algorithm.  
+   
 
 \item {\color{red}{Appendix B: we see that the continuous equations are indeed mass, angular momentum, and energy conserving. How might the discretization affect these conservation relations? In particular, I had thought that the vector-invariant momentum equation (49) is not angular-momentum conserving; and the angular momentum conservation law (B.3) does not make the shallow-atmosphere approxmiation used in the rest of the text.}}
 
@@ -335,7 +336,7 @@ Dennis!
 
 \item {\color{red}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, phyiscs \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}\\
 
-Dennis
+We have modified figure 11 such that it illustrates the core-hours per simulated year for each sub-component of CAM as well as the entire atmosphere model. After the submission of our initial manuscript we identified an errant print statement that was causing scalability issues in the phyics section of the code. The affect of this print statement was significant at larger core counts, and now the physics illustrates only a very minor increase in cost at greater then 30 nodes.
 
 \item {\color{red}{L1315: probably ... (2014) ...}}
 
