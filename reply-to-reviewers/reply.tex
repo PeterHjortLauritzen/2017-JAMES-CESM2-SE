@@ -332,11 +332,13 @@ As discussed in Section 2.7 the total AAM torque from the dynamical core, in the
 
 \item {\color{red}{L873: ... cores/node. The x-axis ...}}\\
 
-Dennis!
+Fixed.
 
 \item {\color{red}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, phyiscs \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}\\
 
-We have modified figure 11 such that it illustrates the core-hours per simulated year for each sub-component of CAM as well as the entire atmosphere model. After the submission of our initial manuscript we identified an errant print statement that was causing scalability issues in the phyics section of the code. The affect of this print statement was significant at larger core counts, and now the physics illustrates only a very minor increase in cost at greater then 30 nodes.
+We have modified figure 11 (which is Figure 12 in the new version of the manuscript) such that it illustrates the core-hours per simulated year for each sub-component of CAM as well as the entire atmosphere model. After the submission of our initial manuscript we identified an errant print statement that was causing scalability issues in the phyics section of the code. The affect of this print statement was significant at larger core counts, and now the physics illustrates only a very minor increase in cost at greater then 30 nodes.\\
+
+Figure 14 has also been updated.
 
 \item {\color{red}{L1315: probably ... (2014) ...}}
 
