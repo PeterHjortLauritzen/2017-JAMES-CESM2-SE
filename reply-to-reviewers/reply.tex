@@ -15,14 +15,14 @@
 \begin{center}
  {\large   \sf Reply to reviewer's and associate Editor}\\
     \vspace{.1in}
-    March 1 2018)
+    March 12, 2018
   \end{center}
 \section{Reply to associate editor}
 {\color{blue}{Associate Editor (Remarks to Author):\\
 
 Both reviewers commented on the switch to a dry-mass vertical coordinate but with opposite reactions. I think it would be helpful to the paper, and to assuage \# 1, by providing more evidence of the benefits of the switch to dry-mass. Other than that, I think the paper fits the purpose of a documentation paper for the CESM special issue.}}
 
-The author's thank the associate editor for supporting the publication of this manuscript after the appropriate revions are made. In the reponse to reviewer 1 we will address the associate editors overall comment.
+The author's thank the associate editor for supporting the publication of this manuscript after the appropriate revisions are made. In the response to reviewer 1 we will address the associate editors overall comment. Also, we have performed a slight rewording of the title from `NCAR CESM2.0 release of CAM-SE: ...' to `NCAR release of CAM-SE in CESM2.0'.
 \section{Reply to reviewer 1}
 We thank the reviewer for the helpful comments and spending the time going through a long and technical manuscript. Responses are interleaved below (reviewer comments are in blue font and authors responses in black font). 
 \subsection{Reviever 1's overall comments}
@@ -162,26 +162,39 @@ We have changed the colors so as to be more readable.
 
 \item {\color{blue}{Section 4.3: The performance gains in CAM-SE over CAM-HOMME are excellent. Is this due to code optimization, or have there been science-related changes that could also lead to speedups? Also, tracer advection can be a major cost in many numerical models. How many tracers are used for these benchmark tests, and how efficient is the tracer advection compared to the rest of the dynamics?}}
 
-The performance gains in CAM-SE over CAM-HOMME are almost entirely due to improvements in code optimization. The new dry-mass formulation should actually be slower then the previous formulation if no code optimizations had been undertaken (moist pressure is diagnostic implying the summation of water every dynamics time-step for computing the pressure gradient force and hydrostatic integral, hyperviscosity is more complicated due to having to compute a reference pressure  - that requires communication - and the correction terms for approximate pressure-level damping).  The number of advected tracers is 33 in this case.  The vast majority of the performance gains were a direct result of improving the cache behavior in the advection algorithm.  
-   
+The performance gains in CAM-SE over CAM-HOMME are almost entirely due to improvements in code optimization. The new dry-mass formulation should actually be slower then the previous formulation if no code optimizations had been undertaken (moist pressure is diagnostic implying the summation of water every dynamics time-step for computing the pressure gradient force and hydrostatic integral, hyperviscosity is more complicated due to having to compute a reference pressure  - that requires communication - and the correction terms for approximate pressure-level damping).  The number of advected tracers is 33 in this case.  The vast majority of the performance gains were a direct result of improving the cache behavior in the advection algorithm.  \\
+
+Changes to the manuscript:
+\begin{itemize}
+\item we have added that CAM6 has 33 advected species in the performance section.
+\item added to sentence (red font):\\
+
+`We suspect that the decrease in computational cost illustrated in Figure 11 is likely due to the fact that the calculations performed in the dynamical core {\color{red}{(in particular tracer advection code)}} now fit into the Level 3 (L3) cache on 75 nodes where they did not previously in either the original code base on the optimized code base on smaller node counts.  The decreased execution time due to the calculations being L3 cache resident is sufficiently large as to overcome any increase in execution time increase due to message passing.'
+\end{itemize}
 
 \item {\color{blue}{Appendix B: we see that the continuous equations are indeed mass, angular momentum, and energy conserving. How might the discretization affect these conservation relations? In particular, I had thought that the vector-invariant momentum equation (49) is not angular-momentum conserving; and the angular momentum conservation law (B.3) does not make the shallow-atmosphere approxmiation used in the rest of the text.}}
 
-We agree that angular momentum is not inherently conserved discretizations based on the vector-invariant momentum equations; neither is the case for the kinematic momentum formulation used in, e.g., MPAS. In fact, it is unclear why some numerical methods conserve AAM better than others \citep[see ][]{LBDL2014JAMES} but we are unaware of discratizations inhrently conserving AAM.\\
+Angular momentum is not inherently conserved in discretizations based on the vector-invariant momentum equations; neither is the case for the kinematic momentum formulation used in, e.g., MPAS. In fact, it is unclear why some numerical methods conserve AAM better than others \citep[see ][]{LBDL2014JAMES} but we are unaware of discratizations inherently conserving AAM.\\
 
 In (B.3) $r$ is the mean radius of Earth so the equation does make the shallow atmosphere approximation.\\
 
-Changes to the manuscript: `CAM-SE uses the vector-invariant form of the momentum equations and the discretization thereof is not inherently AAM conserving' add to conclusions section.
+Changes to the manuscript: `CAM-SE uses the vector-invariant form of the momentum equations and the discretization thereof is not inherently AAM conserving' added to conclusions section.
 \end{itemize}  
 \newpage
 
 \section{Reply to reviewer 2}
-We thank the reviewer for the helpful comments and spending the time going through a long and technical manuscript. Responses are interleaved below (reviewer comments are in red font and authors responses in black font). 
-\subsection{Reviever 2's overall comments}
-This manuscript presents a documentation of the new NCAR CESM2.0 release of CAM-SE with its reformulated dynamical core that uses a dry-mass vertical coordinate and accounts for the condensate loading effects. The authors present in detail the continuous equations and their discretization, and present a few results from simplified experiments to demonstrate the effect of the reformulations and the conservation properties expected from the discretized equations of the dynamical core. A substantial appendix adds further details to the documentation. Overall I think that the paper fulfills its purpose, as it provides the necessary background information for the analysis of experiments based on this model or for its further development. The text is relatively hard to read, owing to the large number of necessary equations, but they are unavoidable.
+We thank the reviewer for the helpful comments and spending the time going through a long and technical manuscript. Responses are interleaved below (reviewer comments are in blue font and authors responses in black font). 
+\subsection{Reviewer 2's overall comments}
+{\color{blue}{This manuscript presents a documentation of the new NCAR CESM2.0 release of CAM-SE with its reformulated dynamical core that uses a dry-mass vertical coordinate and accounts for the condensate loading effects. The authors present in detail the continuous equations and their discretization, and present a few results from simplified experiments to demonstrate the effect of the reformulations and the conservation properties expected from the discretized equations of the dynamical core. A substantial appendix adds further details to the documentation. Overall I think that the paper fulfills its purpose, as it provides the necessary background information for the analysis of experiments based on this model or for its further development. The text is relatively hard to read, owing to the large number of necessary equations, but they are unavoidable.
 In general I congratulate the authors for their decision to reformulate the dynamics with dry-mass vertical coordinate and with comprehensive treatment of condensates and energy. In reading the manuscript it one realizes only relatively late that this reformulation is still limited to the dycore. Therefore I would recommend to clarify early in the text that this paper presents the reformulation of the model dynamics (i.e. of the dynamical core) alone, while a reformulation of the physical parameterizations, as necessary for a fully consistent model, is a separate endeavor that will be addressed later (if that is the plan). Then less explanations about the lack of consistency are needed in the discussion of the results.
 Otherwise I do not have any major critique. But please check carefully the equations. A number of minor errors are pointed out below.
-I recommend a minor revision.
+I recommend a minor revision.}}
+
+We agree that it is not entirely clear that this is a manuscript focusing on the dynamical core in the introduction. We do, however, advocate to keep the discussion of the lack of consistency with physics since we argue that is an important topic and relevant to this manuscript.
+
+Changes to the manuscript:\\
+
+In last paragraph of the introduction we have added the sentence: `This paper presents the reformulation of the SE dynamical core alone, while a reformulation of the physical parameterizations, as necessary for a fully consistent model in dry-mass vertical coordinates, is a separate endeavor.'
 \subsection{Reviever 2's minor comments}
 \begin{itemize}
 \item {\color{blue}{L40: ``... the SE methods' near perfect scalability ...'' or ``... the near perfect scalability of the SE methods ...''}}
@@ -194,11 +207,19 @@ Added reference to \cite{RP1996QJ}. FYI: Regular gnomonic, equ-angular gnomonic 
 
 \item {\color{blue}{L61: ``science changes'' is vague. Based on the title of the manuscript you could use ``... reformulations of the dynamical core ...''}}
  
+Reformulated!
+
 \item {\color{blue}{Figure 1: Panel (a) shows the spectral element grid for Ne=20, while panel (b) seems to use Ne=30 as a base grid. Also both panels show different rotations of the globe and (b) does not show the cubed sphere panel edges. Making the two panels as similar as possible would be helpful.}}
 
-Done! Plots (a) and (b) are now centered over the US. (a) now show $N_e=30$ and (b) shows the elements of the actual Conus grid.
+Done! Plots (a) and (b) are now centered over the US. (a) now shows $N_e=30$ grid and (b) shows the elements of the actual Conus grid (instead of a low resolution version).
 
 \item {\color{blue}{L.80-102: From these two paragraphs, both motivating the utility of the dry-mass vertical coordinate, it somehow becomes clear that also the physical parameterizations are involved. But it is not sufficiently clear that for a fully consistent formulation of this CAM-SE and physics, also the physical parameterizations need (in part) to be reformulated so that the same definitions of cp and energy are in use through the whole model. Please add a statement that clarifies already here that (a) an adaptation of the physics is necessary for a fully consistent model, and that (b) this adaptation is not treated in this paper, but will follow later.}}
+
+Good point. \\
+
+Changes to the manuscript: The following sentence has been appended:\\
+
+The changes to physics needed to make it consistent with the dynamical core (discussed in this paragraph and the previous paragraph) is necessary for a fully consistent model. This adaptation is, however, not treated in this paper.
 
 \item {\color{blue}{L129: The first sentence is a bit awkward to read. Why not ``Equation 1 defines ... `` L159: ``... (more on this ...) ``}}
 
@@ -292,9 +313,9 @@ Tracer / tracer-mass consistency requires $\nu_p = \nu_q$ (there was a typo in t
 
 There are no constraints on the hyper-viscosity coefficients applied to velocity, $\nu_{div}$ and $\nu_{vor}$.  Also, no constraints of the hyper-viscosity applied to temperature.\\
 
-To reduce noise we have emperically found it effective to use a larger $\nu_{div}$ and $\nu_p$ compared to $\nu_T$ and $\nu_{vor}$ to damp computational modes and noise associated with the SE basis functions being $C^0$ at element boundaries.\\
+We have emperically found it effective to use a larger $\nu_{div}$ and $\nu_p$ compared to $\nu_T$ and $\nu_{vor}$ to damp computational modes and noise associated with the SE basis functions being $C^0$ at element boundaries.\\
 
-We have not envestigated what the consequence of  $\nu_T \neq \nu_{vor}$ is but it is, indeed, an interesting research question.\\
+We have not investigated what the consequence of  $\nu_T \neq \nu_{vor}$ is but it is, indeed, an interesting research question.\\
 
 Changes to the manuscript: appended 'Note that the viscosity coefficient for pressure and tracers should be the same otherwise the model is no longer 'free-stream' preserving (i.e. a constant mixing ratio is preserved; also referred to as mass-wind consistency in the literature). The dispersion properties of CAM-SE with hyperviscosity are similar to A-grid models. There are no computational modes, but the grid scale modes are erratic with large phase errors \citep{AW2009SIAM}. Empirically we have found that increasing $\nu_{div}$ and $\nu_p$ compared to  $\nu_T$ and $\nu_{vor}$ is effective at damping grid-scale modes and noise associated with the SE basis functions being $C^0$ at element edges while not making the total kinetic energy spectrum too dissipative at the high wavenumbers.' after line 264.
 
@@ -308,7 +329,7 @@ Missing 1/2 added to equation 59.
 
 \item {\color{blue}{L290-293: Also convection parameterizations matter, as a forcing for resolved waves, and the dissipation (numerical and physical) matters for the QBO.}}
 
-Sentence at L290 has beedreplaced with:
+Sentence at L290 has been replaced with:\\
 
 `Good AAM conservation may be important for the simulation of the Quasi-Biennial Oscillation (QBO) although the accurate simulation of the QBO also depends on vertical resolution, location of model top, model dissipation (numerical and physical) and parameterizations \citep[such as nonorographic gravity wave drag and convection parameterization; ][]{RSB2014JGR}. '
 
@@ -324,7 +345,7 @@ Appended 'where $A_k=\frac{1}{2}\left( A_{k+1/2}+A_{k-/12}\right)$ and $B_k=\fra
 
 \item {\color{blue}{L.342: ``... and density ...'': Later Eq.73 shows that density is defined on the full levels, not on the interface levels as stated on this line. What is correct?}}
 
-Density is a derived variable and defined at full levels. Manuscript text corrected by removing denisty from L342.
+Density is a derived variable and defined at full levels. Manuscript text corrected by removing density from L342.
 
 \item {\color{blue}{Section ``3.5 Temporal discretization'':
 This section details the rational for using different time stepping schemes for different equations or operations. What is missing is to point out if there exist any links between the schemes. In particular I am wondering how tracer mass conservation and mass-wind consistency is achieved with different schemes for advection and the continuity equation. Does the ``faster'' dynamics provide dry-air mass flux information from its se\_rsplit dynamics steps to the ``slower'' tracer advection step?}}
@@ -332,17 +353,25 @@ This section details the rational for using different time stepping schemes for 
 The choice of a 5 stage high-CFL RK method for dynamics and a 3 stage RK-SSP method
 allows both dynamics and tracers to use the same timestep.  
 For mass / tracer-mass consistency, the dynamics computes a mean flux (averaged over
-the 5 Runge-Kutte stages.  This mean flux is then used by all 3 tracer RK stages.
+the 5 Runge-Kutte stages.  This mean flux is then used by all 3 tracer RK stages.\\
+
+Changes to the manuscript: The following sentence has been added to section 3.5, `The choice of a five stage large-timestep Runga-Kutta method for dynamics and a three stage RK-SSP method allows both dynamics and tracers to use the same timestep. For mass / tracer-mass consistency, the dynamics computes a mean dry-air mass flux (averaged over the five Runge-Kutte stages. This mean flux is then used by all three tracer RK stages.'
 
 \item {\color{blue}{L545-550: Tracer concentrations need to be positive definite as outlined, which may require some sort of limiters. When water tracers are involved, such mechanisms, however, not only affect the tracer budgets, but generally also the energetics. Does CAM-SE relate tracer tendency limitations to the energetics? Or does ``setting to zero'' of a mixing ratio necessarily cause an energetic inconsistency? It would be valuable to have some explanation on this aspect.}}
 
-Very interesting question. In the dynamical core, since there are no phase changes, the latent heat contained in the tracers is proportional to their mass, and thus does not change (as long as we conserve mass).  And since the limiter conserves mass (and dissipates variance) the global energetics should not change. Locally, of course, a limiter will change the local energy budget.\\
+Very interesting question. In the physics-dynamics coupling layer (that the reviewer is referring to) there is an if-statement to prevent tracer mass from becoming negative. That operation will be a spurious source if mass and energy for the forcing term. After submitting this manuscript the E3SM model (the DOE version of CESM using SE) group has showed that using the ftype=0 option leads to significant errors in coupled simulations due to the `clipping' of water sink terms \citep{water-leak}. Given this new information we will change ftype to 2 in CAM-SE in future applications of the model.\\
 
-Changes to the manuscript: None since answer is speculative.
+Changes to the manuscript: Appended the following sentence\\
+
+`This leads to energy conservation errors and it has recently been shown to lead to hydrological cycle biases in coupled climate simulations \citep{water-leak}.'
+
+%First of all, in the dynamical core where there are no phase changes, the latent heat contained in the tracers is proportional to their mass, and thus does not change (as long as we conserve mass).  And since the limiter in the transport scheme conserves mass (and dissipates variance) the global energetics should not change. Locally, of course, a limiter will change the local energy budget.\\
+
+
 
 \item {\color{blue}{L586: ... Appendix D. When ...}}
 
-The LaTeX style from JAMES adds `:' after the referece to the Appendix. Asking journal to fix.
+The LaTeX style from JAMES adds `:' after the reference to the Appendix. Asking journal to fix.
 
 \item {\color{blue}{L701: Please specify the model top of the 32 level version used here.}}
 
@@ -360,17 +389,17 @@ Agreed.
 
 The torque from physics is not total AAM conserving so Figure 9 is not showing inconsistency from physics. The purpose of comparing the physics torque to the dynamical core torque is to show that the spurious torque from dynamics is much less than the `physical' torque from physics.
 
-Sentece in L830 changed to:\\
+Sentence in L830 changed to (changes in red font):\\
 
-As discussed in Section 2.7 the total AAM torque from the dynamical core, in the absence of topography, should be small {\color{blue}{(ideally zero)}} compared to the torque from the parameterizations {\color{blue}{which is not spurious}}.
+As discussed in Section 2.7 the total AAM torque from the dynamical core, in the absence of topography, should be small {\color{red}{(ideally zero)}} compared to the torque from the parameterizations {\color{red}{which is not spurious}}.
 
 \item {\color{blue}{L873: ... cores/node. The x-axis ...}}\\
 
 Fixed.
 
-\item {\color{blue}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, phyiscs \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}\\
+\item {\color{blue}{L905-907: Fig. 11 shows that the fraction of the dycore costs is reduced for higher node numbers, as a result of the ``super-scaling'' illustrated in Fig. 10. Then other fractions must increase as the total relative costs = 1 is constant. Therefore from Fig.11 - without more information - we cannot learn if physics costs have remained constant (=''perfect scaling'') or possibly changed. The same holds for the other parts. My suggestion is to replace Fig.11 by a new figure that shows the costs of each part (I/O, dynamics, physics \# dynamics, physics) similar as in Figure 10, with costs scaled by the costs of the 5-node setup of the CAM-SE. Additionally a line for the costs of the ``whole model'' should be shown for completeness.}}\\
 
-We have modified figure 11 (which is Figure 12 in the new version of the manuscript) such that it illustrates the core-hours per simulated year for each sub-component of CAM as well as the entire atmosphere model. After the submission of our initial manuscript we identified an errant print statement that was causing scalability issues in the phyics section of the code. The affect of this print statement was significant at larger core counts, and now the physics illustrates only a very minor increase in cost at greater then 30 nodes.\\
+We have modified figure 11 (which is Figure 12 in the new version of the manuscript) such that it illustrates the core-hours per simulated year for each sub-component of CAM as well as the entire atmosphere model. After the submission of our initial manuscript we identified an errant print statement that was causing scalability issues in the physics section of the code. The affect of this print statement was significant at larger core counts, and now the physics illustrates only a very minor increase in cost at greater then 30 nodes.\\
 
 Figure 14 has also been updated.
 
@@ -390,10 +419,6 @@ The font size has been increased.
 
 Fixed.
 
-\end{itemize}
-\section{Other changes}
-\begin{itemize}
-\item {\color{blue}{J.-F.: you should rewrite the title, maybe something like NCAR release of CAM-SE in CESM2.0}}
 \end{itemize}
 \bibliographystyle{abbrv}
 \bibliography{bib}
