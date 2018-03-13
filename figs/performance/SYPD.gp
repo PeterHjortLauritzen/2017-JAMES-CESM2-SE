@@ -4,8 +4,8 @@ se(x) = a*x**2+b*x+c
 fit se(x) 'perf.dat' using 2:3 via a,b,c
 homme(x) = aa*x**2+bb*x+cc
 fit homme(x) 'perf.dat' using 2:4 via aa,bb,cc
-#set size square
-#set bmargin at screen 0.1
+set size square
+set bmargin at screen 0.1
 set font "Helvetica Bold,20"
 set title "CAM6 Aqua-Planet (incl. I/O)" font ",20"
 set grid
