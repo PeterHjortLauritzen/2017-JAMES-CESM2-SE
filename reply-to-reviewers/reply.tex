@@ -356,7 +356,7 @@ This section details the rational for using different time stepping schemes for 
 
 The choice of a 5 stage high-CFL RK method for dynamics and a 3 stage RK-SSP method
 allows both dynamics and tracers to use the same timestep.  
-For mass / tracer-mass consistency, the dynamics computes a mean flux (averaged over
+For mass / tracer-mass consistency, the dynamics computes a mean flux averaged over
 the 5 Runge-Kutte stages.  This mean flux is then used by all 3 tracer RK stages.\\
 
 Changes to the manuscript: The following sentence has been added to section 3.5, `The choice of a five stage large-timestep Runga-Kutta method for dynamics and a three stage RK-SSP method allows both dynamics and tracers to use the same timestep. For mass / tracer-mass consistency, the dynamics computes a mean dry-air mass flux (averaged over the five Runge-Kutte stages. This mean flux is then used by all three tracer RK stages.'
